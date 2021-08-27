@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WEB_Water.Data.Entities
 {
-    public class Address
+    public class Address : IEntity
     {
         public int Id { get; set; }
 

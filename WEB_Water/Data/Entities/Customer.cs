@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WEB_Water.Data.Entities
 {
-    public class Customer
+    public class Customer : IEntity
     {
 
         #region Propiedades

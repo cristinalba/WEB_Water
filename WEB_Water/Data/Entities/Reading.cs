@@ -6,7 +6,7 @@ using System.Threading.Tasks;
 
 namespace WEB_Water.Data.Entities
 {
-    public class Reading
+    public class Reading : IEntity
     {
         public int Id { get; set; }
 

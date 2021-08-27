@@ -30,10 +30,19 @@ namespace WEB_Water
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
-            services.AddControllersWithViews();
+            
 
             //Use the Seed the first time DB is executed
             services.AddTransient<SeedDb>();
+
+            //Dependency injection:
+
+            //services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<ICustomerRepository, CustomerRepository>();
+            // services.AddScoped<IAddressRepository, AddressRepository>();
+            // services.AddScoped<IReadingRepository, ReadingRepository>();
+
+            services.AddControllersWithViews();
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.

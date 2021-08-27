@@ -12,17 +12,18 @@ namespace WEB_Water.Controllers
 {
     public class CustomersController : Controller
     {
-        private readonly DataContext _context;
-
-        public CustomersController(DataContext context)
+        //private readonly DataContext _context;
+        private readonly ICustomerRepository _customerRepository;
+        public CustomersController(ICustomerRepository customerRepository)
         {
-            _context = context;
+            _customerRepository = customerRepository;
         }
 
         // GET: Customers
-        public async Task<IActionResult> Index()
+        public IActionResult Index()
         {
-            return View(await _context.Customers.ToListAsync());
+            return View(_customerRepository.GetAll());
+            //return View(await _context.Customers.ToListAsync());
         }
 
         // GET: Customers/Details/5
@@ -32,9 +33,8 @@ namespace WEB_Water.Controllers
             {
                 return NotFound();
             }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerRepository.GetByIdAsync(id.Value);
+            //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -58,8 +58,11 @@ namespace WEB_Water.Controllers
         {
             if (ModelState.IsValid)
             {
-                _context.Add(customer);
-                await _context.SaveChangesAsync();
+                //TODO: change to the user who is logged in
+                //customer.User = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
+                await _customerRepository.CreateAsync(customer);
+                //_context.Add(customer);
+                //await _context.SaveChangesAsync();
                 return RedirectToAction(nameof(Index));
             }
             return View(customer);
@@ -72,8 +75,8 @@ namespace WEB_Water.Controllers
             {
                 return NotFound();
             }
-
-            var customer = await _context.Customers.FindAsync(id);
+            var customer = await _customerRepository.GetByIdAsync(id.Value);
+            //var customer = await _context.Customers.FindAsync(id);
             if (customer == null)
             {
                 return NotFound();
@@ -97,12 +100,14 @@ namespace WEB_Water.Controllers
             {
                 try
                 {
-                    _context.Update(customer);
-                    await _context.SaveChangesAsync();
+                    await _customerRepository.UpdateAsync(customer);
+                    //_context.Update(customer);
+                    //await _context.SaveChangesAsync();
                 }
                 catch (DbUpdateConcurrencyException)
                 {
-                    if (!CustomerExists(customer.Id))
+                    //if (!CustomerExists(customer.Id))
+                    if (!await _customerRepository.ExistAsync(customer.Id))
                     {
                         return NotFound();
                     }
@@ -123,9 +128,8 @@ namespace WEB_Water.Controllers
             {
                 return NotFound();
             }
-
-            var customer = await _context.Customers
-                .FirstOrDefaultAsync(m => m.Id == id);
+            var customer = await _customerRepository.GetByIdAsync(id.Value);
+            //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
                 return NotFound();
@@ -139,15 +143,17 @@ namespace WEB_Water.Controllers
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
-            var customer = await _context.Customers.FindAsync(id);
-            _context.Customers.Remove(customer);
-            await _context.SaveChangesAsync();
+            var customer = await _customerRepository.GetByIdAsync(id);
+            await _customerRepository.DeleteAsync(customer);
+            //var customer = await _context.Customers.FindAsync(id);
+            //_context.Customers.Remove(customer);
+            //await _context.SaveChangesAsync();
             return RedirectToAction(nameof(Index));
         }
 
-        private bool CustomerExists(int id)
-        {
-            return _context.Customers.Any(e => e.Id == id);
-        }
+        //private bool CustomerExists(int id)
+        //{
+        //    return _context.Customers.Any(e => e.Id == id);
+        //}
     }
 }
