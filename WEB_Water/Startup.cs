@@ -39,8 +39,8 @@ namespace WEB_Water
 
             //services.AddScoped<IUserHelper, UserHelper>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
-            // services.AddScoped<IAddressRepository, AddressRepository>();
-            // services.AddScoped<IReadingRepository, ReadingRepository>();
+            services.AddScoped<IAddressRepository, AddressRepository>();
+            services.AddScoped<IReadingRepository, ReadingRepository>();
 
             services.AddControllersWithViews();
         }
