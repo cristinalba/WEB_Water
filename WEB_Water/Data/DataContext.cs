@@ -8,7 +8,7 @@ using WEB_Water.Data.Entities;
 
 namespace WEB_Water.Data
 {
-    public class DataContext :DbContext
+    public class DataContext : IdentityDbContext<User>
     {
         public DbSet<Customer> Customers { get; set; } // Property responsible for the table
 

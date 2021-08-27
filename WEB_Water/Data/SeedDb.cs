@@ -1,8 +1,10 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Identity;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB_Water.Data.Entities;
+using WEB_Water.Helpers;
 
 namespace WEB_Water.Data
 {
@@ -10,21 +12,48 @@ namespace WEB_Water.Data
     {
         private readonly DataContext _context; //join DB
         private Random _random;
+        private readonly IUserHelper _userHelper;
+        //private readonly UserManager<User> _userManager;
 
-        public SeedDb(DataContext context)
+        public SeedDb(DataContext context,
+                      IUserHelper userHelper)
+                       //UserManager<User> userManager)
         {
             _context = context;
             _random = new Random();
+            _userHelper = userHelper;
+            //_userManager = userManager;
         }
 
-        public async Task SeedAsync()
+    public async Task SeedAsync()
         {
             await _context.Database.EnsureCreatedAsync(); //If there is no DB created, this will create one
+                                                          //await _context.Database.MigrateAsync(); //If there is no DB, it will create one and execute the migrations 
 
-          
+            var user = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
+            //var user = await _userManager.FindByIdAsync("cristinajular@gmail.com"); //check if this user has been already created
+            if (user == null)
+            {
+                user = new User
+                {
+                    FirstName = "Cristina",
+                    LastName = "Jular",
+                    Email = "cristinajular@gmail.com",
+                    UserName = "cristinajular@gmail.com",
+                    PhoneNumber = "914412891"
+                };
+
+                var result = await _userHelper.AddUserAsync(user, "123456");
+                //var result = await _userManager.CreateAsync(user, "123456"); //Create User through the _userManager's method and the pass goes separetely in case I want to encrypt it
+                if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("It was not possible to create the user in seeder");
+                }
+            }
+
             if (!_context.Customers.Any())
             {
-                AddCustomer("Juan", "Martin");
+                AddCustomer("Juan", "Martin", user);
                 await _context.SaveChangesAsync(); //Save data in the new Table
             }
             if (!_context.Addresses.Any())
@@ -47,7 +76,7 @@ namespace WEB_Water.Data
             });
         }
 
-        private void AddCustomer(string first, string last)
+        private void AddCustomer(string first, string last, User user)
         {
             _context.Customers.Add(new Customer
             {
@@ -55,7 +84,8 @@ namespace WEB_Water.Data
                 LastName = last,
                 NIF_customer = _random.Next(100000000),
                 Telefone = _random.Next(900000000),
-                Email = "kamistesta@gmail.com"
+                Email = "kamistesta@gmail.com",
+                User = user
             });
         }
     }

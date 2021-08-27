@@ -13,7 +13,7 @@ namespace WEB_Water.Data.Entities
         //public bool WasDeleted { get; set; }
 
         [Required]
-        public Customer CustomerDetails { get; set; }
+        public Customer Customer { get; set; }
 
         [Display(Name = "Address")]
         [MaxLength(100, ErrorMessage = "The field {0} only can contain {1} characters lenght.")]

@@ -37,7 +37,7 @@ namespace WEB_Water.Data.Entities
         [MaxLength(100, ErrorMessage = "The field {0} only can contain {1} characters lenght.")]
         public string Email { get; set; }
 
-        //public User User { get; set; } //Once login is done, the user can control the Customers
+        public User User { get; set; } //Once login is done, the user can control the Customers
 
         //public List<int> AddressID { get; set; }
         //Table con foreign key cliente

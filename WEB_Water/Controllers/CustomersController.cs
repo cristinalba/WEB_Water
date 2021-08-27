@@ -7,6 +7,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
 using WEB_Water.Data;
 using WEB_Water.Data.Entities;
+using WEB_Water.Helpers;
 
 namespace WEB_Water.Controllers
 {
@@ -14,15 +15,19 @@ namespace WEB_Water.Controllers
     {
         //private readonly DataContext _context;
         private readonly ICustomerRepository _customerRepository;
-        public CustomersController(ICustomerRepository customerRepository)
+        private readonly IUserHelper _userHelper;
+
+        public CustomersController(ICustomerRepository customerRepository,
+                                   IUserHelper userHelper)
         {
             _customerRepository = customerRepository;
+            _userHelper = userHelper;
         }
 
         // GET: Customers
         public IActionResult Index()
         {
-            return View(_customerRepository.GetAll());
+            return View(_customerRepository.GetAll().OrderBy(e => e.FirstName));//Show Customers order by FirstName
             //return View(await _context.Customers.ToListAsync());
         }
 
@@ -59,7 +64,7 @@ namespace WEB_Water.Controllers
             if (ModelState.IsValid)
             {
                 //TODO: change to the user who is logged in
-                //customer.User = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
+                customer.User = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
                 await _customerRepository.CreateAsync(customer);
                 //_context.Add(customer);
                 //await _context.SaveChangesAsync();
