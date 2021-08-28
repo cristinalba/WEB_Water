@@ -59,6 +59,8 @@ namespace WEB_Water
             //Dependency injection:
 
             services.AddScoped<IUserHelper, UserHelper>();
+            services.AddScoped<IImageHelper, ImageHelper>();
+            //services.AddScoped<IConverterHelper, ConverterHelper>();
             services.AddScoped<ICustomerRepository, CustomerRepository>();
             services.AddScoped<IAddressRepository, AddressRepository>();
             services.AddScoped<IReadingRepository, ReadingRepository>();

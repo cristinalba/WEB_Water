@@ -16,12 +16,16 @@ namespace WEB_Water.Controllers
         //private readonly DataContext _context;
         private readonly ICustomerRepository _customerRepository;
         private readonly IUserHelper _userHelper;
+        private readonly IImageHelper _imageHelper;
+        //private readonly IConverterHelper _converterHelper;
 
         public CustomersController(ICustomerRepository customerRepository,
-                                   IUserHelper userHelper)
+                                   IUserHelper userHelper,
+                                   IImageHelper imageHelper)
         {
             _customerRepository = customerRepository;
             _userHelper = userHelper;
+            _imageHelper = imageHelper;
         }
 
         // GET: Customers
