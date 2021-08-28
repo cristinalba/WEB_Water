@@ -22,7 +22,6 @@
                 <span asp-validation-for="LastName" class="text-warning"></span>
             </div>
 
-           
             <div class="form-group">
                 <input type="submit" value="Update" class="btn btn-primary" />
                 <a asp-action="ChangePassword" class="btn btn-success">Change Password</a>
@@ -35,4 +34,4 @@
 
 @section Scripts {
     @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-}
+} 

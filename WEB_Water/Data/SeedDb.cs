@@ -30,6 +30,11 @@ namespace WEB_Water.Data
             await _context.Database.EnsureCreatedAsync(); //If there is no DB created, this will create one
                                                           //await _context.Database.MigrateAsync(); //If there is no DB, it will create one and execute the migrations 
 
+            await _userHelper.CheckRoleAsync("Admin");
+            await _userHelper.CheckRoleAsync("Worker");
+            await _userHelper.CheckRoleAsync("Customer");
+            await _userHelper.CheckRoleAsync("Anonymous");
+
             var user = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
             //var user = await _userManager.FindByIdAsync("cristinajular@gmail.com"); //check if this user has been already created
             if (user == null)
@@ -49,7 +54,22 @@ namespace WEB_Water.Data
                 {
                     throw new InvalidOperationException("It was not possible to create the user in seeder");
                 }
+
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+                //await _userHelper.AddUserToRoleAsync(user, "Worker");
+                //await _userHelper.AddUserToRoleAsync(user, "Customer");
+                //await _userHelper.AddUserToRoleAsync(user, "Anonymous");
             }
+
+            var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+            if (!isInRole)
+            {
+                await _userHelper.AddUserToRoleAsync(user, "Admin");
+                //await _userHelper.AddUserToRoleAsync(user, "Worker");
+                //await _userHelper.AddUserToRoleAsync(user, "Customer");
+                //await _userHelper.AddUserToRoleAsync(user, "Anonymous");
+            }
+
 
             if (!_context.Customers.Any())
             {
