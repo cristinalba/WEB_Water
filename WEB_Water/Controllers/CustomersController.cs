@@ -12,7 +12,7 @@ using WEB_Water.Helpers;
 
 namespace WEB_Water.Controllers
 {
-    [Authorize]
+    //[Authorize]
     public class CustomersController : Controller
     {
         //private readonly DataContext _context;
@@ -54,6 +54,7 @@ namespace WEB_Water.Controllers
         }
 
         // GET: Customers/Create
+        [Authorize]
         public IActionResult Create()
         {
             return View();
@@ -69,7 +70,8 @@ namespace WEB_Water.Controllers
             if (ModelState.IsValid)
             {
                 //TODO: change to the user who is logged in
-                customer.User = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
+                customer.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                //customer.User = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
                 await _customerRepository.CreateAsync(customer);
                 //_context.Add(customer);
                 //await _context.SaveChangesAsync();
@@ -79,6 +81,7 @@ namespace WEB_Water.Controllers
         }
 
         // GET: Customers/Edit/5
+        [Authorize]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
@@ -110,6 +113,9 @@ namespace WEB_Water.Controllers
             {
                 try
                 {
+                    //change to the user who is logged in
+                    customer.User = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+                    //customer.User = await _userHelper.GetUserByEmailAsync("cristinajular@gmail.com");
                     await _customerRepository.UpdateAsync(customer);
                     //_context.Update(customer);
                     //await _context.SaveChangesAsync();
@@ -132,6 +138,7 @@ namespace WEB_Water.Controllers
         }
 
         // GET: Customers/Delete/5
+        [Authorize]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
