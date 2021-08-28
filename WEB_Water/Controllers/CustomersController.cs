@@ -2,6 +2,7 @@
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Mvc;
 using Microsoft.AspNetCore.Mvc.Rendering;
 using Microsoft.EntityFrameworkCore;
@@ -11,21 +12,21 @@ using WEB_Water.Helpers;
 
 namespace WEB_Water.Controllers
 {
+    [Authorize]
     public class CustomersController : Controller
     {
         //private readonly DataContext _context;
         private readonly ICustomerRepository _customerRepository;
         private readonly IUserHelper _userHelper;
-        private readonly IImageHelper _imageHelper;
+        //private readonly IImageHelper _imageHelper;
         //private readonly IConverterHelper _converterHelper;
 
         public CustomersController(ICustomerRepository customerRepository,
-                                   IUserHelper userHelper,
-                                   IImageHelper imageHelper)
+                                   IUserHelper userHelper)
         {
             _customerRepository = customerRepository;
             _userHelper = userHelper;
-            _imageHelper = imageHelper;
+            //_imageHelper = imageHelper;
         }
 
         // GET: Customers
