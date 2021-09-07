@@ -30,6 +30,12 @@ namespace WEB_Water
             {
                 var seeder = scope.ServiceProvider.GetService<SeedDb>();
                 seeder.SeedAsync().Wait();
+
+                //ICustomerRepository pruebaCustomerRepository = scope.ServiceProvider.GetService<ICustomerRepository>();
+
+                //var addressTask = pruebaCustomerRepository.GetAddressesForCustomerAsync("cristinajular@gmail.com");
+
+                //Console.WriteLine(addressTask.Result);//Result consigue info de tareas asincronas
             }
         }
 

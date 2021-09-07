@@ -8,6 +8,8 @@ namespace WEB_Water.Data
 {
     public interface ICustomerRepository : IGenericRepository<Customer>
     {
-        public IQueryable GetAllWithUsers();
+        IQueryable GetAllWithUsers();
+
+        Task GetAddressesForCustomerAsync(string username);
     }
 }

@@ -68,6 +68,7 @@ namespace WEB_Water.Controllers
                         Email = model.Username,
                         UserName = model.Username,
                     };
+                    //METER ROLE AL USER 
 
                     var result = await _userHelper.AddUserAsync(user, model.Password);
                     if (result != IdentityResult.Success)
@@ -166,12 +167,16 @@ namespace WEB_Water.Controllers
             return this.View(model);
         }
 
-
         public async Task<IActionResult> Logout()
         {
             await _userHelper.LogoutAsync();
             return RedirectToAction("Index", "Home");
 
+        }
+
+        public IActionResult NotAuthorized()
+        {
+            return View();
         }
     }
 }

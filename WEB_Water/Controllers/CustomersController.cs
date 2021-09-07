@@ -41,13 +41,13 @@ namespace WEB_Water.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
             var customer = await _customerRepository.GetByIdAsync(id.Value);
             //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             return View(customer);
@@ -86,13 +86,13 @@ namespace WEB_Water.Controllers
         {
             if (id == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
             var customer = await _customerRepository.GetByIdAsync(id.Value);
             //var customer = await _context.Customers.FindAsync(id);
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
             return View(customer);
         }
@@ -125,7 +125,7 @@ namespace WEB_Water.Controllers
                     //if (!CustomerExists(customer.Id))
                     if (!await _customerRepository.ExistAsync(customer.Id))
                     {
-                        return NotFound();
+                        return new NotFoundViewResult("CustomerNotFound");
                     }
                     else
                     {
@@ -149,7 +149,7 @@ namespace WEB_Water.Controllers
             //var customer = await _context.Customers.FirstOrDefaultAsync(m => m.Id == id);
             if (customer == null)
             {
-                return NotFound();
+                return new NotFoundViewResult("CustomerNotFound");
             }
 
             return View(customer);
@@ -172,5 +172,10 @@ namespace WEB_Water.Controllers
         //{
         //    return _context.Customers.Any(e => e.Id == id);
         //}
+
+        public IActionResult CustomerNotFound()
+        {
+            return View();
+        }
     }
 }

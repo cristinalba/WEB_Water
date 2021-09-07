@@ -26,10 +26,23 @@ namespace WEB_Water.Data
         }
 
 
-        //public async Task GetAddressesForCustomerAsync(string mail)
-        //{
-        //    var user = await _userHelper.GetUserByEmailAsync(mail);
-        //    var addresses = await _context.Addresses.Where(mor => mor.Customer == customer);
-        //}
+        public async Task GetAddressesForCustomerAsync(string username)
+        {
+            var customer = await _context.Customers
+                                            .Where(cus => cus.Email == username)
+                                            .FirstOrDefaultAsync();
+        
+            if (customer == null)
+            {
+                return;
+            }
+
+            var addresses = await _context.Addresses
+                                            .Where(ruas => ruas.Customer == customer)
+                                            .ToListAsync();
+
+            
+
+        }
     }
 }
