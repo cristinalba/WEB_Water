@@ -3,30 +3,10 @@ using Microsoft.EntityFrameworkCore.Migrations;
 
 namespace WEB_Water.Migrations
 {
-    public partial class AddUsers : Migration
+    public partial class InitDB : Migration
     {
         protected override void Up(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_Customers_CustomerDetailsId",
-                table: "Addresses");
-
-            migrationBuilder.RenameColumn(
-                name: "CustomerDetailsId",
-                table: "Addresses",
-                newName: "CustomerId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Addresses_CustomerDetailsId",
-                table: "Addresses",
-                newName: "IX_Addresses_CustomerId");
-
-            migrationBuilder.AddColumn<string>(
-                name: "UserId",
-                table: "Customers",
-                type: "nvarchar(450)",
-                nullable: true);
-
             migrationBuilder.CreateTable(
                 name: "AspNetRoles",
                 columns: table => new
@@ -48,6 +28,7 @@ namespace WEB_Water.Migrations
                     Id = table.Column<string>(type: "nvarchar(450)", nullable: false),
                     FirstName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
                     LastName = table.Column<string>(type: "nvarchar(50)", maxLength: 50, nullable: true),
+                    Nif = table.Column<string>(type: "nvarchar(max)", nullable: true),
                     UserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     NormalizedUserName = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
                     Email = table.Column<string>(type: "nvarchar(256)", maxLength: 256, nullable: true),
@@ -174,10 +155,91 @@ namespace WEB_Water.Migrations
                         onDelete: ReferentialAction.Cascade);
                 });
 
-            migrationBuilder.CreateIndex(
-                name: "IX_Customers_UserId",
-                table: "Customers",
-                column: "UserId");
+            migrationBuilder.CreateTable(
+                name: "Readers",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    ReaderName = table.Column<string>(type: "nvarchar(max)", nullable: true),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    AddressName = table.Column<string>(type: "nvarchar(100)", maxLength: 100, nullable: true),
+                    Installation = table.Column<DateTime>(type: "datetime2", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Readers", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Readers_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Readings",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReaderId = table.Column<int>(type: "int", nullable: true),
+                    Begin = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    End = table.Column<DateTime>(type: "datetime2", nullable: true),
+                    MonthlyConsume = table.Column<double>(type: "float", nullable: false),
+                    BillIssued = table.Column<bool>(type: "bit", nullable: false)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Readings", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Readings_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Readings_Readers_ReaderId",
+                        column: x => x.ReaderId,
+                        principalTable: "Readers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
+
+            migrationBuilder.CreateTable(
+                name: "Bills",
+                columns: table => new
+                {
+                    Id = table.Column<int>(type: "int", nullable: false)
+                        .Annotation("SqlServer:Identity", "1, 1"),
+                    UserId = table.Column<string>(type: "nvarchar(450)", nullable: true),
+                    ReaderId = table.Column<int>(type: "int", nullable: true),
+                    BillDate = table.Column<DateTime>(type: "datetime2", nullable: false),
+                    ReadingId = table.Column<int>(type: "int", nullable: true)
+                },
+                constraints: table =>
+                {
+                    table.PrimaryKey("PK_Bills", x => x.Id);
+                    table.ForeignKey(
+                        name: "FK_Bills_AspNetUsers_UserId",
+                        column: x => x.UserId,
+                        principalTable: "AspNetUsers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bills_Readers_ReaderId",
+                        column: x => x.ReaderId,
+                        principalTable: "Readers",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                    table.ForeignKey(
+                        name: "FK_Bills_Readings_ReadingId",
+                        column: x => x.ReadingId,
+                        principalTable: "Readings",
+                        principalColumn: "Id",
+                        onDelete: ReferentialAction.Restrict);
+                });
 
             migrationBuilder.CreateIndex(
                 name: "IX_AspNetRoleClaims_RoleId",
@@ -218,33 +280,39 @@ namespace WEB_Water.Migrations
                 unique: true,
                 filter: "[NormalizedUserName] IS NOT NULL");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_Customers_CustomerId",
-                table: "Addresses",
-                column: "CustomerId",
-                principalTable: "Customers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            migrationBuilder.CreateIndex(
+                name: "IX_Bills_ReaderId",
+                table: "Bills",
+                column: "ReaderId");
 
-            migrationBuilder.AddForeignKey(
-                name: "FK_Customers_AspNetUsers_UserId",
-                table: "Customers",
-                column: "UserId",
-                principalTable: "AspNetUsers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
+            migrationBuilder.CreateIndex(
+                name: "IX_Bills_ReadingId",
+                table: "Bills",
+                column: "ReadingId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Bills_UserId",
+                table: "Bills",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Readers_UserId",
+                table: "Readers",
+                column: "UserId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Readings_ReaderId",
+                table: "Readings",
+                column: "ReaderId");
+
+            migrationBuilder.CreateIndex(
+                name: "IX_Readings_UserId",
+                table: "Readings",
+                column: "UserId");
         }
 
         protected override void Down(MigrationBuilder migrationBuilder)
         {
-            migrationBuilder.DropForeignKey(
-                name: "FK_Addresses_Customers_CustomerId",
-                table: "Addresses");
-
-            migrationBuilder.DropForeignKey(
-                name: "FK_Customers_AspNetUsers_UserId",
-                table: "Customers");
-
             migrationBuilder.DropTable(
                 name: "AspNetRoleClaims");
 
@@ -261,36 +329,19 @@ namespace WEB_Water.Migrations
                 name: "AspNetUserTokens");
 
             migrationBuilder.DropTable(
+                name: "Bills");
+
+            migrationBuilder.DropTable(
                 name: "AspNetRoles");
 
             migrationBuilder.DropTable(
+                name: "Readings");
+
+            migrationBuilder.DropTable(
+                name: "Readers");
+
+            migrationBuilder.DropTable(
                 name: "AspNetUsers");
-
-            migrationBuilder.DropIndex(
-                name: "IX_Customers_UserId",
-                table: "Customers");
-
-            migrationBuilder.DropColumn(
-                name: "UserId",
-                table: "Customers");
-
-            migrationBuilder.RenameColumn(
-                name: "CustomerId",
-                table: "Addresses",
-                newName: "CustomerDetailsId");
-
-            migrationBuilder.RenameIndex(
-                name: "IX_Addresses_CustomerId",
-                table: "Addresses",
-                newName: "IX_Addresses_CustomerDetailsId");
-
-            migrationBuilder.AddForeignKey(
-                name: "FK_Addresses_Customers_CustomerDetailsId",
-                table: "Addresses",
-                column: "CustomerDetailsId",
-                principalTable: "Customers",
-                principalColumn: "Id",
-                onDelete: ReferentialAction.Restrict);
         }
     }
 }

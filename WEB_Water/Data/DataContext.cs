@@ -10,11 +10,12 @@ namespace WEB_Water.Data
 {
     public class DataContext : IdentityDbContext<User>
     {
-        public DbSet<Customer> Customers { get; set; } // Property responsible for the table
-
-        public DbSet<Address> Addresses { get; set; }
+      
+        public DbSet<Reader> Readers { get; set; }// Property responsible for the table
 
         public DbSet<Reading> Readings { get; set; }
+
+        public DbSet<Bill> Bills { get; set; }
 
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {

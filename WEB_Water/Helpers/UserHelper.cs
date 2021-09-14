@@ -33,7 +33,7 @@ namespace WEB_Water.Helpers
         {
             return await _userManager.FindByEmailAsync(email);
         }
-        public async Task<SignInResult> LoginAsync(LoginViewModel model)
+        public async Task<SignInResult> LoginAsync(LoginViewModel model)//receives the view model 
         {
             return await _signInManager.PasswordSignInAsync(
                 model.Username,

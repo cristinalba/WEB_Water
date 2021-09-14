@@ -14,18 +14,18 @@ namespace WEB_Water.Controllers
     {
         private readonly IUserHelper _userHelper;
 
-        public AccountController(IUserHelper userHelper)
+        public AccountController(IUserHelper userHelper) //search for the methods in the UserHelper
         {
             _userHelper = userHelper;
         }
-        public IActionResult Login()
+        public IActionResult Login() //right button, add razor view(Login, without model, use layout)
         {
-            if (User.Identity.IsAuthenticated)
+            if (User.Identity.IsAuthenticated) //if the user is autherticated, shows Home!
             {
                 return RedirectToAction("Index", "Home");
             }
             
-            return View();
+            return View(); //If there is not log in, it remains in the same view
         }
 
         [HttpPost]

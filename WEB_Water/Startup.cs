@@ -12,6 +12,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using WEB_Water.Data;
 using WEB_Water.Data.Entities;
+using WEB_Water.Data.Repositories;
 using WEB_Water.Helpers;
 
 namespace WEB_Water
@@ -62,9 +63,10 @@ namespace WEB_Water
             //services.AddScoped<IImageHelper, ImageHelper>();
             //services.AddScoped<IConverterHelper, ConverterHelper>();
 
-            services.AddScoped<ICustomerRepository, CustomerRepository>();
-            services.AddScoped<IAddressRepository, AddressRepository>();
+           
+            services.AddScoped<IReaderRepository, ReaderRepository>();
             services.AddScoped<IReadingRepository, ReadingRepository>();
+            services.AddScoped<IBillRepository, BillRepository>();
 
             services.ConfigureApplicationCookie(options => 
             {

@@ -150,7 +150,37 @@ namespace WEB_Water.Migrations
                     b.ToTable("AspNetUserTokens");
                 });
 
-            modelBuilder.Entity("WEB_Water.Data.Entities.Address", b =>
+            modelBuilder.Entity("WEB_Water.Data.Entities.Bill", b =>
+                {
+                    b.Property<int>("Id")
+                        .ValueGeneratedOnAdd()
+                        .HasColumnType("int")
+                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
+
+                    b.Property<DateTime>("BillDate")
+                        .HasColumnType("datetime2");
+
+                    b.Property<int?>("ReaderId")
+                        .HasColumnType("int");
+
+                    b.Property<int?>("ReadingId")
+                        .HasColumnType("int");
+
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
+
+                    b.HasKey("Id");
+
+                    b.HasIndex("ReaderId");
+
+                    b.HasIndex("ReadingId");
+
+                    b.HasIndex("UserId");
+
+                    b.ToTable("Bills");
+                });
+
+            modelBuilder.Entity("WEB_Water.Data.Entities.Reader", b =>
                 {
                     b.Property<int>("Id")
                         .ValueGeneratedOnAdd()
@@ -161,58 +191,11 @@ namespace WEB_Water.Migrations
                         .HasMaxLength(100)
                         .HasColumnType("nvarchar(100)");
 
-                    b.Property<DateTime>("BeginOfContract")
+                    b.Property<DateTime?>("Installation")
                         .HasColumnType("datetime2");
 
-                    b.Property<string>("City")
-                        .HasMaxLength(70)
-                        .HasColumnType("nvarchar(70)");
-
-                    b.Property<int?>("CustomerId")
-                        .HasColumnType("int");
-
-                    b.Property<string>("NameOfBank")
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("PostalCode")
-                        .HasMaxLength(9)
-                        .HasColumnType("nvarchar(9)");
-
-                    b.HasKey("Id");
-
-                    b.HasIndex("CustomerId");
-
-                    b.ToTable("Addresses");
-                });
-
-            modelBuilder.Entity("WEB_Water.Data.Entities.Customer", b =>
-                {
-                    b.Property<int>("Id")
-                        .ValueGeneratedOnAdd()
-                        .HasColumnType("int")
-                        .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
-
-                    b.Property<string>("Email")
-                        .IsRequired()
-                        .HasMaxLength(100)
-                        .HasColumnType("nvarchar(100)");
-
-                    b.Property<string>("FirstName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<string>("LastName")
-                        .IsRequired()
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<int>("NIF_customer")
-                        .HasColumnType("int");
-
-                    b.Property<int>("Telefone")
-                        .HasColumnType("int");
+                    b.Property<string>("ReaderName")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
@@ -221,7 +204,7 @@ namespace WEB_Water.Migrations
 
                     b.HasIndex("UserId");
 
-                    b.ToTable("Customers");
+                    b.ToTable("Readers");
                 });
 
             modelBuilder.Entity("WEB_Water.Data.Entities.Reading", b =>
@@ -231,29 +214,29 @@ namespace WEB_Water.Migrations
                         .HasColumnType("int")
                         .HasAnnotation("SqlServer:ValueGenerationStrategy", SqlServerValueGenerationStrategy.IdentityColumn);
 
-                    b.Property<int?>("AddressDetailsId")
-                        .HasColumnType("int");
+                    b.Property<DateTime?>("Begin")
+                        .HasColumnType("datetime2");
+
+                    b.Property<bool>("BillIssued")
+                        .HasColumnType("bit");
+
+                    b.Property<DateTime?>("End")
+                        .HasColumnType("datetime2");
 
                     b.Property<double>("MonthlyConsume")
                         .HasColumnType("float");
 
-                    b.Property<DateTime>("MonthlyReadingDate")
-                        .HasColumnType("datetime2");
+                    b.Property<int?>("ReaderId")
+                        .HasColumnType("int");
 
-                    b.Property<string>("StatusOfPayment")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
-
-                    b.Property<double>("ValueToPay")
-                        .HasColumnType("float");
-
-                    b.Property<string>("WayOfPayment")
-                        .HasMaxLength(50)
-                        .HasColumnType("nvarchar(50)");
+                    b.Property<string>("UserId")
+                        .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
 
-                    b.HasIndex("AddressDetailsId");
+                    b.HasIndex("ReaderId");
+
+                    b.HasIndex("UserId");
 
                     b.ToTable("Readings");
                 });
@@ -290,6 +273,9 @@ namespace WEB_Water.Migrations
 
                     b.Property<DateTimeOffset?>("LockoutEnd")
                         .HasColumnType("datetimeoffset");
+
+                    b.Property<string>("Nif")
+                        .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("NormalizedEmail")
                         .HasMaxLength(256)
@@ -382,16 +368,28 @@ namespace WEB_Water.Migrations
                         .IsRequired();
                 });
 
-            modelBuilder.Entity("WEB_Water.Data.Entities.Address", b =>
+            modelBuilder.Entity("WEB_Water.Data.Entities.Bill", b =>
                 {
-                    b.HasOne("WEB_Water.Data.Entities.Customer", "Customer")
+                    b.HasOne("WEB_Water.Data.Entities.Reader", "Reader")
                         .WithMany()
-                        .HasForeignKey("CustomerId");
+                        .HasForeignKey("ReaderId");
 
-                    b.Navigation("Customer");
+                    b.HasOne("WEB_Water.Data.Entities.Reading", "Reading")
+                        .WithMany()
+                        .HasForeignKey("ReadingId");
+
+                    b.HasOne("WEB_Water.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Reader");
+
+                    b.Navigation("Reading");
+
+                    b.Navigation("User");
                 });
 
-            modelBuilder.Entity("WEB_Water.Data.Entities.Customer", b =>
+            modelBuilder.Entity("WEB_Water.Data.Entities.Reader", b =>
                 {
                     b.HasOne("WEB_Water.Data.Entities.User", "User")
                         .WithMany()
@@ -402,11 +400,17 @@ namespace WEB_Water.Migrations
 
             modelBuilder.Entity("WEB_Water.Data.Entities.Reading", b =>
                 {
-                    b.HasOne("WEB_Water.Data.Entities.Address", "AddressDetails")
+                    b.HasOne("WEB_Water.Data.Entities.Reader", "Reader")
                         .WithMany()
-                        .HasForeignKey("AddressDetailsId");
+                        .HasForeignKey("ReaderId");
 
-                    b.Navigation("AddressDetails");
+                    b.HasOne("WEB_Water.Data.Entities.User", "User")
+                        .WithMany()
+                        .HasForeignKey("UserId");
+
+                    b.Navigation("Reader");
+
+                    b.Navigation("User");
                 });
 #pragma warning restore 612, 618
         }
