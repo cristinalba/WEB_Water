@@ -6,6 +6,8 @@ using System.Diagnostics;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB_Water.Models;
+using System.Net.Mail;
+using System.Net;
 
 namespace WEB_Water.Controllers
 {
@@ -30,6 +32,53 @@ namespace WEB_Water.Controllers
         public IActionResult Contact()
         {
             return View();
+        }
+
+        [HttpPost]
+        public IActionResult Contact(EmailForm sendMail)
+        {
+            if (!ModelState.IsValid) return View();
+
+            try
+            {
+                SmtpClient sc = new SmtpClient();
+                MailMessage mail = new MailMessage();
+                
+
+                mail.From = new MailAddress("kamistesta@gmail.com");
+                mail.To.Add(new MailAddress("kamistesta@gmail.com"));
+                mail.Subject = sendMail.Subject;
+
+                mail.IsBodyHtml = true;
+
+                mail.Body = "<br/><br/>This customer contacted us"+ 
+                    $"<b>Name:</b> {sendMail.Name}.<br/>" +
+                    $"<b>E-mail:</b> {sendMail.Email}.<br/><br/>" +
+                    "with the following message: <br/>" + 
+                    $"<b>Message:</b><br/>" + $"{sendMail.Message}"+
+                    $"on {DateTime.Now}<br/>";
+
+                sc.Host = "smtp.gmail.com";
+                sc.Port = 587;
+
+
+                sc.Credentials = new NetworkCredential("kamistesta@gmail.com", "Cinel123!");
+                sc.EnableSsl = true;
+
+                sc.Send(mail);
+
+                ViewBag.Message = "Message sent!";
+
+                ModelState.Clear();
+
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message.ToString();
+            }
+
+            return View();
+
         }
 
         [ResponseCache(Duration = 0, Location = ResponseCacheLocation.None, NoStore = true)]

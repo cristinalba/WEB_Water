@@ -11,7 +11,7 @@
     <header>
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">WEB_Water</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Tajo Water Company</a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -22,10 +22,10 @@
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="About">About us</a>
                         </li>
                         <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact us</a>
+                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Contact">Contact</a>
                         </li>
                         @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Admin"))
                         {
@@ -34,18 +34,16 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Users</a></li>
                                     <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Roles</a></li>
-                                   
+
                                 </ul>
                             </li>
                         }
-                        <li class="nav-item">
-                            <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
-                        </li>
+                
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (this.User.Identity.IsAuthenticated)
                         {
-                           
+
                             <li class="nav-item">
                                 <a class="nav-link text-dark" style="border-right: 2px solid black;" asp-area="" asp-controller="Account" asp-action="ChangeUser">@this.User.Identity.Name</a>
                             </li>
@@ -76,12 +74,76 @@
             @RenderBody()
         </main>
     </div>
+    <footer id="footer">
+        <div class="footer-top">
+            <div class="container">
+                <div class="row">
 
-    <footer class="border-top footer text-muted">
-        <div class="container">
-            &copy; 2021 - WEB_Water - <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                    <div class="col-lg-4 col-md-6">
+                        <div class="footer-info">
+                            <h3>Tajo Water Company</h3>
+                            <p class="pb-3"><em>Our goal is to haveWe just happy customers</em></p>
+                            <p>
+                                Rua Jau 
+                                <br>
+                                1300-312 Lisboa
+                                <br><br>
+                                <strong>Phone:</strong> +351 22 222 2222<br>
+                                <strong>E-mail:</strong> geral@webwater.com<br>
+                            </p>
+                            <div class="social-links mt-3">
+                                <a href="#" class="twitter"><i class="bx bxl-twitter"></i></a>
+                                <a href="#" class="facebook"><i class="bx bxl-facebook"></i></a>
+                                <a href="#" class="instagram"><i class="bx bxl-instagram"></i></a>
+                                <a href="#" class="google-plus"><i class="bx bxl-skype"></i></a>
+                                <a href="#" class="linkedin"><i class="bx bxl-linkedin"></i></a>
+                            </div>
+                        </div>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Our Services</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i>Companies</li>
+                            <li><i class="bx bx-chevron-right"></i>Particulars</li>
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-2 col-md-6 footer-links">
+                        <h4>Contact us</h4>
+                        <ul>
+                            <li><i class="bx bx-chevron-right"></i> <a asp-area="" asp-controller="Home" asp-action="Contact">Get in Touch</a></li>
+                           
+                            @*<li><i class="bx bx-chevron-right"></i> <a href="#">Careers</a></li>*@
+                        </ul>
+                    </div>
+
+                    <div class="col-lg-4 col-md-6 footer-newsletter">
+                        <h4>Our headquarters</h4>
+                        <iframe src="https://www.google.com/maps/embed?pb=!1m18!1m12!1m3!1d3113.6829585881687!2d-9.190358348903443!3d38.70212627950111!2m3!1f0!2f0!3f0!3m2!1i1024!2i768!4f13.1!3m3!1m2!1s0xd1ecd1cdf51dba5%3A0xaaa77b600a1271fe!2sCINEL%20-%20Centro%20de%20Forma%C3%A7%C3%A3o%20Profissional%20da%20Ind%C3%BAstria%20Electr%C3%B3nica%2C%20Energia%2C%20Telecomunica%C3%A7%C3%B5es%20e%20Tecnologias%20da%20Informa%C3%A7%C3%A3o!5e0!3m2!1spt-BR!2spt!4v1610986753277!5m2!1spt-BR!2spt" width="350" height="200" frameborder="0" style="border:0;" allowfullscreen="" aria-hidden="false" tabindex="0"></iframe>
+                    </div>
+                </div>
+            </div>
         </div>
-    </footer>
+       
+        <div class="container">
+            <div class="copyright">
+                <br />
+                <br />
+                <center>
+                    &copy; 2021 <strong><span>Tajo Water Company</span></strong>. <a asp-area="" asp-controller="Home" asp-action="Privacy">Privacy</a>
+                </center>
+
+            </div>
+            <div class="credits">
+                <center>
+                    <p>Software design as a student of CINEL</p>
+                </center>
+                <br />
+            </div>
+        </div>
+    </footer><!-- End Footer -->
+
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
