@@ -135,6 +135,7 @@ namespace WEB_Water.Data
             {
                 ReaderName = "Ref" + _random.Next(100000000, 999999999).ToString(),
                 AddressName = address,
+                Installation = DateTime.Now,
                 User = user
             });
         }

@@ -1,8 +1,10 @@
 ﻿using Microsoft.AspNetCore.Identity;
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB_Water.Data;
 using WEB_Water.Data.Entities;
 using WEB_Water.Models;
 
@@ -13,14 +15,17 @@ namespace WEB_Water.Helpers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+        private readonly DataContext _context;
 
         public UserHelper(UserManager<User> userManager,
                           SignInManager<User> signInManager,
-                          RoleManager<IdentityRole> roleManager)
+                          RoleManager<IdentityRole> roleManager,
+                          DataContext context)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
+            _context = context;
         }
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
@@ -79,6 +84,24 @@ namespace WEB_Water.Helpers
         public async Task<bool> IsUserInRoleAsync(User user, string roleName)
         {
             return await _userManager.IsInRoleAsync(user, roleName);
+        }
+
+        public IEnumerable<SelectListItem> GetComboUsers()
+        {
+            var list = _context.Users.Select(u => new SelectListItem
+            {
+                Text = u.UserName,
+                Value = u.Id.ToString(),
+            }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Choose a customer...)",
+                Value = "0"
+            });
+
+            return list;
+
         }
     }
 }

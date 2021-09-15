@@ -51,12 +51,12 @@ namespace WEB_Water.Controllers
 
                 mail.IsBodyHtml = true;
 
-                mail.Body = "<br/><br/>This customer contacted us"+ 
-                    $"<b>Name:</b> {sendMail.Name}.<br/>" +
-                    $"<b>E-mail:</b> {sendMail.Email}.<br/><br/>" +
-                    "with the following message: <br/>" + 
-                    $"<b>Message:</b><br/>" + $"{sendMail.Message}"+
-                    $"on {DateTime.Now}<br/>";
+                mail.Body = "<br/><br/><b>This customer contacted us:</b><br/>"+ 
+                    $"<b>Name:</b> {sendMail.Name}<br/>" +
+                    $"<b>E-mail:</b> {sendMail.Email}<br/><br/>" +
+                    "<b>With the following message:</b><br/>" + 
+                    $"{sendMail.Message}<br/><br/>"+
+                    $"On {DateTime.Now}<br/>";
 
                 sc.Host = "smtp.gmail.com";
                 sc.Port = 587;
