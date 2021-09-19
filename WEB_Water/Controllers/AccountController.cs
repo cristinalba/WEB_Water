@@ -1,5 +1,7 @@
-﻿using Microsoft.AspNetCore.Identity;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Identity;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -7,6 +9,7 @@ using System.Threading.Tasks;
 using WEB_Water.Data.Entities;
 using WEB_Water.Helpers;
 using WEB_Water.Models;
+
 
 namespace WEB_Water.Controllers
 {
@@ -18,6 +21,16 @@ namespace WEB_Water.Controllers
         {
             _userHelper = userHelper;
         }
+
+
+        //  Account/Index
+        [Authorize(Roles = "Admin")]
+        public IActionResult Index()
+        {
+            return View(_userHelper.GetAll().OrderBy(x => x.UserName));
+        }
+
+
         public IActionResult Login() //right button, add razor view(Login, without model, use layout)
         {
             if (User.Identity.IsAuthenticated) //if the user is autherticated, shows Home!

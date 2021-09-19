@@ -1,0 +1,61 @@
+﻿@*@model WEB_Water.Data.Entities.Reading*@
+@model WEB_Water.Models.AddReadingViewModel
+
+@{
+    ViewData["Title"] = "Create";
+}
+
+<h1>Register new reading:</h1>
+
+<hr />
+<div class="row">
+    <div class="col-md-4">
+        <form asp-action="Create">
+            <div asp-validation-summary="ModelOnly" class="text-danger"></div>
+            @if (this.User.IsInRole("Admin"))
+            {
+            <div class="form-group">
+                <label asp-for="UserId" class="control-label"></label>
+                <select asp-for="UserId" asp-items="Model.Users" class="form-control"></select>
+                <span asp-validation-for="UserId" class="text-danger"></span>
+            </div>}
+                <br />
+            <div class="form-group">
+                <label asp-for="ReaderId" class="control-label"></label>
+                <select asp-for="ReaderId" asp-items="Model.Readers" class="form-control"></select>
+                <span asp-validation-for="ReaderId" class="text-danger"></span>
+            </div>
+
+
+
+            <div class="form-group">
+                <label asp-for="Start" class="control-label"></label>
+                <input asp-for="Start" class="form-control" />
+                <span asp-validation-for="Start" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="End" class="control-label"></label>
+                <input asp-for="End" class="form-control" />
+                <span asp-validation-for="End" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="RegistrationDateNewReading" class="control-label"></label>
+                <input asp-for="RegistrationDateNewReading" class="form-control" />
+                <span asp-validation-for="RegistrationDateNewReading" class="text-danger"></span>
+            </div>
+            <div class="form-group">
+                <label asp-for="MonthlyConsume" class="control-label"></label>
+                <input asp-for="MonthlyConsume" class="form-control" />
+                <span asp-validation-for="MonthlyConsume" class="text-danger"></span>
+            </div>
+
+            <div class="form-group">
+                <input type="submit" value="Register new reading" class="btn btn-primary" />
+                <a asp-action="Index" class="btn btn-success">Back to List</a>
+            </div>
+        </form>
+    </div>
+</div>
+
+
+

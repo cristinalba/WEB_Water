@@ -29,6 +29,11 @@ namespace WEB_Water.Helpers
 
         Task<bool> IsUserInRoleAsync(User user, string roleName);
 
-        IEnumerable<SelectListItem> GetComboUsers();
+        IEnumerable<SelectListItem> GetComboUsers();//readerscontroller
+        IEnumerable<SelectListItem> GetComboUsers(string email);//readingscontroller
+
+        IQueryable<User> GetAll();
+
+        Task<User> GetUserByIdAsync(string id);
     }
 }

@@ -17,6 +17,8 @@ namespace WEB_Water.Data
 
         public DbSet<Bill> Bills { get; set; }
 
+       
+
         public DataContext(DbContextOptions<DataContext> options):base(options)
         {
 

@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEB_Water.Data;
 
 namespace WEB_Water.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210916160920_modifyEntityReading")]
+    partial class modifyEntityReading
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -198,7 +200,6 @@ namespace WEB_Water.Migrations
                         .HasColumnType("nvarchar(max)");
 
                     b.Property<string>("UserId")
-                        .IsRequired()
                         .HasColumnType("nvarchar(450)");
 
                     b.HasKey("Id");
@@ -396,10 +397,8 @@ namespace WEB_Water.Migrations
             modelBuilder.Entity("WEB_Water.Data.Entities.Reader", b =>
                 {
                     b.HasOne("WEB_Water.Data.Entities.User", "User")
-                        .WithMany("Readers")
-                        .HasForeignKey("UserId")
-                        .OnDelete(DeleteBehavior.Cascade)
-                        .IsRequired();
+                        .WithMany()
+                        .HasForeignKey("UserId");
 
                     b.Navigation("User");
                 });
@@ -417,11 +416,6 @@ namespace WEB_Water.Migrations
                     b.Navigation("Reader");
 
                     b.Navigation("User");
-                });
-
-            modelBuilder.Entity("WEB_Water.Data.Entities.User", b =>
-                {
-                    b.Navigation("Readers");
                 });
 #pragma warning restore 612, 618
         }

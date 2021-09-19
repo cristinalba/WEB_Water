@@ -1,4 +1,5 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Mvc.Rendering;
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
@@ -11,5 +12,9 @@ namespace WEB_Water.Data.Repositories
     {
 
         Task AddReaderToListAsync(AddReaderViewModel model, string name);
+
+        IEnumerable<SelectListItem> GetComboReaders();
+        IEnumerable<SelectListItem> GetComboReaders(string email);
+
     }
 }

@@ -119,9 +119,9 @@ namespace WEB_Water.Data
 
             if (!_context.Readers.Any()) // se estiver vazia
             {
-                this.AddEquipment("X Street", user1);
-                this.AddEquipment("Y Street", user2);
-                this.AddEquipment("Z Street", user3);
+                this.AddReader("X Street", user1);
+                this.AddReader("Y Street", user2);
+                this.AddReader("Z Street", user3);
 
                 await _context.SaveChangesAsync(); //vamos gravar
 
@@ -129,7 +129,7 @@ namespace WEB_Water.Data
 
         }
 
-        private void AddEquipment(string address, User user)
+        private void AddReader(string address, User user)
         {
             _context.Readers.Add(new Reader
             {

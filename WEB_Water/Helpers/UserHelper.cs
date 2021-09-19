@@ -32,8 +32,6 @@ namespace WEB_Water.Helpers
             return await _userManager.CreateAsync(user, password);
         }
 
-    
-
         public async Task<User> GetUserByEmailAsync(string email)
         {
             return await _userManager.FindByEmailAsync(email);
@@ -103,5 +101,32 @@ namespace WEB_Water.Helpers
             return list;
 
         }
+        public IEnumerable<SelectListItem> GetComboUsers(string email)
+        {
+            var list = _context.Users.Where(x => x.UserName == email).Select(u => new SelectListItem
+            {
+                Text = u.UserName,
+                Value = u.Id.ToString(),
+            }).ToList();
+
+            list.Insert(0, new SelectListItem
+            {
+                Text = "(Choose a customer...)",
+                Value = "0"
+            });
+
+            return list;
+        }
+        public IQueryable<User> GetAll()
+        {
+            return _context.Set<User>();
+        }
+
+        public async Task<User> GetUserByIdAsync(string id)
+        {
+            return await _context.Set<User>().FindAsync(id);
+        }
+
+      
     }
 }

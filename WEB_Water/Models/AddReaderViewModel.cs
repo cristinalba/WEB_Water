@@ -12,19 +12,19 @@ namespace WEB_Water.Models
         [Display(Name = "Reader")]
         public string ReaderName { get; set; }
 
-        //Data da Instalação
+      
         [Display(Name = "Installation date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? Installation { get; set; }
 
-        //Morada
+        
         [Display(Name = "Address")]
         public string AddressName { get; set; }
         
         [Display(Name = "Customer")]
         public string UserId { get; set; }
 
-        // lista de users
+        
         public IEnumerable<SelectListItem> Users { get; set; }
     }
 }

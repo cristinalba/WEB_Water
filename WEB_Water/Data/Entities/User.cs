@@ -36,8 +36,8 @@ namespace WEB_Water.Data.Entities
         //}
 
         [Display(Name = "Customer")]
-        public string FullName => $"{FirstName} {LastName}";
+        public string FullName { get { return $"{this.FirstName} {this.LastName}"; } }
 
-        //public List<Reader> Equipments { get; set; }
+        public List<Reader> Readers { get; set; }
     }
 }

@@ -9,7 +9,9 @@ namespace WEB_Water.Data
 {
     public interface IReadingRepository : IGenericRepository<Reading>
     {
+        Task<IQueryable<Reading>> GetReadingAsync(string username);
 
-       
+        Task AddReadingToCustomerAsync(AddReadingViewModel model, string username);
+
     }
 }

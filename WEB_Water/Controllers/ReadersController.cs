@@ -33,7 +33,7 @@ namespace WEB_Water.Controllers
         }
 
         //[Authorize(Roles = "Admin")]
-        // GET: Equipments/Create
+        // GET: Readers/Create
         public IActionResult Create()
         {
             var model = new AddReaderViewModel

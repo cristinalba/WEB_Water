@@ -20,17 +20,21 @@ namespace WEB_Water.Data.Entities
         [Display(Name = "Reader")]
         public Reader Reader { get; set; }
 
-        //Período
+
+        //BeginReading
         [Display(Name = "Begin date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? Begin { get; set; }
 
-        //Período
+        //EndReading
         [Display(Name = "End Date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
-        public DateTime? End { get; set; } 
+        public DateTime? End { get; set; }
 
-
+        //RegisterReading
+        [Display(Name = "Registration date")]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
+        public DateTime? RegistrationDateNewReading{ get; set; }
 
 
         [Display(Name = "Monthly consume (m³)")]

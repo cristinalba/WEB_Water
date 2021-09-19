@@ -1,0 +1,49 @@
+﻿@model IEnumerable<WEB_Water.Data.Entities.User>
+
+
+@{ ViewData["Title"] = "ListOfAllTheCustomers"; }
+
+<main id="main">
+
+    <section class="inner-page">
+        <div class="container">
+            <h1>Customers</h1>
+            <br /><br />
+
+            <h4>Select a customer to add a reading:</h4>
+
+            <hr />
+            <table class="table">
+                <thead>
+                    <tr>
+                        <th>
+                            @Html.DisplayNameFor(model => model.FullName)
+                        </th>
+                        <th>
+                            @Html.DisplayNameFor(model => model.UserName)
+                        </th>
+                        <th></th>
+                    </tr>
+                </thead>
+                <tbody>
+                    @foreach (var item in Model)
+                    {
+                        <tr>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.FullName)
+                            </td>
+                            <td>
+                                @Html.DisplayFor(modelItem => item.UserName)
+                            </td>
+                            <td>
+                                @*<a asp-action="Create" asp-route-id="@item.Id" title="Add new reading" class="btn btn-outline-danger"></a>*@
+                                <a asp-action="Create" asp-route-id="@item.Id" title="Add new reading"> <i class="fas fa-plus-circle"></i></a>
+                            </td>
+                        </tr>
+                    }
+                </tbody>
+            </table>
+        </div>
+    </section>
+
+</main>
