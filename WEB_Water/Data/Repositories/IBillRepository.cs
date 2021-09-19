@@ -8,6 +8,8 @@ namespace WEB_Water.Data.Repositories
 {
     public interface IBillRepository : IGenericRepository<Bill>
     {
+        Task<IQueryable<Bill>> GetBillAsync(string username);
 
+        bool BillExists(int id);
     }
 }

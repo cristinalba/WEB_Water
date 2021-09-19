@@ -12,6 +12,7 @@
 <table class="table">
     <thead>
         <tr>
+
             <th>
                 @Html.DisplayNameFor(model => model.User.FullName)
             </th>
@@ -28,7 +29,7 @@
                 @Html.DisplayNameFor(model => model.RegistrationDateNewReading)
             </th>
             <th>
-                @Html.DisplayNameFor(model => model.MonthlyConsume)
+                @Html.DisplayNameFor(model => model.ValueOfConsume)
             </th>
             <th>
                 @Html.DisplayNameFor(model => model.BillIssued)
@@ -41,10 +42,10 @@
         <tr>
             
             <td>
-                @Html.DisplayNameFor(model => model.User.FullName)
+                @Html.DisplayFor(modelItem => item.User.FullName)
             </td>
             <td>
-                @Html.DisplayNameFor(model => model.Reader.ReaderName)
+                @Html.DisplayFor(modelItem => item.Reader.ReaderName)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.Begin)
@@ -56,7 +57,7 @@
                 @Html.DisplayFor(modelItem => item.RegistrationDateNewReading)
             </td>
             <td>
-                @Html.DisplayFor(modelItem => item.MonthlyConsume)
+                @Html.DisplayFor(modelItem => item.ValueOfConsume)
             </td>
             <td>
                 @Html.DisplayFor(modelItem => item.BillIssued)

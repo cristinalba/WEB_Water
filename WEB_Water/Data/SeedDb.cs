@@ -30,16 +30,16 @@ namespace WEB_Water.Data
                                                           //await _context.Database.MigrateAsync(); //If there is no DB, it will create one and execute the migrations 
 
             await _userHelper.CheckRoleAsync("Admin");
-            //await _userHelper.CheckRoleAsync("Worker");
+            await _userHelper.CheckRoleAsync("Worker");
             await _userHelper.CheckRoleAsync("Customer");
             //await _userHelper.CheckRoleAsync("Anonymous");
 
-            var user = await _userHelper.GetUserByEmailAsync("admin@webwater.com");
-            //var user = await _userManager.FindByIdAsync("admin@webwater"); //check if this user has been already created
+            var user = await _userHelper.GetUserByEmailAsync("admin@webwater.com");//check if this user has been already created
+            //var user = await _userManager.FindByIdAsync("admin@webwater"); 
 
-            var user1 = await _userHelper.GetUserByEmailAsync("admin@webwater.com");
-            var user2 = await _userHelper.GetUserByEmailAsync("admin@webwater.com");
-            var user3 = await _userHelper.GetUserByEmailAsync("admin@webwater.com");
+            var user1 = await _userHelper.GetUserByEmailAsync("adminworker1@webwater.com");
+            var user2 = await _userHelper.GetUserByEmailAsync("quim@webwater.com");
+            var user3 = await _userHelper.GetUserByEmailAsync("king@webwater.com");
 
             if (user == null)
             {
@@ -54,17 +54,17 @@ namespace WEB_Water.Data
                 };
                 user1 = new User
                 {
-                    FirstName = "Paquito",
-                    LastName = "Chocolatero",
-                    Email = "paco@webwater.com",
-                    UserName = "paco@webwater.com",
+                    FirstName = "Admin_Worker",
+                    LastName = "Web_Water",
+                    Email = "adminworker1@webwater.com",
+                    UserName = "adminworker1@webwater.com",
                     PhoneNumber = "9" + _random.Next(10000000, 99999999).ToString(),
                     Nif = _random.Next(100000000, 999999999).ToString()
                 };
 
 
                 user2 = new User
-                {
+                {                 
                     FirstName = "Quim",
                     LastName = "Barreiros",
                     Email = "quim@webwater.com",
@@ -99,10 +99,10 @@ namespace WEB_Water.Data
                 }
 
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
-                //await _userHelper.AddUserToRoleAsync(user, "Worker");
-                await _userHelper.AddUserToRoleAsync(user1, "Customer");
+                await _userHelper.AddUserToRoleAsync(user1, "Worker");
                 await _userHelper.AddUserToRoleAsync(user2, "Customer");
                 await _userHelper.AddUserToRoleAsync(user3, "Customer");
+               
                 //await _userHelper.AddUserToRoleAsync(user, "Anonymous");
             }
 
@@ -110,18 +110,15 @@ namespace WEB_Water.Data
             if (!isInRole)
             {
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
-                //await _userHelper.AddUserToRoleAsync(user, "Worker");
-                await _userHelper.AddUserToRoleAsync(user1, "Customer");
-                //await _userHelper.AddUserToRoleAsync(user, "Anonymous");
-              
+                await _userHelper.AddUserToRoleAsync(user1, "Worker");
                 await _userHelper.AddUserToRoleAsync(user2, "Customer");
                 await _userHelper.AddUserToRoleAsync(user3, "Customer");
             }
 
 
-            if (!_context.Readers.Any()) // se estiver vazia
+            if (!_context.Readers.Any()) // if it is empty
             {
-                this.AddReader("X Street", user1);
+                //this.AddReader("X Street", user1);
                 this.AddReader("Y Street", user2);
                 this.AddReader("Z Street", user3);
 

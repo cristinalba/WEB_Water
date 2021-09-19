@@ -3,15 +3,17 @@ using System;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.EntityFrameworkCore.Infrastructure;
 using Microsoft.EntityFrameworkCore.Metadata;
+using Microsoft.EntityFrameworkCore.Migrations;
 using Microsoft.EntityFrameworkCore.Storage.ValueConversion;
 using WEB_Water.Data;
 
 namespace WEB_Water.Migrations
 {
     [DbContext(typeof(DataContext))]
-    partial class DataContextModelSnapshot : ModelSnapshot
+    [Migration("20210919133319_entityBillModify")]
+    partial class entityBillModify
     {
-        protected override void BuildModel(ModelBuilder modelBuilder)
+        protected override void BuildTargetModel(ModelBuilder modelBuilder)
         {
 #pragma warning disable 612, 618
             modelBuilder
@@ -227,6 +229,9 @@ namespace WEB_Water.Migrations
                     b.Property<DateTime?>("End")
                         .HasColumnType("datetime2");
 
+                    b.Property<double>("MonthlyConsume")
+                        .HasColumnType("float");
+
                     b.Property<int?>("ReaderId")
                         .HasColumnType("int");
 
@@ -235,9 +240,6 @@ namespace WEB_Water.Migrations
 
                     b.Property<string>("UserId")
                         .HasColumnType("nvarchar(450)");
-
-                    b.Property<double>("ValueOfConsume")
-                        .HasColumnType("float");
 
                     b.HasKey("Id");
 

@@ -21,8 +21,9 @@ namespace WEB_Water.Models
         [Range(0.0001, double.MaxValue, ErrorMessage = "Value must be a positive number")]
         [Display(Name = "Value in m³")]
         [DisplayFormat(DataFormatString = "{0:N3}")]
-        public double MonthlyConsume { get; set; }
-       
+        public double ValueOfConsume { get; set; }
+
+
         [Display(Name = "Start")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? Start { get; set; }
@@ -33,7 +34,7 @@ namespace WEB_Water.Models
 
        
         [Display(Name = "Registration date")]
-        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy HH:mm tt}", ApplyFormatInEditMode = false)]
+        [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime RegistrationDateNewReading { get; set; }
 
 

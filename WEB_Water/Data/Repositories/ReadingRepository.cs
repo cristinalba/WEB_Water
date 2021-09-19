@@ -40,19 +40,19 @@ namespace WEB_Water.Data
                 Reader = reader,
                 Begin = model.Start,
                 End = model.End,
-                MonthlyConsume = model.MonthlyConsume,
+                ValueOfConsume = model.ValueOfConsume,
                 RegistrationDateNewReading = DateTime.UtcNow
             };
 
             _context.Readings.Add(reading);
 
-            await _context.SaveChangesAsync();
+            await _context.SaveChangesAsync();//Guardar
         }
 
         public async Task<IQueryable<Reading>> GetReadingAsync(string username)
         {
             //throw new NotImplementedException();
-            var user = await _userHelper.GetUserByEmailAsync("admin@webwater.com");
+            var user = await _userHelper.GetUserByEmailAsync(username);
             if (user == null)
             {
                 return null;
@@ -63,20 +63,20 @@ namespace WEB_Water.Data
                 //Admin
                 return _context.Readings
                     .Include(o => o.User)
-                    .Include(c => c.Reader)
+                    .Include(c => c.Reader) //ThenInclude
                     .OrderByDescending(c => c.RegistrationDateNewReading);
             }
 
             //Customer
             //if (await _userHelper.IsUserInRoleAsync(user, "Customer"))
-            //{ }
-            //Worker
-            //if (await _userHelper.IsUserInRoleAsync(user, "Worker"))
-            //{ }
-            return _context.Readings
-                .Include(i => i.Reader)
-                .Where(c => c.User == user)
-                .OrderByDescending(c => c.RegistrationDateNewReading);
+            //{
+                return _context.Readings
+                   .Include(i => i.Reader)
+                   .Where(c => c.User == user)
+                   .OrderByDescending(c => c.RegistrationDateNewReading);
+            //}
+         
+           
         }
     }
 }

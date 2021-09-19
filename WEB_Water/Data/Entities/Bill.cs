@@ -21,6 +21,12 @@ namespace WEB_Water.Data.Entities
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy hh:mm tt}", ApplyFormatInEditMode = false)]
         public DateTime BillDate { get; set; }
 
+
+        [Display(Name = "To Pay")]
+        [DisplayFormat(DataFormatString = "{0:C2}")]
+        public double? ValueToPay { get; set; }
+
+
         public Reading Reading { get; set; }
     }
 }

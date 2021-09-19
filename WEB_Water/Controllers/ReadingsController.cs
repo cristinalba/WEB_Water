@@ -44,6 +44,7 @@ namespace WEB_Water.Controllers
         public async Task<IActionResult> Create(string id)
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
             {
                 if (id == null)
@@ -54,8 +55,9 @@ namespace WEB_Water.Controllers
                 user = await _userHelper.GetUserByIdAsync(id);
                 var model = new AddReadingViewModel
                 {
-                    Readers = _readerRepository.GetComboReaders(user.UserName),
-                    Users = _userHelper.GetComboUsers(user.UserName)
+                    Users = _userHelper.GetComboUsers(user.UserName),
+                    Readers = _readerRepository.GetComboReaders(user.UserName)
+                    
                 };
                 return View(model);
             }
@@ -70,6 +72,7 @@ namespace WEB_Water.Controllers
             }
         }
 
+        //[Authorize(Roles = "Admin, Worker, Customer")]
         [HttpPost]
         public async Task<IActionResult> Create(AddReadingViewModel model)
         {
@@ -80,6 +83,7 @@ namespace WEB_Water.Controllers
                 return this.RedirectToAction("Create");
             }
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
             {
                 user = await _userHelper.GetUserByIdAsync(model.UserId.ToString());
@@ -90,8 +94,8 @@ namespace WEB_Water.Controllers
                 await _readingRepository.AddReadingToCustomerAsync(model, this.User.Identity.Name);
             }
             return this.RedirectToAction("Index");
-        }
 
+        }
 
     }
 }

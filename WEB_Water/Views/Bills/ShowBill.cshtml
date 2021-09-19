@@ -1,0 +1,89 @@
+﻿@model WEB_Water.Data.Entities.Bill
+
+@{ ViewData["Title"] = "Bill";
+    Layout = null; }
+
+
+
+<!DOCTYPE html>
+<html lang="pt-br">
+<head>
+    <title>Bill</title>
+    <meta charset="utf-8">
+</head>
+<body>
+    <div>
+              
+            <h1>Bill #@Model.Id</h1>
+            <p>
+                Issued Date: @Model.BillDate<br />
+                To pay before the end of the month
+            </p>
+
+            <h3>Details of the customer: </h3>
+                    <h2>@Model.User.FullName</h2>
+                    <p>
+                        @Model.User.Email<br />
+                        @Model.User.PhoneNumber<br />
+                        @Model.Reader.AddressName<br />
+    </div>
+
+    <div id="project">
+        <h2>Período de Faturação</h2>
+        <p>
+            Start of period: @Model.Reading.Begin<br />
+            End of period: @Model.Reading.End
+        </p>
+    </div>
+
+
+    <div id="table">
+        <table>
+            <tr class="tabletitle">
+                <td class="item" style="width: 150px;"><h2>Contador</h2></td>
+                <td class="item" style="width: 80px;"><h2>Escalão</h2></td>
+                <td class="Rate" style="width: 250px;"><h2>Consumo em m³</h2></td>
+                <td class="subtotal"><h2>Total</h2></td>
+            </tr>
+
+            <tr class="service">
+                <td class="tableitem"><p class="itemtext">@Model.Reader.ReaderName</p></td>
+                @if (Model.Reading.ValueOfConsume <= 5)
+                {
+                        <td class="tableitem" style="width: 50px;"><p class="itemtext">1</p></td>
+                }
+                @if (Model.Reading.ValueOfConsume > 5 && Model.Reading.ValueOfConsume <= 15)
+                {
+                        <td class="tableitem" style="width: 50px;"><p class="itemtext">2</p></td>
+                }
+                @if (Model.Reading.ValueOfConsume > 15 && Model.Reading.ValueOfConsume <= 25)
+                {
+                    <td class="tableitem" style="width: 50px;"><p class="itemtext">3</p></td>
+                }
+                @if (Model.Reading.ValueOfConsume > 25)
+                {
+                    <td class="tableitem"><p class="itemtext">4</p></td>
+                }
+
+                <td class="tableitem"><p class="itemtext">@Model.Reading.ValueOfConsume</p></td>
+                <td class="tableitem"><p class="itemtext">@Model.ValueToPay €</p></td>
+            </tr>
+
+        </table>
+    </div><!--End Table-->
+      
+    <div>
+        <p>
+            <strong>Pagamento Multibanco</strong>
+            <br />
+            Entidade: 1234
+            <br />
+            Referência:111111111
+            <br />
+            Total a pagar: @Model.ValueToPay €
+        </p>
+    </div>
+
+  
+</body>
+</html>
