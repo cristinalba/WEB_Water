@@ -33,20 +33,23 @@
                             <li class="nav-item dropdown">
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Customer</a>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Customer</a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">List of Customers</a></li>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Register new customer</a></li>
                                         </ul>
-                                        
+
                                     </li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Reader</a>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Reader</a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Index">List of Readers</a></li>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Create">Register new Reader</a></li>
                                         </ul>
                                     </li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Reading</a>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Reading</a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Index">List of Readings</a></li>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Create">Register new reading</a></li>
@@ -56,7 +59,33 @@
                                 </ul>
                             </li>
                         }
-                
+
+                        @if (this.User.Identity.IsAuthenticated && this.User.IsInRole("Customer"))
+                        {
+                            <li class="nav-item dropdown">
+                                <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Customer Area</a>
+                                <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
+                                 
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Reader</a>
+                                        <ul>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Index">List of Readers</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Create">Register new Reader</a></li>
+                                        </ul>
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Reading</a>
+                                        <ul>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Index">List of Readings</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Create">Register new reading</a></li>
+                                        </ul>
+                                    </li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Bills</a></li>
+                                </ul>
+                            </li>
+                        }
+
+
                     </ul>
                     <ul class="nav navbar-nav navbar-right">
                         @if (this.User.Identity.IsAuthenticated)

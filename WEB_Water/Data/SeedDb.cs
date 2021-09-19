@@ -100,7 +100,9 @@ namespace WEB_Water.Data
 
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
                 //await _userHelper.AddUserToRoleAsync(user, "Worker");
-                //await _userHelper.AddUserToRoleAsync(user, "Customer");
+                await _userHelper.AddUserToRoleAsync(user1, "Customer");
+                await _userHelper.AddUserToRoleAsync(user2, "Customer");
+                await _userHelper.AddUserToRoleAsync(user3, "Customer");
                 //await _userHelper.AddUserToRoleAsync(user, "Anonymous");
             }
 
@@ -109,11 +111,11 @@ namespace WEB_Water.Data
             {
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
                 //await _userHelper.AddUserToRoleAsync(user, "Worker");
-                //await _userHelper.AddUserToRoleAsync(user, "Customer");
+                await _userHelper.AddUserToRoleAsync(user1, "Customer");
                 //await _userHelper.AddUserToRoleAsync(user, "Anonymous");
-                await _userHelper.AddUserToRoleAsync(user1, "Admin");
-                await _userHelper.AddUserToRoleAsync(user2, "Admin");
-                await _userHelper.AddUserToRoleAsync(user3, "Admin");
+              
+                await _userHelper.AddUserToRoleAsync(user2, "Customer");
+                await _userHelper.AddUserToRoleAsync(user3, "Customer");
             }
 
 
