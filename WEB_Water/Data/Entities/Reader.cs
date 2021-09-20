@@ -13,7 +13,7 @@ namespace WEB_Water.Data.Entities
         //public bool WasDeleted { get; set; }
 
       
-        //[Display(Name = "Reader Reference")]
+        [Display(Name = "Reader Reference")]
         public string ReaderName { get; set; } 
 
 

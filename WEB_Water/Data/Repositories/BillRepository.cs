@@ -1,6 +1,4 @@
 ﻿using Microsoft.EntityFrameworkCore;
-using System;
-using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB_Water.Data.Entities;
@@ -19,10 +17,10 @@ namespace WEB_Water.Data.Repositories
             _userHelper = userHelper;
         }
 
-        public async Task<IQueryable<Bill>> GetBillAsync(string username)
+        public async Task<IQueryable<Bill>> GetBillAsync(string id)
         {
 
-            var user = await _userHelper.GetUserByIdAsync(username);
+            var user = await _userHelper.GetUserByIdAsync(id);
             if (user == null)
             {
                 return null;
@@ -34,13 +32,14 @@ namespace WEB_Water.Data.Repositories
                .Where(u => u.User == user)
                .OrderByDescending(b => b.BillDate);
 
+
         }
 
-        public bool BillExists(int id)
-        {
-            return _context.Bills.Any(e => e.Reading.Id == id);
-        }
+        //public bool BillExists(int id)
+        //{
+        //    return _context.Bills.Any(e => e.Reading.Id == id);
+        //}
 
-      
+
     }
 }

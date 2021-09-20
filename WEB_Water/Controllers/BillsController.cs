@@ -26,22 +26,25 @@ namespace WEB_Water.Controllers
             _billRepository = billRepository;
             _readingRepository = readingRepository;
         }
-        public async Task<IActionResult> Index() //All the bills
+        public async Task<IActionResult> Index() //Show all the customers with a button to go to the bills
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))//Worker
             {
                 return View(_userHelper.GetAll().OrderBy(u => u.UserName));//fullname
             }
 
-            var invoices = _userHelper.GetAll()
+            var customers = _userHelper.GetAll()
             .Where(u => u.UserName == user.UserName)
             .OrderBy(u => u.FullName);//Username
-            return View(invoices);
+
+            return View(customers);
         }
         public async Task<IActionResult> BillSummary(string id) //All  the bills of a customer
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
             if (await _userHelper.IsUserInRoleAsync(user, "Admin"))//Worker
             {
                 var model = await _billRepository.GetBillAsync(id);
@@ -55,7 +58,8 @@ namespace WEB_Water.Controllers
 
         }
 
-        public async Task<IActionResult> CalculateBill(int? id)
+        
+        public async Task<IActionResult> CalculateBill(int? id)//Receives the id of the selected Reading to calculate the value to pay and show it
         {
             if (id == null)
             {
@@ -77,52 +81,54 @@ namespace WEB_Water.Controllers
                 return NotFound();
             }
 
-            double valorTotal = 0;
+            double TotalValue = 0;
 
             for (int i = 1; i <= model.ValueOfConsume; i++)
             {
                 if (i <= 5)
                 {
-                    valorTotal += 0.30;
+                    TotalValue += 0.30;
                 }
                 else if (i > 5 && i <= 15)
                 {
-                    valorTotal += 0.80;
+                    TotalValue += 0.80;
                 }
                 else if (i > 15 && i <= 25)
                 {
-                    valorTotal += 1.20;
+                    TotalValue += 1.20;
                 }
                 else
                 {
-                    valorTotal += 1.60;
+                    TotalValue += 1.60;
                 }
             }
 
-            var bill = new Bill
+            var billfromModel = new Bill
             {
                 Reader = model.Reader,
                 Reading = model,
                 BillDate = DateTime.UtcNow,
-                ValueToPay = valorTotal,
+                ValueToPay = TotalValue,
                 User = model.User
             };
 
-            _context.Bills.Add(bill);
-
-            //var readingUpdate = await _context.Readings.FirstOrDefaultAsync(c => c.Id == model.Id);
-
-            //var contact = new Reading { Id = model.Id };
-            //contact.BillIssued = true;
-            //_context.Entry(contact).Property("BillIssued").IsModified = true;
+            _context.Bills.Add(billfromModel);
 
             await _context.SaveChangesAsync();
+            //check if the bill has been produced
+
+            //var readingUpdate = await _context.Readings.FirstOrDefaultAsync(x => x.Id == model.Id);
+            //var readingBill = new Reading { Id = model.Id };
+            //readingBill.BillIssued = true;
+            //_context.Entry(readingBill).Property("BillIssued").IsModified = true;
+
+            //await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
         private bool BillExists(int id)
         {
-            return _context.Bills.Any(e => e.Reading.Id == id);
+            return _context.Bills.Any(r => r.Reading.Id == id);
 
         }
         public async Task<IActionResult> ShowBill(string id)
@@ -134,7 +140,7 @@ namespace WEB_Water.Controllers
             var model = await _context.Bills
                 .Include(u => u.User)
                 .Include(r => r.Reader)
-                .Include(c => c.Reading)
+                .Include(x => x.Reading)
                 .Where(u => u.Id == Convert.ToInt32(idDesencrypted))
                 .FirstOrDefaultAsync();
 

@@ -4,12 +4,15 @@
     ViewData["Title"] = "BillSummary";
 }
 
-<h1>BillSummary</h1>
+<h1>Bill Summary</h1>
 
 
 <table class="table">
     <thead>
         <tr>
+            <th>
+                @Html.DisplayNameFor(model => model.User.FullName)
+            </th>
             <th>
                 @Html.DisplayNameFor(model => model.Reader.ReaderName)
             </th>
@@ -32,21 +35,37 @@
         </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-            <td>
-                @Html.DisplayFor(modelItem => item.BillDate)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValueToPay)
-            </td>
-            @*<td>
-                <a asp-action="Edit" asp-route-id="@item.Id">Edit</a> |
-                <a asp-action="Details" asp-route-id="@item.Id">Details</a> |
-                <a asp-action="Delete" asp-route-id="@item.Id">Delete</a>
-            </td>*@
-        </tr>
-}
+            @foreach (var item in Model) 
+            {
+                    <tr>
+                        <th>
+                            @Html.DisplayFor(modelItem => item.User.FullName)
+                        </th>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reader.ReaderName)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.BillDate)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reading.Begin)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reading.End)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.Reading.ValueOfConsume)
+                        </td>
+                        <td>
+                            @Html.DisplayFor(modelItem => item.ValueToPay)
+                        </td>
+                        <td>
+                            @* Route appears encrypted in the URL *@
+                            <a asp-action="ShowBill" asp-route-id="@EncryptationFunctions.EncryptString(item.Id.ToString());" title="Show bill" target="_blank" class="btn btn-warning fas fa-file-invoice-dollar"></a>
+                        </td>
+
+                    </tr>
+            }
     </tbody>
 </table>
 <br />

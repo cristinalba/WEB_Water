@@ -10,6 +10,6 @@ namespace WEB_Water.Data.Repositories
     {
         Task<IQueryable<Bill>> GetBillAsync(string username);
 
-        bool BillExists(int id);
+        //bool BillExists(int id);
     }
 }

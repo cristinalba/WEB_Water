@@ -35,7 +35,7 @@
                                 @Html.DisplayFor(modelItem => item.UserName)
                             </td>
                             <td>
-
+                               @* From index(all the customers) send to BillSummary through the Id wich appears too in the url*@
                                 <a asp-action="BillSummary" asp-route-id="@item.Id" title="Bill Summary" class="btn btn-outline-primary fas fa-chart-line"></a>
 
                             </td>
