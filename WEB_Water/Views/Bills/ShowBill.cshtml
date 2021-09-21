@@ -10,51 +10,87 @@
 <head>
     <title>Bill</title>
     <meta charset="utf-8">
+    <style>
+        table, th, td {
+            border: 1px solid black;
+            text-align:center;
+        }
+    </style>
 </head>
 <body>
     <div>
-              
-            <h1>Bill #@Model.Id</h1>
-            <p>
-                Issued Date: @Model.BillDate<br />
-                To pay before the end of the month
-            </p>
-
-            <h3>Details of the customer: </h3>
-                    <h2>@Model.User.FullName</h2>
-                    <p>
-                        @Model.User.Email<br />
-                        @Model.User.PhoneNumber<br />
-                        @Model.Reader.AddressName<br />
-    </div>
-
-    <div id="project">
-        <h2>Período de Faturação</h2>
+        @* Bill reference *@
+        <h1>Bill #@Model.Id</h1>
         <p>
-            Start of period: @Model.Reading.Begin<br />
-            End of period: @Model.Reading.End
+            Issued Date: @Model.BillDate<br />
+            To pay before the end of the month
         </p>
+
+        @* Generate pdf and it to customer *@
+
+        <a asp-action="GenerateSendPDF" asp-controller="Bills" asp-route-id="@Model.User.Id" title="Generate PDF" class="btn btn-outline-warning fas fa-calculator"></a>
+
+
     </div>
+    <div>
 
-
-    <div id="table">
+        <h2>Details of the customer: </h2>
         <table>
-            <tr class="tabletitle">
-                <td class="item" style="width: 150px;"><h2>Contador</h2></td>
-                <td class="item" style="width: 80px;"><h2>Escalão</h2></td>
-                <td class="Rate" style="width: 250px;"><h2>Consumo em m³</h2></td>
-                <td class="subtotal"><h2>Total</h2></td>
+            <tr>
+                <td style="width: 200px;"><h3>Name:</h3></td>
+                <td style="width: 200px;"><h3>Email:</h3></td>
+                <td style="width: 150px;"><h3>Telefone:</h3></td>
+                <td style="width: 150px;"><h3>Address:</h3></td>
+            </tr>
+            <tr>
+                <td>@Model.User.FullName</td>
+                <td>@Model.User.Email</td>
+                <td>@Model.User.PhoneNumber</td>
+                <td>@Model.Reader.AddressName</td>
             </tr>
 
-            <tr class="service">
-                <td class="tableitem"><p class="itemtext">@Model.Reader.ReaderName</p></td>
+        </table>
+        <br />
+    </div>
+
+    <div>
+        <h2>Period of consumption:</h2>
+        <table>
+            <tr>
+                <td style="width: 350px;"><h3>Start of period:</h3></td>
+                <td style="width: 350px;"><h3>End of period:</h3></td>
+            </tr>
+            <tr>
+                <td>@Model.Reading.Begin</td>
+                <td>@Model.Reading.End</td>
+            </tr>
+            
+        </table>
+        <br />
+
+    </div>
+
+
+    <div>
+        <h2>Consumption:</h2>
+        <table>
+            <tr>
+                <td style="width: 110px;"><h3>Reader Name</h3></td>
+                <td style="width: 200px;"><h3>Level of consume</h3></td>
+                <td style="width: 300px;"><h3>Value of consumption in m³</h3></td>
+                <td style="width: 90px;"><h3>Total</h3></td>
+            </tr>
+
+            <tr>
+                <td><p>@Model.Reader.ReaderName</p></td>
+
                 @if (Model.Reading.ValueOfConsume <= 5)
                 {
-                        <td class="tableitem" style="width: 50px;"><p class="itemtext">1</p></td>
+                        <td style="width: 50px;"><p>1</p></td>
                 }
                 @if (Model.Reading.ValueOfConsume > 5 && Model.Reading.ValueOfConsume <= 15)
                 {
-                        <td class="tableitem" style="width: 50px;"><p class="itemtext">2</p></td>
+                        <td style="width: 50px;"><p>2</p></td>
                 }
                 @if (Model.Reading.ValueOfConsume > 15 && Model.Reading.ValueOfConsume <= 25)
                 {
@@ -65,25 +101,32 @@
                     <td class="tableitem"><p class="itemtext">4</p></td>
                 }
 
-                <td class="tableitem"><p class="itemtext">@Model.Reading.ValueOfConsume</p></td>
-                <td class="tableitem"><p class="itemtext">@Model.ValueToPay €</p></td>
+                <td><p>@Model.Reading.ValueOfConsume</p></td>
+
+                <td><p>@Model.ValueToPay €</p></td>
             </tr>
 
         </table>
+        <br />
+        
     </div><!--End Table-->
       
     <div>
-        <p>
-            <strong>Pagamento Multibanco</strong>
-            <br />
-            Entidade: 1234
-            <br />
-            Referência:111111111
-            <br />
-            Total a pagar: @Model.ValueToPay €
-        </p>
+        <h2>Way of payment: <strong>Multibanco</strong></h2>
+        <table>
+            <tr>
+                <td style="width: 200px;"><h3>Entity:</h3></td>
+                <td style="width: 300px;"><h3>Reference:</h3></td>
+                <td style="width: 200px;"><h3>Total to pay:</h3></td>
+            </tr>
+            <tr>
+                <td>1234</td>
+                <td>111111111</td>
+                <td> @Model.ValueToPay €</td>
+            </tr>
+        </table>
+
     </div>
 
-  
 </body>
 </html>

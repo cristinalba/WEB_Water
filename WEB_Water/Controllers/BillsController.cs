@@ -58,7 +58,7 @@ namespace WEB_Water.Controllers
 
         }
 
-        
+
         public async Task<IActionResult> CalculateBill(int? id)//Receives the id of the selected Reading to calculate the value to pay and show it
         {
             if (id == null)
@@ -71,6 +71,7 @@ namespace WEB_Water.Controllers
                 return RedirectToAction("Index");
             }
 
+            //select the reading
             var model = await _context.Readings
                 .Include(u => u.User)
                 .ThenInclude(r => r.Readers)
@@ -103,6 +104,7 @@ namespace WEB_Water.Controllers
                 }
             }
 
+            //creates a bill with the reading selected
             var billfromModel = new Bill
             {
                 Reader = model.Reader,
@@ -114,15 +116,15 @@ namespace WEB_Water.Controllers
 
             _context.Bills.Add(billfromModel);
 
-            await _context.SaveChangesAsync();
+
             //check if the bill has been produced
 
-            //var readingUpdate = await _context.Readings.FirstOrDefaultAsync(x => x.Id == model.Id);
-            //var readingBill = new Reading { Id = model.Id };
-            //readingBill.BillIssued = true;
-            //_context.Entry(readingBill).Property("BillIssued").IsModified = true;
+            var readingUpdate = await _context.Readings.FirstOrDefaultAsync(x => x.Id == model.Id);
 
-            //await _context.SaveChangesAsync();
+            readingUpdate.BillIssued = true;
+            _context.Entry(readingUpdate).Property("BillIssued").IsModified = true;
+
+            await _context.SaveChangesAsync();
 
             return RedirectToAction(nameof(Index));
         }
@@ -145,6 +147,17 @@ namespace WEB_Water.Controllers
                 .FirstOrDefaultAsync();
 
             return View(model);
+        }
+
+        [HttpPost]
+        public IActionResult GeneratePdfBill(EmailForm sendMail)
+        {
+            return RedirectToAction(nameof(Index));
+        }
+        [HttpPost]
+        public IActionResult SendPdfBill(EmailForm sendMail)
+        {
+            return View();
         }
     }
 }
