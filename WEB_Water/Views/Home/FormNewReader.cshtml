@@ -1,0 +1,53 @@
+﻿@model EmailForm
+
+@{ 
+    ViewData["Title"] = "FormNewReader"; 
+    
+    }
+
+
+<main>
+
+    <br />
+    <center><h2>Fill in the form to register a new reader:</h2></center>
+    <br />
+    <form method="post">
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <input type="text" asp-for="@Model.FirstName" name="FirstName" class="form-control" id="FirstName" placeholder="First name:" data-rule="minlen:3" data-msg="Please enter at least 3 chars" />
+                <div class="validate"><span asp-validation-for="@Model.FirstName"></span></div>
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input type="text" asp-for="@Model.LastName" class="form-control" name="LastName" id="LastName" placeholder="Last name:" data-rule="minlen: 3" data-msg="Please enter at least 4 chars" />
+                <div class="validate"><span asp-validation-for="@Model.LastName"></span></div>
+            </div>
+        </div>
+
+        <div class="row">
+            <div class="col-md-6 form-group">
+                <input type="text" asp-for="@Model.NIF" name="NIF" class="form-control" id="NIF" placeholder="NIF:" data-rule="minlen:9" data-msg="Please enter at least 9 chars" />
+                <div class="validate"><span asp-validation-for="@Model.NIF"></span></div>
+            </div>
+            <div class="col-md-6 form-group mt-3 mt-md-0">
+                <input type="text" asp-for="@Model.Telephone" class="form-control" name="Telephone" id="Telephone" placeholder="Telephone:" data-rule="minlen:9" data-msg="Please enter at least 9 chars" />
+                <div class="validate"><span asp-validation-for="@Model.Telephone"></span></div>
+            </div>
+        </div>
+
+        <div class="form-group mt-3">
+            <input type="email" asp-for="@Model.Email" class="form-control" name="email" id="email" placeholder="Your e-mail:" data-rule="email" data-msg="Please enter a valid email" />
+            <div class="validate"><span asp-validation-for="@Model.Email"></span></div>
+        </div>
+
+        <div class="form-group mt-3">
+            <textarea class="form-control" asp-for="@Model.Address" name="Address" rows="5" id="tb_corpo" data-rule="required" data-msg="Include your Zip Code" placeholder="Your address:"></textarea>
+            <div class="validate"><span asp-validation-for="@Model.Address"></span></div>
+        </div>
+
+        <br />
+
+        <div class="text-center"><button class="btn btn-outline-info" type="submit">Send Form</button></div>
+    </form>
+    <br />
+    <br />
+</main>
