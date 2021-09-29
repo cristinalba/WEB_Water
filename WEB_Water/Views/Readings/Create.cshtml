@@ -12,13 +12,14 @@
     <div class="col-md-4">
         <form asp-action="Create">
             <div asp-validation-summary="ModelOnly" class="text-danger"></div>
-            @if (this.User.IsInRole("Admin"))
+            @if (this.User.IsInRole("Worker"))
             {
-            <div class="form-group">
-                <label asp-for="UserId" class="control-label"></label>
-                <select asp-for="UserId" asp-items="Model.Users" class="form-control"></select>
-                <span asp-validation-for="UserId" class="text-danger"></span>
-            </div>}
+                <div class="form-group">
+                    <label asp-for="UserId" class="control-label"></label>
+                    <select asp-for="UserId" asp-items="Model.Users" class="form-control"></select>
+                    <span asp-validation-for="UserId" class="text-danger"></span>
+                </div>
+            }
                 <br />
             <div class="form-group">
                 <label asp-for="ReaderId" class="control-label"></label>
@@ -29,9 +30,9 @@
 
 
             <div class="form-group">
-                <label asp-for="Start" class="control-label"></label>
-                <input asp-for="Start" class="form-control" />
-                <span asp-validation-for="Start" class="text-danger"></span>
+                <label asp-for="Begin" class="control-label"></label>
+                <input asp-for="Begin" class="form-control" />
+                <span asp-validation-for="Begin" class="text-danger"></span>
             </div>
             <div class="form-group">
                 <label asp-for="End" class="control-label"></label>

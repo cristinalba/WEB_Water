@@ -1,4 +1,5 @@
-﻿using Microsoft.AspNetCore.Mvc;
+﻿using Microsoft.AspNetCore.Authorization;
+using Microsoft.AspNetCore.Mvc;
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
@@ -26,11 +27,13 @@ namespace WEB_Water.Controllers
             _billRepository = billRepository;
             _readingRepository = readingRepository;
         }
+
+        [Authorize(Roles = "Worker, Customer")]
         public async Task<IActionResult> Index() //Show all the customers with a button to go to the bills
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
-            if (await _userHelper.IsUserInRoleAsync(user, "Admin"))//Worker
+            if (await _userHelper.IsUserInRoleAsync(user, "Worker"))//Worker
             {
                 return View(_userHelper.GetAll().OrderBy(u => u.UserName));//fullname
             }
@@ -41,11 +44,13 @@ namespace WEB_Water.Controllers
 
             return View(customers);
         }
-        public async Task<IActionResult> BillSummary(string id) //All  the bills of a customer
+
+        [Authorize(Roles = "Worker, Customer")]
+        public async Task<IActionResult> BillSummary(string id) //All the bills of a customer
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
 
-            if (await _userHelper.IsUserInRoleAsync(user, "Admin"))//Worker
+            if (await _userHelper.IsUserInRoleAsync(user, "Worker"))//Worker
             {
                 var model = await _billRepository.GetBillAsync(id);
                 return View(model);
@@ -58,7 +63,7 @@ namespace WEB_Water.Controllers
 
         }
 
-
+        [Authorize(Roles = "Worker")]
         public async Task<IActionResult> CalculateBill(int? id)//Receives the id of the selected Reading to calculate the value to pay and show it
         {
             if (id == null)

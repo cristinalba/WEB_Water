@@ -38,7 +38,7 @@ namespace WEB_Water.Data
             {
                 User = user,
                 Reader = reader,
-                Begin = model.Start,
+                Begin = model.Begin,
                 End = model.End,
                 ValueOfConsume = model.ValueOfConsume,
                 RegistrationDateNewReading = DateTime.UtcNow
@@ -51,16 +51,24 @@ namespace WEB_Water.Data
 
         public async Task<IQueryable<Reading>> GetReadingAsync(string username)
         {
-            //throw new NotImplementedException();
             var user = await _userHelper.GetUserByEmailAsync(username);
             if (user == null)
             {
                 return null;
             }
 
-            if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
+            //if (await _userHelper.IsUserInRoleAsync(user, "Admin"))
+            //{
+            //    //Admin
+            //    return _context.Readings
+            //        .Include(o => o.User)
+            //        .Include(c => c.Reader) //ThenInclude
+            //        .OrderByDescending(c => c.RegistrationDateNewReading);
+            //}
+
+            if (await _userHelper.IsUserInRoleAsync(user, "Worker"))
             {
-                //Admin
+                //Worker can see the readings from the customers
                 return _context.Readings
                     .Include(o => o.User)
                     .Include(c => c.Reader) //ThenInclude
@@ -68,15 +76,41 @@ namespace WEB_Water.Data
             }
 
             //Customer
-            //if (await _userHelper.IsUserInRoleAsync(user, "Customer"))
-            //{
-                return _context.Readings
+
+            return _context.Readings
                    .Include(i => i.Reader)
                    .Where(c => c.User == user)
                    .OrderByDescending(c => c.RegistrationDateNewReading);
-            //}
-         
-           
+
         }
+
+        public async Task<Reading> GetReadingByIdAsync(int id)
+        {
+            return await _context.Readings
+                 .Include(e => e.Reader)
+                 .Where(u => u.Id == id)
+                 .FirstOrDefaultAsync();
+        }
+
+
+        //public bool BillExists(int id)
+        //{
+        //    return _context.Bills.Any(e => e.Reading.Id == id);
+        //}
+
+        //public async Task<T> GetByIdAsync(int id) //search by Id, just one
+        //{
+        //    return await _context.Set<T>()
+        //        .AsNoTracking()
+        //        .FirstOrDefaultAsync(e => e.Id == id);
+        //}
+
+        //////   var consumption = await _context.Readings
+        //////.Include(e => e.Reader)
+        //////.Where(u => u.Id == id)
+        //////.FirstOrDefaultAsync();
+
+
+
     }
 }

@@ -16,7 +16,6 @@ namespace WEB_Water.Data.Entities
         [Display(Name = "Reader Reference")]
         public string ReaderName { get; set; } 
 
-
         [Required]
         [Display(Name = "Customer")]
         public User User { get; set; }
@@ -30,6 +29,8 @@ namespace WEB_Water.Data.Entities
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? Installation { get; set; }
 
+        //When the worker receives a new reader form
+        //public bool NewReaderForm { get; set; }
 
         //public List<int> ConsumosID { get; set; }
     }

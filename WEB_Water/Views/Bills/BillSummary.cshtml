@@ -10,61 +10,67 @@
 <table class="table">
     <thead>
         <tr>
-            <th>
-                @Html.DisplayNameFor(model => model.User.FullName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reader.ReaderName)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.BillDate)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reading.Begin)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reading.End)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.Reading.ValueOfConsume)
-            </th>
-            <th>
-                @Html.DisplayNameFor(model => model.ValueToPay)
-            </th>
-            <th></th>
-        </tr>
+            @if (this.User.IsInRole("Worker"))
+            {
+                <th>
+                    @Html.DisplayNameFor(model => model.User.FullName)
+                </th>
+            }
+                <th>
+                    @Html.DisplayNameFor(model => model.Reader.ReaderName)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.BillDate)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reading.Begin)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reading.End)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.Reading.ValueOfConsume)
+                </th>
+                <th>
+                    @Html.DisplayNameFor(model => model.ValueToPay)
+                </th>
+                <th></th>
+            </tr>
     </thead>
     <tbody>
             @foreach (var item in Model) 
             {
-                    <tr>
-                        <th>
+                <tr>
+                    @if (this.User.IsInRole("Worker"))
+                    {
+                        <td>
                             @Html.DisplayFor(modelItem => item.User.FullName)
-                        </th>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reader.ReaderName)
                         </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.BillDate)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reading.Begin)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reading.End)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.Reading.ValueOfConsume)
-                        </td>
-                        <td>
-                            @Html.DisplayFor(modelItem => item.ValueToPay)
-                        </td>
-                        <td>
-                            @* Route appears encrypted in the URL *@
-                            <a asp-action="ShowBill" asp-route-id="@EncryptationFunctions.EncryptString(item.Id.ToString());" title="Show bill" target="_blank" class="btn btn-warning fas fa-file-invoice-dollar"></a>
-                        </td>
+                    }
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reader.ReaderName)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.BillDate)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reading.Begin)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reading.End)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.Reading.ValueOfConsume)
+                    </td>
+                    <td>
+                        @Html.DisplayFor(modelItem => item.ValueToPay)
+                    </td>
+                    <td>
+                        @* Route appears encrypted in the URL *@
+                        <a asp-action="ShowBill" asp-route-id="@EncryptationFunctions.EncryptString(item.Id.ToString());" title="Show bill" target="_blank" class="btn btn-warning fas fa-file-invoice-dollar"></a>
+                    </td>
 
-                    </tr>
+                </tr>
             }
     </tbody>
 </table>

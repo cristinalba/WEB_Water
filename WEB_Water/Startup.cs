@@ -1,15 +1,10 @@
 using Microsoft.AspNetCore.Builder;
 using Microsoft.AspNetCore.Hosting;
-using Microsoft.AspNetCore.HttpsPolicy;
 using Microsoft.AspNetCore.Identity;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Hosting;
-using System;
-using System.Collections.Generic;
-using System.Linq;
-using System.Threading.Tasks;
 using WEB_Water.Data;
 using WEB_Water.Data.Entities;
 using WEB_Water.Data.Repositories;
@@ -52,7 +47,7 @@ namespace WEB_Water
             {
                 cfg.UseSqlServer(this.Configuration.GetConnectionString("DefaultConnection"));
             });
-            
+
 
             //Use the Seed the first time DB is executed
             services.AddTransient<SeedDb>();
@@ -63,12 +58,12 @@ namespace WEB_Water
             //services.AddScoped<IImageHelper, ImageHelper>();
             //services.AddScoped<IConverterHelper, ConverterHelper>();
 
-           
+
             services.AddScoped<IReaderRepository, ReaderRepository>();
             services.AddScoped<IReadingRepository, ReadingRepository>();
             services.AddScoped<IBillRepository, BillRepository>();
 
-            services.ConfigureApplicationCookie(options => 
+            services.ConfigureApplicationCookie(options =>
             {
                 options.LoginPath = "/Account/NotAuthorized";
                 options.AccessDeniedPath = "/Account/NotAuthorized";

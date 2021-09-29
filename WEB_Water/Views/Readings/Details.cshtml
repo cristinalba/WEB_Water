@@ -1,0 +1,57 @@
+﻿@model WEB_Water.Data.Entities.Reading
+
+@{
+    ViewData["Title"] = "Details";
+}
+
+<h2>Details of the reading:</h2>
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Reader.ReaderName) 
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Reader.ReaderName)    
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.RegistrationDateNewReading) <!--Label, columna3-->
+
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.RegistrationDateNewReading)     <!--Mostra campo, columna9-->
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Begin) <!--Label, columna3-->
+
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Begin)     <!--Mostra campo, columna9-->
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.End) <!--Label, columna3-->
+
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.End)     <!--Mostra campo, columna9-->
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.ValueOfConsume) <!--Label, columna3-->
+
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.ValueOfConsume)     <!--Mostra campo, columna9-->
+                </dd>
+            </dl>
+        </div>
+    </div>
+</div>
+<div>
+    @if (Model.BillIssued == false)
+    {
+        <a asp-action="Edit" asp-route-id="@Model.Id" class="btn btn-warning">Edit</a>
+    }
+    <a asp-action="Index" class="btn btn-success">Back to List</a>
+</div>

@@ -32,8 +32,7 @@ namespace WEB_Water.Data
             await _userHelper.CheckRoleAsync("Admin");
             await _userHelper.CheckRoleAsync("Worker");
             await _userHelper.CheckRoleAsync("Customer");
-            //await _userHelper.CheckRoleAsync("Anonymous");
-
+           
             var user = await _userHelper.GetUserByEmailAsync("admin@webwater.com");//check if this user has been already created
             //var user = await _userManager.FindByIdAsync("admin@webwater"); 
 
@@ -84,9 +83,6 @@ namespace WEB_Water.Data
                     Nif = _random.Next(100000000, 999999999).ToString()
                 };
 
-
-
-
                 var result = await _userHelper.AddUserAsync(user, "123456");
                 //var result = await _userManager.CreateAsync(user, "123456"); //Create User through the _userManager's method and the pass goes separetely in case I want to encrypt it
                 var result1 = await _userHelper.AddUserAsync(user1, "123456");
@@ -94,6 +90,18 @@ namespace WEB_Water.Data
                 var result3 = await _userHelper.AddUserAsync(user3, "123456");
 
                 if (result != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("It was not possible to create the user in seeder");
+                }
+                if (result1 != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("It was not possible to create the user in seeder");
+                }
+                if (result2 != IdentityResult.Success)
+                {
+                    throw new InvalidOperationException("It was not possible to create the user in seeder");
+                }
+                if (result3 != IdentityResult.Success)
                 {
                     throw new InvalidOperationException("It was not possible to create the user in seeder");
                 }
@@ -110,11 +118,27 @@ namespace WEB_Water.Data
             if (!isInRole)
             {
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
+               
+            }
+            var isInRole1 = await _userHelper.IsUserInRoleAsync(user1, "Worker");
+            if (!isInRole1)
+            {
                 await _userHelper.AddUserToRoleAsync(user1, "Worker");
+
+            }
+            var isInRole2 = await _userHelper.IsUserInRoleAsync(user2, "Customer");
+            if (!isInRole2)
+            {
                 await _userHelper.AddUserToRoleAsync(user2, "Customer");
-                await _userHelper.AddUserToRoleAsync(user3, "Customer");
+
             }
 
+            var isInRole3 = await _userHelper.IsUserInRoleAsync(user3, "Customer");
+            if (!isInRole3)
+            {
+                await _userHelper.AddUserToRoleAsync(user3, "Customer");
+
+            }
 
             if (!_context.Readers.Any()) // if it is empty
             {

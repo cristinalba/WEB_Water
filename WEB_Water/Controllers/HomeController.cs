@@ -92,7 +92,8 @@ namespace WEB_Water.Controllers
             MailMessage mail = new MailMessage();
 
             mail.From = new MailAddress("kamistesta@gmail.com");
-            mail.To.Add(new MailAddress("kamistesta@gmail.com"));
+            //TODO: Worker email
+            mail.To.Add(new MailAddress("kamistesta@gmail.com"));//Change, send email to worker
             mail.Subject = "Form from a new customer";
 
             mail.IsBodyHtml = true;

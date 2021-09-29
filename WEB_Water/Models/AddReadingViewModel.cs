@@ -26,7 +26,7 @@ namespace WEB_Water.Models
 
         [Display(Name = "Start")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
-        public DateTime? Start { get; set; }
+        public DateTime? Begin { get; set; }
 
         [Display(Name = "End")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
@@ -37,6 +37,7 @@ namespace WEB_Water.Models
         public DateTime RegistrationDateNewReading { get; set; }
 
         public User User { get; set; }
+
 
         public IEnumerable<SelectListItem> Users { get; set; }
 

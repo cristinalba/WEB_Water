@@ -37,7 +37,7 @@ namespace WEB_Water.Data.Entities
         public DateTime? RegistrationDateNewReading{ get; set; }
 
 
-        [Display(Name = "Monthly consume (m³)")]
+        [Display(Name = "Monthly consumption (m³)")]
         [DisplayFormat(DataFormatString = "{0:N2}")]
         public double ValueOfConsume { get; set; }
 

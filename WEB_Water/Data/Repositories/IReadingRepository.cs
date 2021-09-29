@@ -13,5 +13,7 @@ namespace WEB_Water.Data
 
         Task AddReadingToCustomerAsync(AddReadingViewModel model, string username);
 
+        Task<Reading> GetReadingByIdAsync(int id);
+
     }
 }

@@ -1,0 +1,56 @@
+﻿@model WEB_Water.Data.Entities.Reading
+
+@{
+    ViewData["Title"] = "Delete";
+}
+
+<h1>Delete</h1>
+
+<div>
+    <hr />
+    <div class="row">
+        <div class="col-md-8">
+            <dl class="row">
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Reader.ReaderName)
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Reader.ReaderName)
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.RegistrationDateNewReading) <!--Label, columna3-->
+
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.RegistrationDateNewReading)     <!--Mostra campo, columna9-->
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.Begin) <!--Label, columna3-->
+
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.Begin)     <!--Mostra campo, columna9-->
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.End) <!--Label, columna3-->
+
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.End)     <!--Mostra campo, columna9-->
+                </dd>
+                <dt class="col-sm-4">
+                    @Html.DisplayNameFor(model => model.ValueOfConsume) <!--Label, columna3-->
+                </dt>
+                <dd class="col-sm-9">
+                    @Html.DisplayFor(model => model.ValueOfConsume)     <!--Mostra campo, columna9-->
+                </dd>
+            </dl>
+        </div>
+    </div>
+    <form asp-action="Delete">
+        <input type="hidden" asp-for="Id" />
+        <input type="submit" value="Delete" class="btn btn-danger" />
+        <a asp-action="Index" class="btn btn-success">Voltar</a>
+    </form>
+</div>
+

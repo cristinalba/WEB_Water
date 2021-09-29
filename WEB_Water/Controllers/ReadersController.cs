@@ -5,6 +5,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB_Water.Data.Entities;
 using WEB_Water.Data.Repositories;
 using WEB_Water.Helpers;
 using WEB_Water.Models;
@@ -32,7 +33,7 @@ namespace WEB_Water.Controllers
             return View(readers);
         }
 
-        //[Authorize(Roles = "Admin")]
+        [Authorize(Roles = "Worker")]
         // GET: Readers/Create
         public IActionResult Create()
         {
@@ -43,7 +44,7 @@ namespace WEB_Water.Controllers
 
             return View(model);
         }
-
+        [Authorize(Roles = "Worker")]
         [HttpPost]
         public async Task<IActionResult> Create(AddReaderViewModel model)
         {
@@ -60,6 +61,97 @@ namespace WEB_Water.Controllers
             return this.View(model);
         }
 
+        // GET: Readers/Details/5
+        public async Task<IActionResult> Details(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var equipment = await _readerRepository.GetByIdAsync(id.Value);
+            if (equipment == null)
+            {
+                return NotFound();
+            }
+
+            return View(equipment);
+        }
+
+        // GET: Readers/Edit/5
+        [Authorize(Roles = "Worker")]
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var equipment = await _readerRepository.GetByIdAsync(id.Value);
+            if (equipment == null)
+            {
+                return NotFound();
+            }
+            return View(equipment);
+        }
+        // POST: Readers/Edit/5
+        [Authorize(Roles = "Worker")]
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Reader reader)
+        {
+            if (id != reader.Id)
+            {
+                return NotFound();
+            }
+
+        
+            try
+            {
+                reader.User = await _userHelper.GetUserByIdAsync(id.ToString());
+                await _readerRepository.UpdateAsync(reader);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _readerRepository.ExistAsync(reader.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+        }
+        // GET: Readers/Delete/5
+        [Authorize(Roles = "Worker")]
+        public async Task<IActionResult> Delete(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var reader = await _readerRepository.GetByIdAsync(id.Value);
+            if (reader == null)
+            {
+                return NotFound();
+            }
+
+            return View(reader);
+        }
+        // POST: Readers/Delete/5
+        [Authorize(Roles = "Worker")]
+        [HttpPost, ActionName("Delete")]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(int id)
+        {
+            var reader = await _readerRepository.GetByIdAsync(id);
+            await _readerRepository.DeleteAsync(reader);
+
+            return RedirectToAction(nameof(Index));
+        }
 
     }
 }
