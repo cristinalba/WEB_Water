@@ -91,6 +91,13 @@ namespace WEB_Water.Data
                  .Where(u => u.Id == id)
                  .FirstOrDefaultAsync();
         }
+        public async Task<Reading> GetReadingForBillByIdAsync(int id)
+        {
+            return await _context.Readings
+                   .Include(u => u.User)
+                   .ThenInclude(r => r.Readers)
+                   .Where(u => u.Id == id).FirstOrDefaultAsync();
+        }
 
 
         public bool BillExists(int id)

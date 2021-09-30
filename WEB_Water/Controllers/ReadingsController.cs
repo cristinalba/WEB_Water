@@ -171,7 +171,7 @@ namespace WEB_Water.Controllers
             {
                 reading.Reader = await _readerRepository.GetByIdAsync(id);
                 reading.User = await _userHelper.GetUserByIdAsync(id.ToString());
-                reading.RegistrationDateNewReading = DateTime.UtcNow;
+                reading.RegistrationDateNewReading = DateTime.UtcNow;  //Registration date is in the moment that is done!
 
                 await _readingRepository.UpdateAsync(reading);
             }

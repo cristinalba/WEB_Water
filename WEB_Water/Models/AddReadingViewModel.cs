@@ -28,13 +28,17 @@ namespace WEB_Water.Models
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? Begin { get; set; }
 
+
         [Display(Name = "End")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime? End { get; set; }
-       
+
+
         [Display(Name = "Registration date")]
         [DisplayFormat(DataFormatString = "{0:dd/MM/yyyy}", ApplyFormatInEditMode = false)]
         public DateTime RegistrationDateNewReading { get; set; }
+
+
 
         public User User { get; set; }
 

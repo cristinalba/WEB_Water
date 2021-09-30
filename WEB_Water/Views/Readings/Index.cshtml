@@ -12,12 +12,11 @@
 <table class="table">
     <thead>
         <tr>
-            @if (this.User.IsInRole("Worker"))
-            {
+         
                 <th>
                     @Html.DisplayNameFor(model => model.User.FullName)
                 </th>
-            }
+         
             <th>
                 @Html.DisplayNameFor(model => model.Reader.ReaderName)
             </th>
@@ -33,21 +32,18 @@
             <th>
                 @Html.DisplayNameFor(model => model.ValueOfConsumption)
             </th>
-            @*<th>
-            @Html.DisplayNameFor(model => model.BillIssued)
-        </th>*@
+ 
                 <th></th>
             </tr>
     </thead>
     <tbody>
 @foreach (var item in Model) {
         <tr>
-             @if (this.User.IsInRole("Worker"))
-             {
+          
                 <td>
                     @Html.DisplayFor(modelItem => item.User.FullName)
                 </td>
-             }
+               
             <td>
                 @Html.DisplayFor(modelItem => item.Reader.ReaderName)
             </td>

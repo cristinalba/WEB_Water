@@ -1,4 +1,5 @@
 ﻿using Microsoft.EntityFrameworkCore;
+using System;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB_Water.Data.Entities;
@@ -35,11 +36,36 @@ namespace WEB_Water.Data.Repositories
 
         }
 
-        //public bool BillExists(int id)
-        //{
-        //    return _context.Bills.Any(e => e.Reading.Id == id);
-        //}
+        public void AddBill(Bill billfromModel)
+        {
+            _context.Bills.Add(billfromModel);
+        }
 
+        public async Task<Bill> GetBillByIdAsync(string id)//It receives the idDesencrypted
+        {
+            return await _context.Bills
+             .Include(u => u.User)
+             .Include(r => r.Reader)
+             .Include(x => x.Reading)
+             .Where(u => u.Id == Convert.ToInt32(id))
+             .FirstOrDefaultAsync();
+        }
+        public bool UpdateStatusBill(Reading updateReading)
+        {
+            return _context.Entry(updateReading).Property("BillIssued").IsModified= true;
+        }
+
+        public async Task<bool>  SaveBillAsync()
+        {
+            return await _context.SaveChangesAsync()>0;
+        }
+
+        public bool BillExists(int id)
+        {
+            return _context.Bills.Any(e => e.Reading.Id == id);
+        }
+
+        
 
     }
 }

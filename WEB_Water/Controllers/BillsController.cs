@@ -15,14 +15,14 @@ namespace WEB_Water.Controllers
 {
     public class BillsController : Controller
     {
-        private readonly DataContext _context;
+        
         private readonly IUserHelper _userHelper;
         private readonly IBillRepository _billRepository;
         private readonly IReadingRepository _readingRepository;
 
-        public BillsController(DataContext context, IUserHelper userHelper, IBillRepository billRepository, IReadingRepository readingRepository)
+        public BillsController(IUserHelper userHelper, IBillRepository billRepository, IReadingRepository readingRepository)
         {
-            _context = context;
+         
             _userHelper = userHelper;
             _billRepository = billRepository;
             _readingRepository = readingRepository;
@@ -71,17 +71,15 @@ namespace WEB_Water.Controllers
                 return NotFound();
             }
 
-            if (BillExists(id.Value) == true)
+            if (_billRepository.BillExists(id.Value) == true)
             {
                 return RedirectToAction("Index");
             }
 
             //select the reading
-            //var model = await _readingRepository.GetReadingByIdAsync(id.Value);
-            var model = await _context.Readings
-                .Include(u => u.User)
-                .ThenInclude(r => r.Readers)
-                .Where(u => u.Id == id).FirstOrDefaultAsync();
+            
+            var model = await _readingRepository.GetReadingForBillByIdAsync(id.Value);
+
 
             if (model == null)
             {
@@ -119,38 +117,30 @@ namespace WEB_Water.Controllers
                 ValueToPay = TotalValue,
                 User = model.User
             };
-
-            _context.Bills.Add(billfromModel);
-
+       
+            _billRepository.AddBill(billfromModel);
 
             //check if the bill has been produced
-            //var readingUpdate = await _readingRepository.GetReadingByIdAsync(id.Value);
-            var readingUpdate = await _context.Readings.FirstOrDefaultAsync(x => x.Id == model.Id);
+            var readingUpdate = await _readingRepository.GetReadingByIdAsync(model.Id);
+           
 
             readingUpdate.BillIssued = true;
-            _context.Entry(readingUpdate).Property("BillIssued").IsModified = true;
 
-            await _context.SaveChangesAsync();
+            _billRepository.UpdateStatusBill(readingUpdate);
+
+
+            await _billRepository.SaveBillAsync();
 
             return RedirectToAction(nameof(Index));
         }
-        private bool BillExists(int id)
-        {
-            return _context.Bills.Any(r => r.Reading.Id == id);
 
-        }
         public async Task<IActionResult> ShowBill(string id)
         {
             id = id.Replace(id.Substring(id.IndexOf(";")), "");
 
-            var idDesencrypted = EncryptationFunctions.DecryptString(id);
+            string idDesencrypted = EncryptationFunctions.DecryptString(id);
 
-            var model = await _context.Bills
-                .Include(u => u.User)
-                .Include(r => r.Reader)
-                .Include(x => x.Reading)
-                .Where(u => u.Id == Convert.ToInt32(idDesencrypted))
-                .FirstOrDefaultAsync();
+            var model = await _billRepository.GetBillByIdAsync(idDesencrypted);
 
             return View(model);
         }
