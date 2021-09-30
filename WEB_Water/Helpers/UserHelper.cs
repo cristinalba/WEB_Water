@@ -86,7 +86,7 @@ namespace WEB_Water.Helpers
 
         public IEnumerable<SelectListItem> GetComboUsers()
         {
-            var list = _context.Users.Select(u => new SelectListItem
+            var list = _context.Users.Where(x => x.IsCustomer == true).Select(u => new SelectListItem
             {
                 Text = u.UserName,
                 Value = u.Id.ToString(),
@@ -103,7 +103,7 @@ namespace WEB_Water.Helpers
         }
         public IEnumerable<SelectListItem> GetComboUsers(string email)
         {
-            var list = _context.Users.Where(x => x.UserName == email).Select(u => new SelectListItem
+            var list = _context.Users.Where(x => x.UserName==email).Select(u => new SelectListItem
             {
                 Text = u.UserName,
                 Value = u.Id.ToString(),

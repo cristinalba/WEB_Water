@@ -6,6 +6,7 @@ using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
 using WEB_Water.Data;
+using WEB_Water.Data.Entities;
 using WEB_Water.Data.Repositories;
 using WEB_Water.Helpers;
 using WEB_Water.Models;
@@ -38,7 +39,7 @@ namespace WEB_Water.Controllers
         public IActionResult ListOfAllTheCustomers()
         {
             //TODO:FullName??
-            return View(_userHelper.GetAll().OrderBy(x => x.UserName));
+            return View(_userHelper.GetAll().Where(x => x.IsCustomer == true).OrderBy(x => x.UserName));
         }
 
 
@@ -123,6 +124,70 @@ namespace WEB_Water.Controllers
             }
 
             return View(reading);
+        }
+
+        // GET: Readings/Edit/5
+        public async Task<IActionResult> Edit(int? id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            if (_readingRepository.BillExists(id.Value) == true)
+            {
+                return RedirectToAction("Index");
+            }
+
+            var reading = await _readingRepository.GetByIdAsync(id.Value);
+            if (reading == null)
+            {
+                return NotFound();
+            }
+
+            var model = new AddReadingViewModel
+            {
+                ValueOfConsumption = reading.ValueOfConsumption,
+                Begin = reading.Begin,
+                End = reading.End,
+                User = reading.User,
+                Readers = _readerRepository.GetComboReaders(this.User.Identity.Name)
+            };
+
+            return View(model);
+        }
+
+        // Post: Readings/Edit/5
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public async Task<IActionResult> Edit(int id, Reading reading)
+        {
+            if (id != reading.Id)
+            {
+                return NotFound();
+            }
+
+            try
+            {
+                reading.Reader = await _readerRepository.GetByIdAsync(id);
+                reading.User = await _userHelper.GetUserByIdAsync(id.ToString());
+                reading.RegistrationDateNewReading = DateTime.UtcNow;
+
+                await _readingRepository.UpdateAsync(reading);
+            }
+            catch (DbUpdateConcurrencyException)
+            {
+                if (!await _readingRepository.ExistAsync(reading.Id))
+                {
+                    return NotFound();
+                }
+                else
+                {
+                    throw;
+                }
+            }
+            return RedirectToAction(nameof(Index));
+
         }
 
         // GET: Readings/Delete/5

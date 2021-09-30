@@ -39,7 +39,7 @@ namespace WEB_Water.Data.Entities
 
         [Display(Name = "Monthly consumption (m³)")]
         [DisplayFormat(DataFormatString = "{0:N2}")]
-        public double ValueOfConsume { get; set; }
+        public double ValueOfConsumption { get; set; }
 
         [Display(Name = "Invoice issued")]
         public bool BillIssued { get; set; }

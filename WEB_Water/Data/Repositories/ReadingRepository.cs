@@ -40,7 +40,7 @@ namespace WEB_Water.Data
                 Reader = reader,
                 Begin = model.Begin,
                 End = model.End,
-                ValueOfConsume = model.ValueOfConsume,
+                ValueOfConsumption = model.ValueOfConsumption,
                 RegistrationDateNewReading = DateTime.UtcNow
             };
 
@@ -93,10 +93,10 @@ namespace WEB_Water.Data
         }
 
 
-        //public bool BillExists(int id)
-        //{
-        //    return _context.Bills.Any(e => e.Reading.Id == id);
-        //}
+        public bool BillExists(int id)
+        {
+            return _context.Bills.Any(e => e.Reading.Id == id);
+        }
 
         //public async Task<T> GetByIdAsync(int id) //search by Id, just one
         //{

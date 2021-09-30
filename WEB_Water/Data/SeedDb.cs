@@ -69,7 +69,8 @@ namespace WEB_Water.Data
                     Email = "quim@webwater.com",
                     UserName = "quim@webwater.com",
                     PhoneNumber = "9" + _random.Next(10000000, 99999999).ToString(),
-                    Nif = _random.Next(100000000, 999999999).ToString()
+                    Nif = _random.Next(100000000, 999999999).ToString(),
+                    IsCustomer = true
                 };
 
 
@@ -80,7 +81,8 @@ namespace WEB_Water.Data
                     Email = "king@webwater.com",
                     UserName = "king@webwater.com",
                     PhoneNumber = "9" + _random.Next(10000000, 99999999).ToString(),
-                    Nif = _random.Next(100000000, 999999999).ToString()
+                    Nif = _random.Next(100000000, 999999999).ToString(),
+                    IsCustomer = true 
                 };
 
                 var result = await _userHelper.AddUserAsync(user, "123456");

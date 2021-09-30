@@ -17,6 +17,9 @@ namespace WEB_Water.Data.Entities
         [Display(Name = "NIF")]
         public string Nif { get; set; }
 
+        [Display(Name = "Is Customer?")]
+        public bool IsCustomer { get; set; }
+
         //[Display(Name = "Image")]
         //public string ImageUrl { get; set; }
 

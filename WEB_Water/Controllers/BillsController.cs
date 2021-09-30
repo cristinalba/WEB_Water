@@ -35,7 +35,7 @@ namespace WEB_Water.Controllers
 
             if (await _userHelper.IsUserInRoleAsync(user, "Worker"))//Worker
             {
-                return View(_userHelper.GetAll().OrderBy(u => u.UserName));//fullname
+                return View(_userHelper.GetAll().Where(x => x.IsCustomer==true).OrderBy(u => u.UserName));//fullname
             }
 
             var customers = _userHelper.GetAll()
@@ -77,6 +77,7 @@ namespace WEB_Water.Controllers
             }
 
             //select the reading
+            //var model = await _readingRepository.GetReadingByIdAsync(id.Value);
             var model = await _context.Readings
                 .Include(u => u.User)
                 .ThenInclude(r => r.Readers)
@@ -89,7 +90,7 @@ namespace WEB_Water.Controllers
 
             double TotalValue = 0;
 
-            for (int i = 1; i <= model.ValueOfConsume; i++)
+            for (int i = 1; i <= model.ValueOfConsumption; i++)
             {
                 if (i <= 5)
                 {
@@ -123,7 +124,7 @@ namespace WEB_Water.Controllers
 
 
             //check if the bill has been produced
-
+            //var readingUpdate = await _readingRepository.GetReadingByIdAsync(id.Value);
             var readingUpdate = await _context.Readings.FirstOrDefaultAsync(x => x.Id == model.Id);
 
             readingUpdate.BillIssued = true;
@@ -154,15 +155,6 @@ namespace WEB_Water.Controllers
             return View(model);
         }
 
-        [HttpPost]
-        public IActionResult GeneratePdfBill(EmailForm sendMail)
-        {
-            return RedirectToAction(nameof(Index));
-        }
-        [HttpPost]
-        public IActionResult SendPdfBill(EmailForm sendMail)
-        {
-            return View();
-        }
+
     }
 }

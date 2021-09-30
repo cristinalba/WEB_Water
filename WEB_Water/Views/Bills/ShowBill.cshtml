@@ -84,24 +84,24 @@
             <tr>
                 <td><p>@Model.Reader.ReaderName</p></td>
 
-                @if (Model.Reading.ValueOfConsume <= 5)
+                @if (Model.Reading.ValueOfConsumption <= 5)
                 {
                         <td style="width: 50px;"><p>1</p></td>
                 }
-                @if (Model.Reading.ValueOfConsume > 5 && Model.Reading.ValueOfConsume <= 15)
+                @if (Model.Reading.ValueOfConsumption > 5 && Model.Reading.ValueOfConsumption <= 15)
                 {
                         <td style="width: 50px;"><p>2</p></td>
                 }
-                @if (Model.Reading.ValueOfConsume > 15 && Model.Reading.ValueOfConsume <= 25)
+                @if (Model.Reading.ValueOfConsumption > 15 && Model.Reading.ValueOfConsumption <= 25)
                 {
                     <td class="tableitem" style="width: 50px;"><p class="itemtext">3</p></td>
                 }
-                @if (Model.Reading.ValueOfConsume > 25)
+                @if (Model.Reading.ValueOfConsumption > 25)
                 {
                     <td class="tableitem"><p class="itemtext">4</p></td>
                 }
 
-                <td><p>@Model.Reading.ValueOfConsume</p></td>
+                <td><p>@Model.Reading.ValueOfConsumption</p></td>
 
                 <td><p>@Model.ValueToPay €</p></td>
             </tr>

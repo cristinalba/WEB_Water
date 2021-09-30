@@ -15,5 +15,7 @@ namespace WEB_Water.Data
 
         Task<Reading> GetReadingByIdAsync(int id);
 
+        public bool BillExists(int id);
+
     }
 }
