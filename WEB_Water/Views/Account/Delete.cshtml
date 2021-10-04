@@ -1,0 +1,46 @@
+﻿@model WEB_Water.Data.Entities.User
+
+@{ ViewData["Title"] = "Delete"; }
+
+<main id="main">
+    <section class="inner-page">
+        <div class="container">
+            <br /><br />
+            <h2>Delete Customer</h2>
+            <br />
+
+            <h3>Are you sure you want to delete <b>@Html.DisplayFor(model => model.FullName)</b> permanentely? </h3>
+            <div>
+                @*<h4>Cliente</h4>*@
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LastName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.UserName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.UserName)
+                    </dd>
+                </dl>
+
+                <form asp-action="Delete">
+                    <input type="hidden" asp-for="Id" />
+                    <input type="submit" value="Delete" class="btn btn-danger" />
+                    <a asp-action="Index" class="btn btn-success">Back to list</a>
+                </form>
+            </div>
+        </div>
+    </section>
+
+</main>

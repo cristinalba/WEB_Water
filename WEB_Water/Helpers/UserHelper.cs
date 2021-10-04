@@ -127,6 +127,12 @@ namespace WEB_Water.Helpers
             return await _context.Set<User>().FindAsync(id);
         }
 
+        public async Task<User> GetByIdAsync(string id)
+        {
+            return await _context.Users.FindAsync(id);
+               
+        }
+
       
     }
 }

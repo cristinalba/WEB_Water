@@ -1,0 +1,66 @@
+﻿@model WEB_Water.Data.Entities.User
+
+@{ ViewData["Title"] = "Profile"; }
+
+<main id="main">
+    <section class="inner-page">
+        <div class="container">
+            <br /><br />
+            <center><h2>Profile from  <b>@Html.DisplayFor(model => model.FullName)</b>:</h2></center>
+
+            <div>
+                <h4>@Html.DisplayFor(model => model.FullName)</h4>
+                <hr />
+                <dl class="dl-horizontal">
+                    <dt>
+                        @Html.DisplayNameFor(model => model.FirstName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.FirstName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.LastName)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.LastName)
+                    </dd>
+                    <dt>
+                        Username:
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.UserName)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Email)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Email)
+                    </dd>
+                    <dt>
+                        Phone Number:
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.PhoneNumber)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.Nif)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.Nif)
+                    </dd>
+                    <dt>
+                        @Html.DisplayNameFor(model => model.IsCustomer)
+                    </dt>
+                    <dd>
+                        @Html.DisplayFor(model => model.IsCustomer)
+                    </dd>
+                </dl>
+            </div>
+            <div>
+                <a asp-action="ChangePassword" asp-route-id="@Model.Id" class="btn btn-warning">Change Password</a>
+                <a asp-action="Index" class="btn btn-success">Back to list</a>
+            </div>
+        </div>
+    </section>
+
+</main><!-- End #main -->

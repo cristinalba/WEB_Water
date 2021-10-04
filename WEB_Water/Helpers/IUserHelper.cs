@@ -35,5 +35,7 @@ namespace WEB_Water.Helpers
         IQueryable<User> GetAll();
 
         Task<User> GetUserByIdAsync(string id);
+
+        Task<User> GetByIdAsync(string id);
     }
 }

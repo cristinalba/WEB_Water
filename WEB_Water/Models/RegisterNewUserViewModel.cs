@@ -18,11 +18,17 @@ namespace WEB_Water.Models
 
         [Required]
         [DataType(DataType.EmailAddress)]
-        public string Username { get; set; }   
+        public string UserName { get; set; }   
 
         [MaxLength(20, ErrorMessage = "The field {0} only can contain {1} characters length.")]
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
+
+        [Display(Name = "NIF")]
+        public string Nif { get; set; }
+
+        [Display(Name = "Is Customer?")]
+        public bool IsCustomer { get; set; }
 
         [Required]
         [MinLength(6)]
@@ -31,6 +37,9 @@ namespace WEB_Water.Models
         [Required]
         [Compare("Password")]
         public string Confirm { get; set; }
+
+        [Display(Name = "Image")]
+        public Guid ImageId { get; set; }
 
     }
 }

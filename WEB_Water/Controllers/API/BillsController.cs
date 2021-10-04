@@ -22,7 +22,7 @@ namespace WEB_Water.Controllers.API
         [HttpGet]
         public IActionResult GetBills()
         {
-            return Ok(_billRepository.GetAll());
+            return Ok(_billRepository.GetAllBillsWithUsers());
         }
 
     }

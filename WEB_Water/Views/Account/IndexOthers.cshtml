@@ -6,9 +6,9 @@
 <main id="main">
     <section class="inner-page">
         <div class="container">
-    
+      
             <br /><br />
-            <h2>List of all the customers</h2>
+            <h2>List of all the workers</h2>
 
 
             <hr />
@@ -25,8 +25,8 @@
                     </tr>
                 </thead>
                 <tbody>
-                     @foreach (var item in Model)
-                     {
+                    @foreach (var item in Model)
+                    {
                         <tr>
                             <td>
                                 @Html.DisplayFor(modelItem => item.FullName)
@@ -37,15 +37,14 @@
                             <td>
                                 @if (this.User.IsInRole("Admin"))
                                 {
-                                    <a asp-action="Edit" asp-route-id="@item.Id" title="Edit User" class="btn btn-outline-primary far fa-edit"></a>
-
-                                    <a asp-action="ProfileUser" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
-
-                                    <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt"></a>
-                                }
+                                    <a asp-action="Edit" asp-route-id="@item.Id" title="Editar" class="btn btn-outline-primary far fa-edit"></a>}
+                                <a asp-action="Details" asp-route-id="@item.Id" title="Detalhes" class="btn btn-outline-success fas fa-info-circle"></a>
+                                @if (this.User.IsInRole("Admin"))
+                                {
+                                    <a asp-action="Delete" asp-route-id="@item.Id" title="Apagar" class="btn btn-outline-danger fas fa-trash-alt"></a>}
                             </td>
                         </tr>
-                     }
+                    }
                 </tbody>
             </table>
         </div>

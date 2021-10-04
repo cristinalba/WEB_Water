@@ -19,5 +19,7 @@ namespace WEB_Water.Data.Repositories
         Task<bool> SaveBillAsync();
 
         bool BillExists(int id);
+
+        IQueryable GetAllBillsWithUsers();
     }
 }

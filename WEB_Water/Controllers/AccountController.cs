@@ -16,21 +16,206 @@ namespace WEB_Water.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly UserManager<User> _userManager;
 
-        public AccountController(IUserHelper userHelper) //search for the methods in the UserHelper
+        public AccountController(IUserHelper userHelper,
+                                 UserManager<User> userManager) //search for the methods in the UserHelper
         {
             _userHelper = userHelper;
+            _userManager = userManager;
         }
 
 
-        //  Account/Index
+        //Account/Index
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            return View(_userHelper.GetAll().OrderBy(x => x.UserName));
+            return View(_userHelper.GetAll().Where(x => x.IsCustomer==true).OrderBy(x => x.UserName));
+        }
+
+        [Authorize(Roles = "Admin")]
+        public IActionResult IndexOthers()
+        {
+            return View(_userHelper.GetAll().Where(x => x.IsCustomer == false).OrderBy(x => x.UserName));
+        }
+
+        //Create
+        public IActionResult Register() //Add View+Razor view
+        {
+            return View();
+        }
+
+        //Create
+        [HttpPost]
+        public async Task<IActionResult> Register(RegisterNewUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.UserName); //check if the user exists
+
+                if (user == null)
+                {
+                    user = new User //create user if it doesn't exist
+                    {
+                        FirstName = model.FirstName,
+                        LastName = model.LastName,
+                        Email = model.UserName,
+                        UserName = model.UserName,
+                        Nif = model.Nif,
+                        IsCustomer = model.IsCustomer
+
+                    };
+                    //METER ROLE AL USER 
+
+                    var result = await _userHelper.AddUserAsync(user, model.Password);
+
+                    if (model.IsCustomer == true)
+                        await _userHelper.AddUserToRoleAsync(user, "Customer");
+                    if (model.IsCustomer == false)
+                        await _userHelper.AddUserToRoleAsync(user, "Worker");
+
+
+                    if (result != IdentityResult.Success)
+                    {
+                        ModelState.AddModelError(string.Empty, "The user couldn't be created.");
+                        return View(model);
+                    }
+
+                    var loginViewModel = new LoginViewModel //if it creates a new one user, shows Loginviewmodel
+                    {
+                        Password = model.Password,
+                        RememberMe = false,
+                        Username = model.UserName
+                    };
+
+                    //var result2 = await _userHelper.LoginAsync(loginViewModel);
+                    //if (result2.Succeeded)//if it can log in, shows home
+                    //{
+                    //    return RedirectToAction("Index", "Home");
+                    //}
+                    //ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
+                    if (model.IsCustomer == true)
+                        return RedirectToAction("Index", "Account");
+                    if (model.IsCustomer == false)
+                        return RedirectToAction("IndexOthers", "Account");
+
+                }
+
+            }
+            return View(model);
         }
 
 
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> ProfileUser(string id)
+        {
+
+            var user = await _userManager.FindByIdAsync(id);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+        //Edit
+        public async Task<IActionResult> Edit(string id) //ADD View
+        {
+
+            var user = await _userHelper.GetUserByIdAsync(id);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+            var model = new RegisterNewUserViewModel();
+            if (user != null)
+            {
+                model.FirstName = user.FirstName;
+                model.LastName = user.LastName;
+                model.UserName = user.UserName;
+                model.PhoneNumber = user.PhoneNumber;
+                model.Nif = user.Nif;
+                model.IsCustomer = user.IsCustomer;
+            }
+            return View(model);
+        }
+        //Edit
+        [Authorize(Roles = "Admin")]
+        [HttpPost]//Update data when click over the username
+        public async Task<IActionResult> Edit(RegisterNewUserViewModel model)
+        {
+            if (ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.UserName);
+
+                if (user != null)
+                {
+
+                    user.FirstName = model.FirstName;
+                    user.LastName = model.LastName;
+                    user.PhoneNumber = model.PhoneNumber;
+                    user.UserName = model.UserName;
+                    user.Nif = model.Nif;
+                    user.IsCustomer = model.IsCustomer;
+
+                    var response = await _userHelper.UpdateUserAsync(user);
+                    if (response.Succeeded)
+                    {
+                        ViewBag.UserMessage = "User updated!";
+                    }
+                    else
+                    {
+                        ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
+                    }
+                }
+            }
+            return View(model);
+        }
+
+        // GET: Account/Delete/5
+        [Authorize(Roles = "Admin")]
+        public async Task<IActionResult> Delete(string id)
+        {
+            if (id == null)
+            {
+                return NotFound();
+            }
+
+            var user = await _userHelper.GetUserByIdAsync(id.ToString());
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        // POST: Account/Delete/5
+        [Authorize(Roles = "Admin")]
+        [HttpPost, ActionName("Delete")]
+        //[ValidateAntiForgeryToken]
+        public async Task<IActionResult> DeleteConfirmed(string id)
+        {
+            var user = await _userManager.FindByIdAsync(id);
+
+            var result = await _userManager.DeleteAsync(user);
+
+            if (result.Succeeded)
+            {
+                return RedirectToAction("Index");
+            }
+
+            return RedirectToAction(nameof(Index));
+        }
+
+        /////////////////////////////////////////////////////////////////////////////
+        ///
+        /// Functions to do the Log In / Register / Change Password 
+        /// 
+        /////////////////////////////////////////////////////////////////////////////
         public IActionResult Login() //right button, add razor view(Login, without model, use layout)
         {
             if (User.Identity.IsAuthenticated) //if the user is autherticated, shows Home!
@@ -60,56 +245,8 @@ namespace WEB_Water.Controllers
             this.ModelState.AddModelError(string.Empty, "Failed to login!");
             return View(model);
         }
-        public IActionResult Register() //Add View+Razor view
-        {
-            return View();
-        }
 
-        [HttpPost]
-        public async Task<IActionResult> Register(RegisterNewUserViewModel model)
-        {
-            if (ModelState.IsValid)
-            {
-                var user = await _userHelper.GetUserByEmailAsync(model.Username); //check if the user exists
-
-                if (user == null)
-                {
-                    user = new User //create user if it doesn't exist
-                    {
-                        FirstName = model.FirstName,
-                        LastName = model.LastName,
-                        Email = model.Username,
-                        UserName = model.Username,
-                    };
-                    //METER ROLE AL USER 
-
-                    var result = await _userHelper.AddUserAsync(user, model.Password);
-                    if (result != IdentityResult.Success)
-                    {
-                        ModelState.AddModelError(string.Empty, "The user couldn't be created.");
-                        return View(model);
-                    }
-
-                    var loginViewModel = new LoginViewModel //if it creates a new one user, shows Loginviewmodel
-                    {
-                        Password = model.Password,
-                        RememberMe = false,
-                        Username = model.Username
-                    };
-
-                    var result2 = await _userHelper.LoginAsync(loginViewModel);
-                    if (result2.Succeeded)//if it can log in, shows home
-                    {
-                        return RedirectToAction("Index", "Home");
-                    }
-
-                    ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
-                }
-                
-            }
-            return View(model);
-        }
-
+        //Edit
         public async Task<IActionResult> ChangeUser() //ADD View
         {
             var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
@@ -117,11 +254,11 @@ namespace WEB_Water.Controllers
             if (user != null)
             {
                 model.FirstName = user.FirstName;
-                model.LastName = user.LastName;            
+                model.LastName = user.LastName;
             }        
             return View(model);
         }
-
+        //Edit
         [HttpPost]//Update data when click over the username
         public async Task<IActionResult> ChangeUser(ChangeUserViewModel model)
         {
@@ -133,8 +270,9 @@ namespace WEB_Water.Controllers
                 {
 
                     user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;                  
-                    
+                    user.LastName = model.LastName;
+
+
                     var response = await _userHelper.UpdateUserAsync(user);
                     if (response.Succeeded)
                     {

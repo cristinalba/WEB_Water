@@ -65,6 +65,13 @@ namespace WEB_Water.Data.Repositories
             return _context.Bills.Any(e => e.Reading.Id == id);
         }
 
+        public IQueryable GetAllBillsWithUsers()
+        {
+            return _context.Bills
+                .Include(u => u.User);
+
+            //TODO: faltaria incluir reader y reading
+        }
         
 
     }
