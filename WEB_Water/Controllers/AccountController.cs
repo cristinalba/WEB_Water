@@ -52,7 +52,7 @@ namespace WEB_Water.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByEmailAsync(model.UserName); //check if the user exists
-
+                
                 if (user == null)
                 {
                     user = new User //create user if it doesn't exist
@@ -61,6 +61,7 @@ namespace WEB_Water.Controllers
                         LastName = model.LastName,
                         Email = model.UserName,
                         UserName = model.UserName,
+                        PhoneNumber = model.PhoneNumber,
                         Nif = model.Nif,
                         IsCustomer = model.IsCustomer
 
@@ -81,12 +82,12 @@ namespace WEB_Water.Controllers
                         return View(model);
                     }
 
-                    var loginViewModel = new LoginViewModel //if it creates a new one user, shows Loginviewmodel
-                    {
-                        Password = model.Password,
-                        RememberMe = false,
-                        Username = model.UserName
-                    };
+                    //var loginViewModel = new LoginViewModel //if it creates a new one user, shows Loginviewmodel
+                    //{
+                    //    Password = model.Password,
+                    //    RememberMe = false,
+                    //    Username = model.UserName
+                    //};
 
                     //var result2 = await _userHelper.LoginAsync(loginViewModel);
                     //if (result2.Succeeded)//if it can log in, shows home
@@ -120,6 +121,7 @@ namespace WEB_Water.Controllers
             return View(user);
         }
         //Edit
+        [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id) //ADD View
         {
 
@@ -147,12 +149,12 @@ namespace WEB_Water.Controllers
         [HttpPost]//Update data when click over the username
         public async Task<IActionResult> Edit(RegisterNewUserViewModel model)
         {
-            if (ModelState.IsValid)
-            {
+            //if (ModelState.IsValid)
+            //{
                 var user = await _userHelper.GetUserByEmailAsync(model.UserName);
 
-                if (user != null)
-                {
+                //if (user != null)
+                //{
 
                     user.FirstName = model.FirstName;
                     user.LastName = model.LastName;
@@ -162,6 +164,7 @@ namespace WEB_Water.Controllers
                     user.IsCustomer = model.IsCustomer;
 
                     var response = await _userHelper.UpdateUserAsync(user);
+
                     if (response.Succeeded)
                     {
                         ViewBag.UserMessage = "User updated!";
@@ -170,8 +173,9 @@ namespace WEB_Water.Controllers
                     {
                         ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
                     }
-                }
-            }
+            //}
+            //}
+          
             return View(model);
         }
 

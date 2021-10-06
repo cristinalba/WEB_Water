@@ -29,43 +29,45 @@ namespace WEB_Water.Controllers
         {
             return View();
         }
+
+        [HttpGet]
         public IActionResult Contact()
         {
             return View();
         }
 
         [HttpPost]
-        public IActionResult Contact(EmailForm sendMail)
+        public IActionResult Contact(SendMail mailInfo)
         {
             if (!ModelState.IsValid) return View();
 
             try
             {
-                SmtpClient sc = new SmtpClient();
-                MailMessage mail = new MailMessage();
+                SmtpClient xx = new SmtpClient();
+                MailMessage mailXX = new MailMessage();
                 
 
-                mail.From = new MailAddress("kamistesta@gmail.com");
-                mail.To.Add(new MailAddress("kamistesta@gmail.com"));
-                mail.Subject = sendMail.Subject;
+                mailXX.From = new MailAddress("kamistesta@gmail.com");
+                mailXX.To.Add(new MailAddress("kamistesta@gmail.com"));
+                mailXX.Subject = $"Subject do Email: {mailInfo.Subject}";
 
-                mail.IsBodyHtml = true;
+                mailXX.IsBodyHtml = true;
 
-                mail.Body = "<br/><br/><b>This customer contacted us:</b><br/>" +
-                    $"<b>Name:</b> {sendMail.Name}<br/>" +
-                    $"<b>E-mail:</b> {sendMail.Email}<br/><br/>" +
+                mailXX.Body = "<br/><br/><b>This customer contacted us:</b><br/>" +
+                    $"<b>Name:</b> {mailInfo.Name}<br/>" +
+                    $"<b>E-mail:</b> {mailInfo.Email}<br/><br/>" +
                     "<b>With the following message:</b><br/>" +
-                    $"{sendMail.Message}<br/><br/>" +
+                    $"{mailInfo.Message}<br/><br/>" +
                     $"On {DateTime.Now}<br/>";
 
-                sc.Host = "smtp.gmail.com";
-                sc.Port = 587;
+                xx.Host = "smtp.gmail.com";
+                xx.Port = 587;
 
 
-                sc.Credentials = new NetworkCredential("kamistesta@gmail.com", "Cinel123!");
-                sc.EnableSsl = true;
+                xx.Credentials = new NetworkCredential("kamistesta@gmail.com", "Cinel123!");
+                xx.EnableSsl = true;
 
-                sc.Send(mail);
+                xx.Send(mailXX);
 
                 ViewBag.Message = "Message sent!";
 

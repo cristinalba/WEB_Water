@@ -37,8 +37,10 @@
                             <td>
                                 @if (this.User.IsInRole("Admin"))
                                 {
-                                    <a asp-action="Edit" asp-route-id="@item.Id" title="Editar" class="btn btn-outline-primary far fa-edit"></a>}
-                                <a asp-action="Details" asp-route-id="@item.Id" title="Detalhes" class="btn btn-outline-success fas fa-info-circle"></a>
+                                    <a asp-controller="Account" asp-action="Edit" asp-route-id="@item.Id" title="Editar" class="btn btn-outline-primary far fa-edit"></a>
+                                }
+                                    <a asp-controller="Account" asp-action="ProfileUser" asp-route-id="@item.Id" title="Detalhes" class="btn btn-outline-success fas fa-info-circle"></a>
+
                                 @if (this.User.IsInRole("Admin"))
                                 {
                                     <a asp-action="Delete" asp-route-id="@item.Id" title="Apagar" class="btn btn-outline-danger fas fa-trash-alt"></a>}

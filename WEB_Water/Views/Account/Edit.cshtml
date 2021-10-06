@@ -4,7 +4,7 @@
 
 <main id="main">
 
-    <section class="inner-page">
+   
         <div class="container">
             <br /><br />
             <center><h2>Edit User</h2></center>
@@ -14,12 +14,15 @@
                 <hr />
                 <div class="row">
                     <div class="col-md-4">
-                        <form asp-action="Edit" enctype="multipart/form-data">
+                        <form method="post">
+                            <div asp-validation-summary="ModelOnly"></div>
+
                             <div class="form-group">
                                 <b><label asp-for="FirstName" class="control-label"></label></b>
                                 <input asp-for="FirstName" class="form-control" />
                                 <span asp-validation-for="FirstName" class="text-danger"></span>
                             </div>
+
                             <div class="form-group">
                                 <b><label asp-for="LastName" class="control-label"></label></b>
                                 <input asp-for="LastName" class="form-control" />
@@ -49,17 +52,25 @@
                             </div>
 
                             <br />
+
                             <div class="form-group">
-                                <input type="submit" value="Guardar" class="btn btn-primary" />
-                                <a asp-action="Index" class="btn btn-success">Back to list</a>
+                                <input type="submit" value="Update" class="btn btn-primary" />
+                                @if (Model.IsCustomer == true)
+                                {
+                                    <a asp-action="Index" class="btn btn-success">Back to list</a>
+                                }
+                                else
+                                {
+                                    <a asp-action="IndexOthers" class="btn btn-success">Back to list</a>
+                                }
+                                
                             </div>
                         </form>
                     </div>
                 </div>
             </div>
         </div>
-    </section>
-
+  
 </main><!-- End #main -->
 
 
