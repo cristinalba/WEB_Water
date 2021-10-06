@@ -25,6 +25,18 @@ namespace WEB_Water.Helpers
 
         Task<SignInResult> ValidatePasswordAsync(User user, string password);
 
+        Task<string> GenerateEmailConfirmationTokenAsync(User user);
+
+        Task<IdentityResult> ConfirmEmailAsync(User user, string token);
+
+
+        Task<User> GetUserByIdAsync(string id);
+
+        Task<User> GetByIdAsync(string id);
+
+
+
+
         Task CheckRoleAsync(string roleName);
 
         Task AddUserToRoleAsync(User user, string roleName);
@@ -36,8 +48,5 @@ namespace WEB_Water.Helpers
 
         IQueryable<User> GetAll();
 
-        Task<User> GetUserByIdAsync(string id);
-
-        Task<User> GetByIdAsync(string id);
     }
 }

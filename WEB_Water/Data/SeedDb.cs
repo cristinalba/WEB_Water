@@ -117,31 +117,39 @@ namespace WEB_Water.Data
             }
 
             var isInRole = await _userHelper.IsUserInRoleAsync(user, "Admin");
+
             if (!isInRole)
             {
                 await _userHelper.AddUserToRoleAsync(user, "Admin");
                
             }
+            var token = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+            await _userHelper.ConfirmEmailAsync(user, token);
+
             var isInRole1 = await _userHelper.IsUserInRoleAsync(user1, "Worker");
             if (!isInRole1)
             {
                 await _userHelper.AddUserToRoleAsync(user1, "Worker");
 
             }
+            var token1 = await _userHelper.GenerateEmailConfirmationTokenAsync(user1);
+            await _userHelper.ConfirmEmailAsync(user1, token1);
             var isInRole2 = await _userHelper.IsUserInRoleAsync(user2, "Customer");
             if (!isInRole2)
             {
                 await _userHelper.AddUserToRoleAsync(user2, "Customer");
 
             }
-
+            var token2 = await _userHelper.GenerateEmailConfirmationTokenAsync(user2);
+            await _userHelper.ConfirmEmailAsync(user2, token2);
             var isInRole3 = await _userHelper.IsUserInRoleAsync(user3, "Customer");
             if (!isInRole3)
             {
                 await _userHelper.AddUserToRoleAsync(user3, "Customer");
 
             }
-
+            var token3 = await _userHelper.GenerateEmailConfirmationTokenAsync(user3);
+            await _userHelper.ConfirmEmailAsync(user3, token3);
             if (!_context.Readers.Any()) // if it is empty
             {
                 //this.AddReader("X Street", user1);

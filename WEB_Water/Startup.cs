@@ -31,10 +31,10 @@ namespace WEB_Water
             {
                 cfg.Tokens.AuthenticatorTokenProvider = TokenOptions.DefaultAuthenticatorProvider;
                 cfg.Password.RequireDigit = false;
-                //cfg.SignIn.RequireConfirmedEmail = true;
+                cfg.SignIn.RequireConfirmedEmail = true;
                 //send token to the email, after click to autenticate the user and have a valid email address, the user can log in
-                //cfg.User.RequireUniqueEmail = true;
-                //cfg.Password.RequireDigit = false;//to make it simple while we are creating the web
+                cfg.User.RequireUniqueEmail = true;
+                cfg.Password.RequireDigit = false;//to make it simple while we are creating the web
                 cfg.Password.RequiredUniqueChars = 0;
                 cfg.Password.RequireUppercase = false;
                 cfg.Password.RequireLowercase = false;
@@ -42,7 +42,7 @@ namespace WEB_Water
                 cfg.Password.RequiredLength = 6;
 
             })
-                //.AddDefaultTokenProviders()
+                .AddDefaultTokenProviders()
                 .AddEntityFrameworkStores<DataContext>();
 
             //Install Nugget Authenticatio JWTBearer
@@ -75,6 +75,7 @@ namespace WEB_Water
             services.AddScoped<IUserHelper, UserHelper>();
             //services.AddScoped<IImageHelper, ImageHelper>();
             //services.AddScoped<IConverterHelper, ConverterHelper>();
+            services.AddScoped<IMailHelper, MailHelper>();
 
 
             services.AddScoped<IReaderRepository, ReaderRepository>();

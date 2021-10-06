@@ -129,8 +129,10 @@ namespace WEB_Water.Helpers
 
         public async Task<User> GetByIdAsync(string id)
         {
-            return await _context.Users.FindAsync(id);
-               
+            //return await _context.Users.FindAsync(id);
+
+            return await _userManager.FindByIdAsync(id);
+
         }
         public async Task<SignInResult> ValidatePasswordAsync(User user, string password)
         {
@@ -140,6 +142,14 @@ namespace WEB_Water.Helpers
                 false);
         }
 
+        public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
+        {
+            return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+        }
 
+        public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)
+        {
+            return await _userManager.ConfirmEmailAsync(user, token);
+        }
     }
 }

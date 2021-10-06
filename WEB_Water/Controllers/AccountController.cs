@@ -21,14 +21,17 @@ namespace WEB_Water.Controllers
     public class AccountController : Controller
     {
         private readonly IUserHelper _userHelper;
+        private readonly IMailHelper _mailHelper;
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(IUserHelper userHelper,
+                                 IMailHelper mailHelper,
                                  UserManager<User> userManager,
                                  IConfiguration configuration) //search for the methods in the UserHelper
         {
             _userHelper = userHelper;
+            _mailHelper = mailHelper;
             _userManager = userManager;
             _configuration = configuration;
         }
@@ -90,24 +93,29 @@ namespace WEB_Water.Controllers
                         return View(model);
                     }
 
-                    //var loginViewModel = new LoginViewModel //if it creates a new one user, shows Loginviewmodel
-                    //{
-                    //    Password = model.Password,
-                    //    RememberMe = false,
-                    //    Username = model.UserName
-                    //};
+                    string myToken = await _userHelper.GenerateEmailConfirmationTokenAsync(user);
+                    string tokenLink = Url.Action("ConfirmEmail", "Account", new
+                    {
+                        userid = user.Id,
+                        token = myToken
+                    }, protocol: HttpContext.Request.Scheme);
 
-                    //var result2 = await _userHelper.LoginAsync(loginViewModel);
-                    //if (result2.Succeeded)//if it can log in, shows home
-                    //{
-                    //    return RedirectToAction("Index", "Home");
-                    //}
-                    //ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
-                    if (model.IsCustomer == true)
-                        return RedirectToAction("Index", "Account");
-                    if (model.IsCustomer == false)
-                        return RedirectToAction("IndexOthers", "Account");
+                    Response response = _mailHelper.SendEmail(model.UserName, "Email confirmation", $"<h1>Email Confirmation</h1>" +
+                    $"To allow the user, " +
+                    $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
 
+                    if (response.IsSuccess)
+                    { 
+                        ViewBag.Message = "The instructions to allow the user to activate the account have been sent to the email account";
+                        return View(model);
+                    }
+
+                    ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
+
+                    //if (model.IsCustomer == true)
+                    //    return RedirectToAction("Index", "Account");
+                    //if (model.IsCustomer == false)
+                    //    return RedirectToAction("IndexOthers", "Account");
                 }
 
             }
@@ -378,6 +386,31 @@ namespace WEB_Water.Controllers
 
             return BadRequest();
         }
+
+        public async Task<IActionResult> ConfirmEmail(string userId, string token)
+        {
+            if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+            {
+                return NotFound();
+            }
+
+            var user = await _userHelper.GetUserByIdAsync(userId);
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            var result = await _userHelper.ConfirmEmailAsync(user, token);
+            if (!result.Succeeded)
+            {
+
+            }
+
+            return View();
+
+        }
+
+
         public IActionResult NotAuthorized()
         {
             return View();

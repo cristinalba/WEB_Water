@@ -33,7 +33,7 @@ namespace WEB_Water.Controllers
             return View(readers);
         }
 
-        [Authorize(Roles = "Worker")]
+        [Authorize(Roles = "Worker, Admin")]
         // GET: Readers/Create
         public IActionResult Create()
         {
@@ -44,7 +44,7 @@ namespace WEB_Water.Controllers
 
             return View(model);
         }
-        [Authorize(Roles = "Worker")]
+        [Authorize(Roles = "Worker, Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(AddReaderViewModel model)
         {
@@ -79,7 +79,7 @@ namespace WEB_Water.Controllers
         }
 
         // GET: Readers/Edit/5
-        [Authorize(Roles = "Worker")]
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Edit(int? id)
         {
             if (id == null)
