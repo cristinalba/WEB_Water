@@ -20,6 +20,9 @@ namespace WEB_Water.Data.Entities
         [Display(Name = "Is Customer?")]
         public bool IsCustomer { get; set; }
 
+       //Bool to control the first time a user does a Log IN
+        public bool FirstTimePass { get; set; }
+
         //[Display(Name = "Image")]
         //public string ImageUrl { get; set; }
 

@@ -49,7 +49,9 @@ namespace WEB_Water.Data
                     Email = "admin@webwater.com",
                     UserName = "admin@webwater.com",
                     PhoneNumber = "914412891",
-                    Nif = _random.Next(100000000, 999999999).ToString()
+                    Nif = _random.Next(100000000, 999999999).ToString(),
+                    FirstTimePass = true
+                    
                 };
                 user1 = new User
                 {
@@ -58,7 +60,8 @@ namespace WEB_Water.Data
                     Email = "adminworker1@webwater.com",
                     UserName = "adminworker1@webwater.com",
                     PhoneNumber = "9" + _random.Next(10000000, 99999999).ToString(),
-                    Nif = _random.Next(100000000, 999999999).ToString()
+                    Nif = _random.Next(100000000, 999999999).ToString(),
+                    FirstTimePass = true
                 };
 
 

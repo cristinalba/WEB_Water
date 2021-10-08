@@ -151,5 +151,10 @@ namespace WEB_Water.Helpers
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
+
+        //public async Task<IdentityResult> ChangePasswordAsync(User user, string token)
+        //{
+        //    return await _userManager.ConfirmEmailAsync(user, token);
+        //}
     }
 }

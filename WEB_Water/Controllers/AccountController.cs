@@ -179,6 +179,12 @@ namespace WEB_Water.Controllers
                     user.Nif = model.Nif;
                     user.IsCustomer = model.IsCustomer;
 
+                    if (user.IsCustomer == true)
+                        await _userHelper.AddUserToRoleAsync(user, "Customer");
+                    if (user.IsCustomer == false)
+                        await _userHelper.AddUserToRoleAsync(user, "Worker");
+           
+
                     var response = await _userHelper.UpdateUserAsync(user);
 
                     if (response.Succeeded)
@@ -238,8 +244,10 @@ namespace WEB_Water.Controllers
         /////////////////////////////////////////////////////////////////////////////
         public IActionResult Login() //right button, add razor view(Login, without model, use layout)
         {
+           
             if (User.Identity.IsAuthenticated) //if the user is autherticated, shows Home!
             {
+               
                 return RedirectToAction("Index", "Home");
             }
             
@@ -249,16 +257,29 @@ namespace WEB_Water.Controllers
         [HttpPost]
         public async Task<IActionResult> Login(LoginViewModel model)
         {
+            var user = await _userHelper.GetUserByEmailAsync(model.Username);
+
             if (ModelState.IsValid)
             {
                 var result = await _userHelper.LoginAsync(model);
                 if (result.Succeeded)
                 {
-                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                    if(user.EmailConfirmed==true && user.FirstTimePass==false)
                     {
-                        return Redirect(this.Request.Query["ReturnUrl"].First());
+                        user.FirstTimePass = true;
+                        await _userHelper.UpdateUserAsync(user);
+                        return this.RedirectToAction("ChangePassword", "Account");
+                      
                     }
-                    return this.RedirectToAction("Index", "Home");
+                    else
+                    {
+                        if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                        {
+                            return Redirect(this.Request.Query["ReturnUrl"].First());
+                        }
+                        return this.RedirectToAction("Index", "Home");
+                    }
+           
                 }
             }
 
@@ -403,12 +424,34 @@ namespace WEB_Water.Controllers
             var result = await _userHelper.ConfirmEmailAsync(user, token);
             if (!result.Succeeded)
             {
-
+              
             }
 
             return View();
 
         }
+        //public async Task<IActionResult> ChangePassword(string userId, string token)
+        //{
+        //    if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var user = await _userHelper.GetUserByIdAsync(userId);
+        //    if (user == null)
+        //    {
+        //        return NotFound();
+        //    }
+
+        //    var result = await _userHelper.ConfirmEmailAsync(user, token);
+        //    if (!result.Succeeded)
+        //    {
+
+        //    }
+
+        //    return View();
+
+        //}
 
 
         public IActionResult NotAuthorized()

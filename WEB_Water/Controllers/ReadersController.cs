@@ -35,11 +35,13 @@ namespace WEB_Water.Controllers
 
         [Authorize(Roles = "Worker, Admin")]
         // GET: Readers/Create
-        public IActionResult Create()
+        public async Task<IActionResult> Create(string id)
         {
+            var user = await _userHelper.GetUserByIdAsync(id);
+      
             var model = new AddReaderViewModel
             {
-                Users = _userHelper.GetComboUsers()
+                Users = _userHelper.GetComboUsers(user.UserName)
             };
 
             return View(model);
