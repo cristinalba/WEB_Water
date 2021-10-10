@@ -20,7 +20,9 @@ namespace WEB_Water.Controllers
         private readonly IBillRepository _billRepository;
         private readonly IReadingRepository _readingRepository;
 
-        public BillsController(IUserHelper userHelper, IBillRepository billRepository, IReadingRepository readingRepository)
+        public BillsController(IUserHelper userHelper, 
+                               IBillRepository billRepository, 
+                               IReadingRepository readingRepository)
         {
          
             _userHelper = userHelper;

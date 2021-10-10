@@ -33,11 +33,11 @@ namespace WEB_Water.Controllers
             return View(readers);
         }
 
-        [Authorize(Roles = "Worker, Admin")]
+        [Authorize(Roles = "Admin")]
         // GET: Readers/Create
         public async Task<IActionResult> Create(string id)
         {
-            var user = await _userHelper.GetUserByIdAsync(id);
+            var user = await _userHelper.GetByIdAsync(id);
       
             var model = new AddReaderViewModel
             {
@@ -46,7 +46,7 @@ namespace WEB_Water.Controllers
 
             return View(model);
         }
-        [Authorize(Roles = "Worker, Admin")]
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Create(AddReaderViewModel model)
         {
@@ -97,7 +97,7 @@ namespace WEB_Water.Controllers
             return View(equipment);
         }
         // POST: Readers/Edit/5
-        [Authorize(Roles = "Worker")]
+        [Authorize(Roles = "Worker, Admin")]
         [HttpPost]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> Edit(int id, Reader reader)
@@ -106,11 +106,10 @@ namespace WEB_Water.Controllers
             {
                 return NotFound();
             }
-
-        
+      
             try
             {
-                reader.User = await _userHelper.GetUserByIdAsync(id.ToString());
+                reader.User = await _userHelper.GetByIdAsync(id.ToString());
                 await _readerRepository.UpdateAsync(reader);
             }
             catch (DbUpdateConcurrencyException)
@@ -127,7 +126,7 @@ namespace WEB_Water.Controllers
             return RedirectToAction(nameof(Index));
         }
         // GET: Readers/Delete/5
-        [Authorize(Roles = "Worker")]
+        [Authorize(Roles = "Worker, Admin")]
         public async Task<IActionResult> Delete(int? id)
         {
             if (id == null)
@@ -144,15 +143,35 @@ namespace WEB_Water.Controllers
             return View(reader);
         }
         // POST: Readers/Delete/5
-        [Authorize(Roles = "Worker")]
+        [Authorize(Roles = "Worker, Admin")]
         [HttpPost, ActionName("Delete")]
         [ValidateAntiForgeryToken]
         public async Task<IActionResult> DeleteConfirmed(int id)
         {
+            //if()
+            //{
+            //    ViewBag.Message = "It is not possible to delete this reader as there are readings associated";
+            //    return RedirectToAction(nameof(Index));
+            //}
             var reader = await _readerRepository.GetByIdAsync(id);
-            await _readerRepository.DeleteAsync(reader);
+            try
+            {
+                //throw new Exception("Excepção de testes");
+                await _readerRepository.DeleteAsync(reader);
 
-            return RedirectToAction(nameof(Index));
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"{reader.ReaderName} might be used";
+                    ViewBag.ErrorMessage = $"{reader.ReaderName} can´t be deleted because it has an associated reading to it!</br>" +
+                                        "Try to delete first the readings and then come back to delete the reader!";
+                }
+                return View("Error");
+            }
+       
         }
 
     }

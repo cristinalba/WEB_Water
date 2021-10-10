@@ -29,12 +29,14 @@ namespace WEB_Water.Helpers
 
         Task<IdentityResult> ConfirmEmailAsync(User user, string token);
 
+        Task<string> GeneratePasswordResetTokenAsync(User user);
 
-        Task<User> GetUserByIdAsync(string id);
+        Task<IdentityResult> ResetPasswordAsync(User user, string token, string password);
+
+
+        //Task<User> GetUserByIdAsync(string id);
 
         Task<User> GetByIdAsync(string id);
-
-
 
 
         Task CheckRoleAsync(string roleName);

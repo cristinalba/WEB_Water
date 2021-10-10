@@ -119,13 +119,14 @@ namespace WEB_Water.Helpers
         }
         public IQueryable<User> GetAll()
         {
+           
             return _context.Set<User>();
         }
 
-        public async Task<User> GetUserByIdAsync(string id)
-        {
-            return await _context.Set<User>().FindAsync(id);
-        }
+        //public async Task<User> GetUserByIdAsync(string id)
+        //{
+        //    return await _context.Set<User>().FindAsync(id);
+        //}
 
         public async Task<User> GetByIdAsync(string id)
         {
@@ -151,10 +152,14 @@ namespace WEB_Water.Helpers
         {
             return await _userManager.ConfirmEmailAsync(user, token);
         }
-
-        //public async Task<IdentityResult> ChangePasswordAsync(User user, string token)
-        //{
-        //    return await _userManager.ConfirmEmailAsync(user, token);
-        //}
+        public async Task<string> GeneratePasswordResetTokenAsync(User user)
+        {
+            return await _userManager.GeneratePasswordResetTokenAsync(user);
+        }
+        public async Task<IdentityResult> ResetPasswordAsync(User user, string token, string password)
+        {
+            return await _userManager.ResetPasswordAsync(user, token, password);
+        }
+   
     }
 }

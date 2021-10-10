@@ -108,6 +108,7 @@ namespace WEB_Water.Controllers
                     { 
                         ViewBag.Message = "The instructions to allow the user to activate the account have been sent to the email account";
                         return View(model);
+                        //return this.RedirectToAction("Create", "Readers");
                     }
 
                     ModelState.AddModelError(string.Empty, "The user couldn't be logged.");
@@ -126,7 +127,6 @@ namespace WEB_Water.Controllers
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> ProfileUser(string id)
         {
-
             var user = await _userManager.FindByIdAsync(id);
 
             if (user == null)
@@ -141,7 +141,7 @@ namespace WEB_Water.Controllers
         public async Task<IActionResult> Edit(string id) //ADD View
         {
 
-            var user = await _userHelper.GetUserByIdAsync(id);
+            var user = await _userHelper.GetByIdAsync(id);
             if (user == null)
             {
                 return NotFound();
@@ -210,7 +210,7 @@ namespace WEB_Water.Controllers
                 return NotFound();
             }
 
-            var user = await _userHelper.GetUserByIdAsync(id.ToString());
+            var user = await _userHelper.GetByIdAsync(id.ToString());
             if (user == null)
             {
                 return NotFound();
@@ -227,19 +227,29 @@ namespace WEB_Water.Controllers
         {
             var user = await _userManager.FindByIdAsync(id);
 
-            var result = await _userManager.DeleteAsync(user);
-
-            if (result.Succeeded)
+            try
             {
-                return RedirectToAction("Index");
+                //throw new Exception("Excepção de testes");
+                await _userManager.DeleteAsync(user);
+
+                return RedirectToAction(nameof(Index));
+            }
+            catch (DbUpdateException ex)
+            {
+                if (ex.InnerException != null && ex.InnerException.Message.Contains("DELETE"))
+                {
+                    ViewBag.ErrorTitle = $"{user.FullName} might be used";
+                    ViewBag.ErrorMessage = $"{user.FullName} can´t be deleted because it has a reader associated!</br>" +
+                                        "Try to delete first the readers and then come back to delete the user!";
+                }
+                return View("Error");
             }
 
-            return RedirectToAction(nameof(Index));
         }
 
         /////////////////////////////////////////////////////////////////////////////
         ///
-        /// Functions to do the Log In / Register / Change Password 
+        /// Functions to do the Log In / Register / Change Password /Logout
         /// 
         /////////////////////////////////////////////////////////////////////////////
         public IActionResult Login() //right button, add razor view(Login, without model, use layout)
@@ -269,7 +279,7 @@ namespace WEB_Water.Controllers
                         user.FirstTimePass = true;
                         await _userHelper.UpdateUserAsync(user);
                         return this.RedirectToAction("ChangePassword", "Account");
-                      
+
                     }
                     else
                     {
@@ -365,6 +375,12 @@ namespace WEB_Water.Controllers
             return RedirectToAction("Index", "Home");
 
         }
+
+        /////////////////////////////////////////////////////////////////////////////
+        ///
+        /// Functions with Token: Confirm/Recover/Reset
+        /// 
+        /////////////////////////////////////////////////////////////////////////////
         [HttpPost]
         public async Task<IActionResult> CreateToken([FromBody] LoginViewModel model)
         {
@@ -415,7 +431,7 @@ namespace WEB_Water.Controllers
                 return NotFound();
             }
 
-            var user = await _userHelper.GetUserByIdAsync(userId);
+            var user = await _userHelper.GetByIdAsync(userId);
             if (user == null)
             {
                 return NotFound();
@@ -427,31 +443,121 @@ namespace WEB_Water.Controllers
               
             }
 
+
+            var myToken = await _userHelper.GeneratePasswordResetTokenAsync(user);
+
+            var link = this.Url.Action(
+                "ResetPassword",
+                "Account",
+                new { token = myToken }, protocol: HttpContext.Request.Scheme);
+
+            Response response = _mailHelper.SendEmail(user.UserName, "Web_Water Password Reset", $"<h1>Password Reset</h1>" +
+            $"To reset the password click in this link:</br></br>" +
+            $"<a href = \"{link}\">Reset Password</a>");
+
+            if (response.IsSuccess)
+            {
+                ViewBag.Message = "The instructions to allow the user to activate the account have been sent to the email account";
+                return View();
+            }
+
+
             return View();
 
         }
-        //public async Task<IActionResult> ChangePassword(string userId, string token)
-        //{
-        //    if (string.IsNullOrEmpty(userId) || string.IsNullOrEmpty(token))
-        //    {
-        //        return NotFound();
-        //    }
 
-        //    var user = await _userHelper.GetUserByIdAsync(userId);
-        //    if (user == null)
-        //    {
-        //        return NotFound();
-        //    }
+        public IActionResult RecoverPassword()
+        {
+            return View();
+        }
 
-        //    var result = await _userHelper.ConfirmEmailAsync(user, token);
-        //    if (!result.Succeeded)
-        //    {
 
-        //    }
+        [HttpPost]
+        public async Task<IActionResult> RecoverPassword(RecoverPasswordViewModel model)
+        {
+            if (this.ModelState.IsValid)
+            {
+                var user = await _userHelper.GetUserByEmailAsync(model.Email);
+                if (user == null)
+                {
+                    ModelState.AddModelError(string.Empty, "The email doesn't correspont to a registered user.");
+                    return View(model);
+                }
 
-        //    return View();
+                var myToken = await _userHelper.GeneratePasswordResetTokenAsync(user);
 
-        //}
+                var link = this.Url.Action(
+                    "ResetPassword",
+                    "Account",
+                    new { token = myToken }, protocol: HttpContext.Request.Scheme);
+
+                Response response = _mailHelper.SendEmail(model.Email, "Shop Password Reset", $"<h1>Shop Password Reset</h1>" +
+                $"To reset the password click in this link:</br></br>" +
+                $"<a href = \"{link}\">Reset Password</a>");
+
+                if (response.IsSuccess)
+                {
+                    this.ViewBag.Message = "The instructions to recover your password have been sent to email.";
+                }
+
+                return this.View();
+
+            }
+
+            return this.View(model);
+        }
+
+        public IActionResult ResetPassword(string token)
+        {
+            return View();
+        }
+
+
+        [HttpPost]
+        public async Task<IActionResult> ResetPassword(ResetPasswordViewModel model)
+        {
+            var user = await _userHelper.GetUserByEmailAsync(model.UserName);
+            if (user != null)
+            {
+                var result = await _userHelper.ResetPasswordAsync(user, model.Token, model.Password);
+                if (result.Succeeded)
+                {
+                    this.ViewBag.Message = "Password reset successful.";
+                    return View();
+                }
+
+                this.ViewBag.Message = "Error while resetting the password.";
+                return View(model);
+            }
+
+            this.ViewBag.Message = "User not found.";
+            return View(model);
+        }
+        /////////////////////////////////////////////////////////////////////////////
+        ///
+        /// Functions to Control the price of Consumption
+        /// 
+        /////////////////////////////////////////////////////////////////////////////
+
+        //Account/CheckPrices
+        [Authorize(Roles = "Admin")]
+        public IActionResult PriceControlCheck()
+        {
+            return View();
+        }
+
+        //Account/UpdatePrices
+        [Authorize(Roles = "Admin")]
+        public IActionResult PriceControlUpdate()
+        {
+            return View();
+        }
+
+        /////////////////////////////////////////////////////////////////////////////
+        ///
+        /// Functions to Control the price of Consumption
+        /// 
+        /////////////////////////////////////////////////////////////////////////////
 
 
         public IActionResult NotAuthorized()

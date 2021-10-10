@@ -44,26 +44,40 @@
                     @if (this.User.IsInRole("Worker"))
                     {
                         <td>
+                            <center>
                             @Html.DisplayFor(modelItem => item.User.FullName)
+                            </center>
                         </td>
                     }
                     <td>
-                        @Html.DisplayFor(modelItem => item.Reader.ReaderName)
+                        <center>
+                            @Html.DisplayFor(modelItem => item.Reader.ReaderName)
+                        </center>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.BillDate)
+                        <center>
+                            @Html.DisplayFor(modelItem => item.BillDate)
+                        </center>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Reading.Begin)
+                        <center>
+                            @Html.DisplayFor(modelItem => item.Reading.Begin)
+                        </center>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Reading.End)
+                        <center>
+                            @Html.DisplayFor(modelItem => item.Reading.End)
+                        </center>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.Reading.ValueOfConsumption)
+                        <center>
+                            @Html.DisplayFor(modelItem => item.Reading.ValueOfConsumption)
+                        </center>
                     </td>
                     <td>
-                        @Html.DisplayFor(modelItem => item.ValueToPay)
+                        <center>
+                            @Html.DisplayFor(modelItem => item.ValueToPay)
+                        </center>
                     </td>
                     <td>
                         @* Route appears encrypted in the URL *@

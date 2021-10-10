@@ -7,18 +7,21 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css"/>
     <link rel="stylesheet" href="~/css/site.css" />
+    <style>
+        ul {
+            font-weight: bolder;
+        }
+        h6{
+            font-weight: bolder;
+        }
+    </style>
 </head>
 <body>
     <header>
        
-        @*<nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white">
-            <div  class="nav navbar align-content-center">           
-                    <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Tajo Water Company</a>
-            </div>
-        </nav>*@
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Tajo Water Company</a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Tajo Water Company </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
@@ -43,7 +46,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Customers</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6  style:"font-weight: bolder;">Customers</h6></a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Show all</a></li>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Register new one</a></li>
@@ -51,13 +54,29 @@
 
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Other users</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6>Other users</h6></a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="IndexOthers">Show all</a></li>
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Register new one</a></li>
+                                            @*<li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Register new one</a></li>*@
                                         </ul>
-                                    </li>                          
-                                   
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6>List of Readers</h6></a>
+                                        <ul>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Index">Show all</a></li>
+                                            
+                                        </ul>
+
+                                    </li>
+                                    <li>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6>Prices of Consumption</h6></a>
+                                        <ul>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="PriceControlCheck">Check prices</a></li>
+                                            <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="PriceControlUpdate">Update prices</a></li>
+                                        </ul>
+
+                                    </li>
+
                                 </ul>
                             </li>
                         }
@@ -68,20 +87,20 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                     <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Readers</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6>Readers</h6></a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Index">Show all</a></li>
-                                            <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Create">Register new one</a></li>
+                                            @*<li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Create">Register new one</a></li>*@
                                         </ul>
                                     </li>
                                     <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Reading</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6>Readings</h6></a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Index">List of Readings</a></li>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Create">Register new reading</a></li>
                                         </ul>
                                     </li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Bills" asp-action="Index">Bills</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Bills" asp-action="Index"><h6>Bills</h6></a></li>
                                 </ul>
                             </li>
                         }
@@ -93,13 +112,13 @@
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
 
                                     <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action="">Readings</a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6>Readings</h6></a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Index">Show all</a></li>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readings" asp-action="Create">Register new one</a></li>
                                         </ul>
                                     </li>
-                                    <li><a class="dropdown-item" asp-area="" asp-controller="Bills" asp-action="BillSummary">Bills</a></li>
+                                    <li><a class="dropdown-item" asp-area="" asp-controller="Bills" asp-action="BillSummary"><h6>Bills</h6></a></li>
                                 </ul>
                             </li>
                         }
@@ -125,9 +144,6 @@
 
                             </li>
 
-                            @*<li class="nav-item">
-                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Register">New User</a>
-                            </li>*@
                         }
                     </ul>
 
@@ -149,7 +165,6 @@
                         <div>
                             <center>
                                 <h3>Tajo Water Company</h3>
-                                @*<p class="pb-3"><em>Our goal is to have happy customers</em></p>*@
                                 <p>
                                     Rua Jau
                                     <br>
@@ -173,7 +188,7 @@
                     <div class="col-lg-2 col-md-6 footer-links">
                         <h4>Our Services</h4>
                         <ul>
-                            <li>Companies</li>
+                            <li><a asp-area="" asp-controller="Home" asp-action="CompanyDetails">Companies</a></li>
                             <li>Particulars</li>
                         </ul>
                     </div>

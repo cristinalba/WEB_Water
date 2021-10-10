@@ -6,10 +6,13 @@
 <main id="main">
     <section class="inner-page">
         <div class="container">
-      
+
             <br /><br />
             <h2>List of all the workers</h2>
-
+            
+            <h5>
+            <a asp-action="Register">Register new worker</a>
+            </h5>
 
             <hr />
             <table class="table">
@@ -39,7 +42,7 @@
                                 {
                                     <a asp-controller="Account" asp-action="Edit" asp-route-id="@item.Id" title="Editar" class="btn btn-outline-primary far fa-edit"></a>
                                 }
-                                    <a asp-controller="Account" asp-action="ProfileUser" asp-route-id="@item.Id" title="Detalhes" class="btn btn-outline-success fas fa-info-circle"></a>
+                                <a asp-controller="Account" asp-action="ProfileUser" asp-route-id="@item.Id" title="Detalhes" class="btn btn-outline-success fas fa-info-circle"></a>
 
                                 @if (this.User.IsInRole("Admin"))
                                 {

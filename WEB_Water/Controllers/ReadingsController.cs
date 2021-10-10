@@ -39,7 +39,10 @@ namespace WEB_Water.Controllers
         public IActionResult ListOfAllTheCustomers()
         {
             //TODO:FullName??
-            return View(_userHelper.GetAll().Where(x => x.IsCustomer == true).OrderBy(x => x.UserName));
+            return View(_userHelper.GetAll()
+                .Where(x => x.IsCustomer == true)
+                .Where(x => x.Readers.Count>0) //it only shows a customer if the reader has been created
+                .OrderBy(x => x.UserName));
         }
 
 
@@ -56,7 +59,7 @@ namespace WEB_Water.Controllers
                     return RedirectToAction("ListOfAllTheCustomers");
                 }
 
-                user = await _userHelper.GetUserByIdAsync(id);
+                user = await _userHelper.GetByIdAsync(id);
                 var model = new AddReadingViewModel
                 {
                     Users = _userHelper.GetComboUsers(user.UserName),
@@ -96,7 +99,7 @@ namespace WEB_Water.Controllers
             //else
             if (await _userHelper.IsUserInRoleAsync(user, "Worker"))
             {
-                user = await _userHelper.GetUserByIdAsync(model.UserId.ToString());
+                user = await _userHelper.GetByIdAsync(model.UserId.ToString());
                 await _readingRepository.AddReadingToCustomerAsync(model, user.UserName);
             }
             else
@@ -170,7 +173,7 @@ namespace WEB_Water.Controllers
             try
             {
                 reading.Reader = await _readerRepository.GetByIdAsync(id);
-                reading.User = await _userHelper.GetUserByIdAsync(id.ToString());
+                reading.User = await _userHelper.GetByIdAsync(id.ToString());
                 reading.RegistrationDateNewReading = DateTime.UtcNow;  //Registration date is in the moment that is done!
 
                 await _readingRepository.UpdateAsync(reading);

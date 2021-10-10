@@ -21,7 +21,7 @@ namespace WEB_Water.Data.Repositories
         public async Task<IQueryable<Bill>> GetBillAsync(string id)
         {
 
-            var user = await _userHelper.GetUserByIdAsync(id);
+            var user = await _userHelper.GetByIdAsync(id);
             if (user == null)
             {
                 return null;
