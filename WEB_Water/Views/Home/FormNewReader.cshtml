@@ -1,14 +1,22 @@
 ﻿@model EmailForm
 
-@{ 
-    ViewData["Title"] = "FormNewReader"; 
-    
-    }
+@{ ViewData["Title"] = "FormNewReader"; }
 
 
 <main>
+    <div>
 
-    <br />
+        @if (ViewBag.Message != null)
+        {
+            <div class="alert alert-success" role="alert">
+                <center>
+                    <h3>@ViewBag.Message</h3>
+                </center>
+            </div>
+        }
+
+    </div>
+   
     <center><h2>Fill in the form to register a new reader:</h2></center>
     <br />
     <form method="post">
@@ -51,3 +59,9 @@
     <br />
     <br />
 </main>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

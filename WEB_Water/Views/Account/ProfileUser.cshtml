@@ -31,11 +31,11 @@
                         @Html.DisplayFor(model => model.UserName)
                     </dd>
                     @*<dt>
-                        @Html.DisplayNameFor(model => model.Email)
-                    </dt>
-                    <dd>
-                        @Html.DisplayFor(model => model.Email)
-                    </dd>*@
+                            @Html.DisplayNameFor(model => model.Email)
+                        </dt>
+                        <dd>
+                            @Html.DisplayFor(model => model.Email)
+                        </dd>*@
                     <dt>
                         Phone Number:
                     </dt>
@@ -64,3 +64,9 @@
     </section>
 
 </main><!-- End #main -->
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

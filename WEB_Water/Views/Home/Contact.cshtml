@@ -1,33 +1,28 @@
 ﻿@model SendMail
 
-@{ 
-    ViewData["Title"] = "Contact"; 
-}
+@{ ViewData["Title"] = "Contact"; }
 
 <main>
-    <br />
-    <br />
 
     <div>
         <div>
 
-            @*@if (ViewBag.Message != null)
+            @if (ViewBag.Message != null)
             {
                 <div class="alert alert-success" role="alert">
                     <center><h3>@ViewBag.Message</h3></center>
                 </div>            
-            }*@
+            }
 
-        <div>
-            <h2>Contact us:</h2>
-            <br />
-            <br />
-        </div>
+            <div>
+                <h2>Contact us:</h2>
+                <br />
+            </div>
 
             <div class="row">
                 <div class="col-lg-4" data-aos="fade-right" data-aos-delay="100">
                     <div>
-                        <div>        
+                        <div>
                             <h4>Head office:</h4>
                             <p>Rua Jau, 1300-312 Lisboa</p>
                         </div>
@@ -83,3 +78,9 @@
         </div>
     </div>
 </main>
+
+
+@section Scripts {
+    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
+
+}

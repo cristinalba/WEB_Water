@@ -30,6 +30,11 @@ namespace WEB_Water.Controllers
             return View();
         }
 
+        public IActionResult Privacy()
+        {
+            return View();
+        }
+
         [HttpGet]
         public IActionResult Contact()
         {
@@ -39,7 +44,8 @@ namespace WEB_Water.Controllers
         [HttpPost]
         public IActionResult Contact(SendMail mailInfo)
         {
-            if (!ModelState.IsValid) return View();
+            if (!ModelState.IsValid) 
+                return View();
 
             try
             {
@@ -90,12 +96,21 @@ namespace WEB_Water.Controllers
         [HttpPost]
         public IActionResult FormNewReader(EmailForm sendMail)
         {
-            SmtpClient sc = new SmtpClient();
+            if (!ModelState.IsValid)
+                return View();
+
+            try
+            {
+                SmtpClient sc = new SmtpClient();
             MailMessage mail = new MailMessage();
 
             mail.From = new MailAddress("kamistesta@gmail.com");
-            //TODO: Worker email
-            mail.To.Add(new MailAddress("kamistesta@gmail.com"));//Change, send email to worker
+            ///////////////////////////////////////////////////////////////////////////////
+            ////                                                                        ///
+            ////               It will be changed to the email of the Admin             ///
+            ////                                                                        ///
+            ///////////////////////////////////////////////////////////////////////////////
+            mail.To.Add(new MailAddress("kamistesta@gmail.com"));
             mail.Subject = "Form from a new customer";
 
             mail.IsBodyHtml = true;
@@ -120,6 +135,13 @@ namespace WEB_Water.Controllers
                 ViewBag.Message = "Message sent!";
 
                 ModelState.Clear();
+
+            return View();
+            }
+            catch (Exception ex)
+            {
+                ViewBag.Message = ex.Message.ToString();
+            }
 
             return View();
 

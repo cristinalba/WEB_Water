@@ -5,25 +5,25 @@
 
 @if (ViewBag.ErrorTitle == null)
 {
-    <h1 class="text-danger">Error.</h1>
-    <h2 class="text-danger">An error occurred while processing your request.</h2>
+    <center><h1 class="text-danger">Error.</h1></center>
+    <center><h2 class="text-danger">An error occurred while processing your request.</h2></center>
 }
 else
 {
-    <h1 class="text-danger">@ViewBag.ErrorTitle</h1>
-    <h2 class="text-danger">@Html.Raw(ViewBag.ErrorMessage)</h2>
+    <center><h1 class="alert alert-danger">@ViewBag.ErrorTitle</h1></center>
+    <center><h2 class="alert alert-info">@Html.Raw(ViewBag.ErrorMessage)</h2></center>
 }
 
 
 @*<h1 class="text-danger">Error.</h1>
-<h2 class="text-danger">An error occurred while processing your request.</h2>
+    <h2 class="text-danger">An error occurred while processing your request.</h2>
 
-@if (Model.ShowRequestId)
-{
-    <p>
-        <strong>Request ID:</strong> <code>@Model.RequestId</code>
-    </p>
-}*@
+    @if (Model.ShowRequestId)
+    {
+        <p>
+            <strong>Request ID:</strong> <code>@Model.RequestId</code>
+        </p>
+    }*@
 
 @*<h3>Development Mode</h3>
     <p>
