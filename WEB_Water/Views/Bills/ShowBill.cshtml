@@ -1,7 +1,9 @@
 ﻿@model WEB_Water.Data.Entities.Bill
 
-@{ ViewData["Title"] = "Bill";
-    Layout = null; }
+@{ 
+    ViewData["Title"] = "Bill";
+    Layout = null; 
+ }
 
 
 
@@ -10,123 +12,157 @@
 <head>
     <title>Bill</title>
     <meta charset="utf-8">
-    <style>
-        table, th, td {
-            border: 1px solid black;
-            text-align:center;
-        }
-    </style>
+    
+    <link rel="stylesheet" href="~/css/BillStyle.css" >
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-1BmE4kWBq78iYhFldvKuhfTAU6auU8tT94WrHftjDbrCEXSU1oBoqyl2QvZ6jIW3" crossorigin="anonymous" >
+    
 </head>
 <body>
-    <div>
-        @* Bill reference *@
-        <h1>Bill #@Model.Id</h1>
-        <p>
-            Issued Date: @Model.BillDate<br />
-            To pay before the end of the month
-        </p>
 
-        @* Generate pdf and it to customer *@
+    <!--Bill Start-->
+    <div class="page-content container">
+        <div class="page-header text-blue-d2">
+            <h1 class="page-title text-secondary-d1">
+                Invoice
+                <small class="page-info">
+                    <i class="fa fa-angle-double-right text-80"></i>
+                    ID: #@Model.Id#
+                </small>
+            </h1>
+        </div>
 
-        <a asp-action="GenerateSendPDF" asp-controller="Bills" asp-route-id="@Model.User.Id" title="Generate PDF" class="btn btn-outline-warning fas fa-calculator"></a>
+        <div class="container px-0">
+            <div class="row mt-4">
+                <div class="col-12 col-lg-10 offset-lg-1">
+                    <!-- .row -->
+
+                    <hr class="row brc-default-l1 mx-n1 mb-4" />
+
+                    <div class="row">
+                        <div class="col-sm-6">
+                            <div>
+                                <span class="text-sm text-grey-m2 align-middle">Name:</span>
+                                <span class="text-600 text-110 text-blue align-middle">@Model.User.FullName</span>
+                            </div>
+                            <div>
+                                <span class="text-sm text-grey-m2 align-middle">Email:</span>
+                                <span class="text-600 text-110 text-blue align-middle">@Model.User.Email</span>
+                            </div>
+
+                            <div>
+                                <span class="text-sm text-grey-m2 align-middle">Address:</span>
+                                <span class="text-600 text-110 text-blue align-middle">@Model.Reader.AddressName</span>
+                            </div>
+
+                            <div>
+                                <span class="text-sm text-grey-m2 align-middle">Telephone:</span>
+                                <span class="text-600 text-110 text-blue align-middle">@Model.User.PhoneNumber</span>
+                            </div>
+
+                        </div>
+
+                        <!-- /.col -->
+
+                        <div class="text-95 col-sm-6 align-self-start d-sm-flex justify-content-end">
+                            <hr class="d-sm-none" />
+                            <div class="text-grey-m2">
+                                <div class="mt-1 mb-2 text-secondary-m1 text-600 text-125">
+                                    Invoice
+                                </div>
+
+                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">ID:</span>  #@Model.Id#</div>
+
+                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">Start of period:</span>@Model.Reading.Begin</div>
+
+                                <div class="my-2"><i class="fa fa-circle text-blue-m2 text-xs mr-1"></i> <span class="text-600 text-90">End of period:</span> @Model.Reading.End</div>
+                            </div>
+                        </div>
+                        <!-- /.col -->
+
+                    </div>
+
+                    <div class="mt-4">
+                        <div class="row text-600 text-white bgc-default-tp1 py-25">
+                            <div class="col-9 col-sm-5">Reader Name</div>
+                            <div class="d-none d-sm-block col-4 col-sm-2">Level of Consume</div>
+                            <div class="d-none d-sm-block col-sm-2">Value of Consumption in m³</div>
+                            <div class="col-2">Total (€)</div>
+                        </div>
+
+                        <div class="text-95 text-secondary-d3">
+                            <div class="row mb-2 mb-sm-0 py-25">
+                                <div class="col-9 col-sm-5">@Model.Reader.ReaderName</div>
+
+                                @if (Model.Reading.ValueOfConsumption <= 5)
+                                {
+                                    <div class="d-none d-sm-block col-2">1</div>
+                                }
+                                @if (Model.Reading.ValueOfConsumption > 5 && Model.Reading.ValueOfConsumption <= 15)
+                                {
+                                    <div class="d-none d-sm-block col-2">2</div>
+                                }
+                                @if (Model.Reading.ValueOfConsumption > 15 && Model.Reading.ValueOfConsumption <= 25)
+                                {
+                                    <div class="d-none d-sm-block col-2">3</div>
+                                }
+                                @if (Model.Reading.ValueOfConsumption > 25)
+                                {
+                                    <div class="d-none d-sm-block col-2">4</div>
+                                }
+
+                            
+                                <div class="d-none d-sm-block col-2 text-95">@Model.Reading.ValueOfConsumption</div>
+                                <div class="col-2 text-secondary-d2">@Math.Round((decimal)Model.ValueToPay,2)</div>
+                            </div>
+                        </div>
+                    <hr />
+                   
 
 
+                    <div class="row mt-3">
+                        <div class="col-12 col-sm-7 text-grey-d2 text-95 mt-2 mt-lg-0">
+                            <span class="text-600 text-110 align-middle">Way of payment : Multibanco</span>
+                        </div>
+
+                        <div class="col-12 col-sm-5 text-grey text-90 order-first order-sm-last">
+                            <div class="row my-2">
+                                <div class="col-7 text-right">
+                                    Entity
+                                </div>
+                                <div class="col-5">
+                                    <span class="text-120 text-secondary-d1">1234</span>
+                                </div>
+                            </div>
+
+                            <div class="row my-2">
+                                <div class="col-7 text-right">
+                                    Reference
+                                </div>
+                                <div class="col-5">
+                                    <span class="text-110 text-secondary-d1">1111111111</span>
+                                </div>
+                            </div>
+
+                            <div class="row my-2 align-items-center bgc-primary-l3 p-2">
+                                <div class="col-7 text-right">
+                                    Total Amount (€)
+                                </div>
+                                <div class="col-5">
+                                    <span class="text-150 text-success-d3 opacity-2"> @Math.Round((decimal)Model.ValueToPay, 2) </span>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+
+                </div>
+            </div>
+        </div>
     </div>
-    <div>
+    
+    <!--Bill End-->
 
-        <h2>Details of the customer: </h2>
-        <table>
-            <tr>
-                <td style="width: 200px;"><h3>Name:</h3></td>
-                <td style="width: 200px;"><h3>Email:</h3></td>
-                <td style="width: 150px;"><h3>Telefone:</h3></td>
-                <td style="width: 150px;"><h3>Address:</h3></td>
-            </tr>
-            <tr>
-                <td>@Model.User.FullName</td>
-                <td>@Model.User.Email</td>
-                <td>@Model.User.PhoneNumber</td>
-                <td>@Model.Reader.AddressName</td>
-            </tr>
-
-        </table>
-        <br />
-    </div>
-
-    <div>
-        <h2>Period of consumption:</h2>
-        <table>
-            <tr>
-                <td style="width: 350px;"><h3>Start of period:</h3></td>
-                <td style="width: 350px;"><h3>End of period:</h3></td>
-            </tr>
-            <tr>
-                <td>@Model.Reading.Begin</td>
-                <td>@Model.Reading.End</td>
-            </tr>
-            
-        </table>
-        <br />
-
-    </div>
-
-
-    <div>
-        <h2>Consumption:</h2>
-        <table>
-            <tr>
-                <td style="width: 110px;"><h3>Reader Name</h3></td>
-                <td style="width: 200px;"><h3>Level of consume</h3></td>
-                <td style="width: 300px;"><h3>Value of consumption in m³</h3></td>
-                <td style="width: 90px;"><h3>Total</h3></td>
-            </tr>
-
-            <tr>
-                <td><p>@Model.Reader.ReaderName</p></td>
-
-                @if (Model.Reading.ValueOfConsumption <= 5)
-                {
-                        <td style="width: 50px;"><p>1</p></td>
-                }
-                @if (Model.Reading.ValueOfConsumption > 5 && Model.Reading.ValueOfConsumption <= 15)
-                {
-                        <td style="width: 50px;"><p>2</p></td>
-                }
-                @if (Model.Reading.ValueOfConsumption > 15 && Model.Reading.ValueOfConsumption <= 25)
-                {
-                    <td class="tableitem" style="width: 50px;"><p class="itemtext">3</p></td>
-                }
-                @if (Model.Reading.ValueOfConsumption > 25)
-                {
-                    <td class="tableitem"><p class="itemtext">4</p></td>
-                }
-
-                <td><p>@Model.Reading.ValueOfConsumption</p></td>
-
-                <td><p>@Model.ValueToPay €</p></td>
-            </tr>
-
-        </table>
-        <br />
-        
-    </div><!--End Table-->
-      
-    <div>
-        <h2>Way of payment: <strong>Multibanco</strong></h2>
-        <table>
-            <tr>
-                <td style="width: 200px;"><h3>Entity:</h3></td>
-                <td style="width: 300px;"><h3>Reference:</h3></td>
-                <td style="width: 200px;"><h3>Total to pay:</h3></td>
-            </tr>
-            <tr>
-                <td>1234</td>
-                <td>111111111</td>
-                <td> @Model.ValueToPay €</td>
-            </tr>
-        </table>
-
-    </div>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.1.3/dist/js/bootstrap.bundle.min.js" integrity="sha384-ka7Sk0Gln4gmtz2MlQnikT1wXgYsOg+OMhuP+IlRH9sENBO0LRn5q+8nbTov4+1p" crossorigin="anonymous"></script>
 
 </body>
 </html>

@@ -116,7 +116,7 @@ namespace WEB_Water.Controllers
                 Reader = model.Reader,
                 Reading = model,
                 BillDate = DateTime.UtcNow,
-                ValueToPay = TotalValue,
+                ValueToPay = Math.Round(TotalValue,2),
                 User = model.User
             };
        

@@ -5,20 +5,24 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0" />
     <title>@ViewData["Title"] - WEB_Water</title>
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
-    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css"/>
+    <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
-        ul {
-            font-weight: bolder;
-        }
-        h6{
-            font-weight: bolder;
-        }
-    </style>
+            ul {
+                font-weight: bolder;
+            }
+            h6{
+                font-weight: bolder;
+            }
+        </style>
+
+ 
 </head>
 <body>
+
+  
     <header>
-       
+
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
                 <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index">Tajo Water Company </a>
@@ -46,7 +50,7 @@
                                 <a class="nav-link dropdown-toggle" href="#" id="navbarDropdown" role="button" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">Admin</a>
                                 <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                                     <li>
-                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6  style:"font-weight: bolder;">Customers</h6></a>
+                                        <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6 style:"font-weight: bolder;">Customers</h6></a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Index">Show all</a></li>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Account" asp-action="Register">Register new one</a></li>
@@ -64,7 +68,7 @@
                                         <a class="dropdown-item" asp-area="" asp-controller="" asp-action=""><h6>List of Readers</h6></a>
                                         <ul>
                                             <li><a class="dropdown-item" asp-area="" asp-controller="Readers" asp-action="Index">Show all</a></li>
-                                            
+
                                         </ul>
 
                                     </li>
@@ -140,7 +144,7 @@
                         else
                         {
                             <li class="nav-item">
-                                <a class="nav-link text-dark"  asp-area="" asp-controller="Account" asp-action="Login">Login</a>
+                                <a class="nav-link text-dark" asp-area="" asp-controller="Account" asp-action="Login">Login</a>
 
                             </li>
 
@@ -182,7 +186,7 @@
 
                                 </div>
                             </center>
-                        </div>      
+                        </div>
                     </div>
 
                     <div class="col-lg-2 col-md-6 footer-links">
@@ -208,7 +212,7 @@
                 </div>
             </div>
         </div>
-       
+
         <div class="container">
             <div class="copyright">
                 <br />
@@ -225,11 +229,19 @@
                 <br />
             </div>
         </div>
-    </footer><!-- End Footer -->
+    </footer> 
+    
+    
+    @*End Footer*@ 
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
     @await RenderSectionAsync("Scripts", required: false)
+
+
+
+
+
 </body>
 </html>
