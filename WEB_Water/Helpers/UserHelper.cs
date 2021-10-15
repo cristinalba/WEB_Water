@@ -15,17 +15,15 @@ namespace WEB_Water.Helpers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
-        private readonly DataContext _context;
 
         public UserHelper(UserManager<User> userManager,
                           SignInManager<User> signInManager,
-                          RoleManager<IdentityRole> roleManager,
-                          DataContext context)
+                          RoleManager<IdentityRole> roleManager)
         {
             _userManager = userManager;
             _signInManager = signInManager;
             _roleManager = roleManager;
-            _context = context;
+            
         }
         public async Task<IdentityResult> AddUserAsync(User user, string password)
         {
@@ -86,7 +84,9 @@ namespace WEB_Water.Helpers
 
         public IEnumerable<SelectListItem> GetComboUsers()
         {
-            var list = _context.Users.Where(x => x.IsCustomer == true).Select(u => new SelectListItem
+            var list = _userManager.Users
+                .Where(x => x.IsCustomer == true)
+                .Select(u => new SelectListItem
             {
                 Text = u.UserName,
                 Value = u.Id.ToString(),
@@ -103,7 +103,9 @@ namespace WEB_Water.Helpers
         }
         public IEnumerable<SelectListItem> GetComboUsers(string email)
         {
-            var list = _context.Users.Where(x => x.UserName==email).Select(u => new SelectListItem
+            var list = _userManager.Users
+                .Where(x => x.UserName==email)
+                .Select(u => new SelectListItem
             {
                 Text = u.UserName,
                 Value = u.Id.ToString(),
@@ -117,10 +119,14 @@ namespace WEB_Water.Helpers
 
             return list;
         }
+        //public IQueryable<User> GetAll()
+        //{
+           
+        //    return _context.Set<User>();
+        //}
         public IQueryable<User> GetAll()
         {
-           
-            return _context.Set<User>();
+            return _userManager.Users;
         }
 
         //public async Task<User> GetUserByIdAsync(string id)
@@ -146,6 +152,7 @@ namespace WEB_Water.Helpers
         public async Task<string> GenerateEmailConfirmationTokenAsync(User user)
         {
             return await _userManager.GenerateEmailConfirmationTokenAsync(user);
+
         }
 
         public async Task<IdentityResult> ConfirmEmailAsync(User user, string token)

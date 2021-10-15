@@ -7,6 +7,7 @@ using Microsoft.IdentityModel.Tokens;
 using System;
 using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
+using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
@@ -22,16 +23,22 @@ namespace WEB_Water.Controllers
     {
         private readonly IUserHelper _userHelper;
         private readonly IMailHelper _mailHelper;
+        private readonly IImageHelper _imageHelper;
+        private readonly IConverterHelper _converterHelper;
         private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
 
         public AccountController(IUserHelper userHelper,
                                  IMailHelper mailHelper,
+                                 IImageHelper imageHelper,
+                                 IConverterHelper converterHelper,
                                  UserManager<User> userManager,
                                  IConfiguration configuration) //search for the methods in the UserHelper
         {
             _userHelper = userHelper;
             _mailHelper = mailHelper;
+            _imageHelper = imageHelper;
+            _converterHelper = converterHelper;
             _userManager = userManager;
             _configuration = configuration;
         }
@@ -57,6 +64,7 @@ namespace WEB_Water.Controllers
         }
 
         //Create
+        [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
         {
@@ -100,13 +108,13 @@ namespace WEB_Water.Controllers
                         token = myToken
                     }, protocol: HttpContext.Request.Scheme);
 
-                    Response response = _mailHelper.SendEmail(model.UserName, "Email confirmation", $"<h1>Email Confirmation</h1>" +
-                    $"To allow the user, " +
-                    $"plase click in this link:</br></br><a href = \"{tokenLink}\">Confirm Email</a>");
+                    Response response = _mailHelper.SendEmail(model.UserName, "Email confirmation", $"<h1>Email Confirmation:</h1>" +
+                    $"To access your new account, " +
+                    $"please click in this link: <br/><br/><a href = \"{tokenLink}\">Confirm Email</a>");
 
                     if (response.IsSuccess)
                     { 
-                        ViewBag.Message = "The instructions to allow the user to activate the account have been sent to the email account";
+                        ViewBag.Message = "User registered! Add a reader to the user now";
                         return View(model);
                         //return this.RedirectToAction("Create", "Readers");
                     }
@@ -147,57 +155,68 @@ namespace WEB_Water.Controllers
                 return NotFound();
             }
 
-            //var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
-            var model = new RegisterNewUserViewModel();
-            if (user != null)
-            {
-                model.FirstName = user.FirstName;
-                model.LastName = user.LastName;
-                model.UserName = user.UserName;
-                model.PhoneNumber = user.PhoneNumber;
-                model.Nif = user.Nif;
-                model.IsCustomer = user.IsCustomer;
-            }
+            var model = _converterHelper.ToChangeUserViewModel(user);
             return View(model);
         }
         //Edit
         [Authorize(Roles = "Admin")]
         [HttpPost]//Update data when click over the username
-        public async Task<IActionResult> Edit(RegisterNewUserViewModel model)
+        public async Task<IActionResult> Edit(EditUserWithImageViewModel model)
         {
-            //if (ModelState.IsValid)
-            //{
+            if (ModelState.IsValid)
+            {
                 var user = await _userHelper.GetUserByEmailAsync(model.UserName);
-
-                //if (user != null)
-                //{
-
-                    user.FirstName = model.FirstName;
-                    user.LastName = model.LastName;
-                    user.PhoneNumber = model.PhoneNumber;
-                    user.UserName = model.UserName;
-                    user.Nif = model.Nif;
-                    user.IsCustomer = model.IsCustomer;
-
-                    if (user.IsCustomer == true)
-                        await _userHelper.AddUserToRoleAsync(user, "Customer");
-                    if (user.IsCustomer == false)
-                        await _userHelper.AddUserToRoleAsync(user, "Worker");
-           
-
-                    var response = await _userHelper.UpdateUserAsync(user);
-
-                    if (response.Succeeded)
+                try
+                {
+                    if (user != null)
                     {
-                        ViewBag.UserMessage = "User updated!";
+                        var path = string.Empty;
+
+                        if (model.ImageFile != null && model.ImageFile.Length > 0)
+                        {
+                            path = await _imageHelper.UploadImageAsync(model.ImageFile, "users");
+                        }
+                        //before saving in the database
+
+                        user.FirstName = model.FirstName;
+                        user.LastName = model.LastName;
+                        user.PhoneNumber = model.PhoneNumber;
+                        user.UserName = model.UserName;
+                        user.Nif = model.Nif;
+                        user.IsCustomer = model.IsCustomer;
+                        user.ImageUrl = path;
+
+                        if (user.IsCustomer == true)
+                            await _userHelper.AddUserToRoleAsync(user, "Customer");
+                        if (user.IsCustomer == false)
+                            await _userHelper.AddUserToRoleAsync(user, "Worker");
+
+
+                        var response = await _userHelper.UpdateUserAsync(user);
+
+                        if (response.Succeeded)
+                        {
+                            ViewBag.Message = "User updated!";
+                        }
+                        else
+                        {
+                            ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
+                        }
                     }
-                    else
+                }
+                catch (DbUpdateException ex)
+                {
+                    if (ex.InnerException != null && ex.InnerException.Message.Contains("EDIT"))
                     {
-                        ModelState.AddModelError(string.Empty, response.Errors.FirstOrDefault().Description);
+                        ViewBag.ErrorTitle = $"{user.FullName} might be used";
+                        ViewBag.ErrorMessage = $"{user.FullName} can´t be deleted because it has information associated!</br>" +
+                                            "Try to delete first that info and then come back to edit the user!";
                     }
-            //}
-            //}
-          
+                    return View("Error");
+                }
+
+            }
+
             return View(model);
         }
 
@@ -274,21 +293,22 @@ namespace WEB_Water.Controllers
                 var result = await _userHelper.LoginAsync(model);
                 if (result.Succeeded)
                 {
-                    if(user.EmailConfirmed==true && user.FirstTimePass==false)
-                    {
-                        user.FirstTimePass = true;
-                        await _userHelper.UpdateUserAsync(user);
-                        return this.RedirectToAction("ChangePassword", "Account");
+                    //if(user.EmailConfirmed==true && user.FirstTimePass==false)
+                    //{
+                    //    user.FirstTimePass = true;
+                    //    await _userHelper.UpdateUserAsync(user);
+                    //    //return this.RedirectToAction("ChangePassword", "Account");
+                    //    ViewBag.Message = "Go to your email to follow instructions";
 
-                    }
-                    else
-                    {
+                    //}
+                    //else
+                    //{
                         if (this.Request.Query.Keys.Contains("ReturnUrl"))
                         {
                             return Redirect(this.Request.Query["ReturnUrl"].First());
                         }
                         return this.RedirectToAction("Index", "Home");
-                    }
+                    //}
            
                 }
             }
@@ -327,7 +347,7 @@ namespace WEB_Water.Controllers
                     var response = await _userHelper.UpdateUserAsync(user);
                     if (response.Succeeded)
                     {
-                        ViewBag.UserMessage = "User updated!";
+                        ViewBag.Message = "User updated!";
                     }
                     else
                     {

@@ -4,6 +4,7 @@
     ViewData["Title"] = "Index";
 }
 
+
 <h1>List of readings:</h1>
 
 <p>
@@ -12,11 +13,11 @@
 <table class="table">
     <thead>
         <tr>
-         
-                <th>
-                    @Html.DisplayNameFor(model => model.User.FullName)
-                </th>
-         
+
+            <th>
+                @Html.DisplayNameFor(model => model.User.FullName)
+            </th>
+
             <th>
                 @Html.DisplayNameFor(model => model.Reader.ReaderName)
             </th>
@@ -32,56 +33,56 @@
             <th>
                 @Html.DisplayNameFor(model => model.ValueOfConsumption)
             </th>
- 
-                <th></th>
-            </tr>
+
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-@foreach (var item in Model) {
-        <tr>
-          
+        @foreach (var item in Model)
+        {
+            <tr>
+
                 <td>
                     @Html.DisplayFor(modelItem => item.User.FullName)
                 </td>
-               
-            <td>
-                @Html.DisplayFor(modelItem => item.Reader.ReaderName)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.Begin)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.End)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.RegistrationDateNewReading)
-            </td>
-            <td>
-                @Html.DisplayFor(modelItem => item.ValueOfConsumption)
-            </td>
 
-            <td>
-                 @if (item.BillIssued == true)
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-primary far fa-edit disabled"></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt disabled"></a>//Once the bill is generated, it cant be deleted
-                    <span><i class="fas fa-check"></i></span>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Reader.ReaderName)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.Begin)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.End)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.RegistrationDateNewReading)
+                </td>
+                <td>
+                    @Html.DisplayFor(modelItem => item.ValueOfConsumption)
+                </td>
 
-                }
-                else
-                {
-                    <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-primary far fa-edit"></a>
-                    <a asp-action="Details" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
-                    <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt"></a>
-                    @if (this.User.IsInRole("Worker"))
+                <td>
+                    @if (item.BillIssued == true)
                     {
-                    <a asp-action="CalculateBill" asp-controller="Bills" asp-route-id="@item.Id" title="Generate Bill" class="btn btn-outline-warning fas fa-calculator"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-primary far fa-edit disabled"></a>
+                        <a asp-action="Details" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt disabled"></a>//Once the bill is generated, it cant be deleted
+                        <span><i class="fas fa-check"></i></span> 
+                     }
+                    else
+                    {
+                        <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-primary far fa-edit"></a>
+                        <a asp-action="Details" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
+                        <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt"></a>
+                        @if (this.User.IsInRole("Worker"))
+                        {
+                            <a asp-action="CalculateBill" asp-controller="Bills" asp-route-id="@item.Id" title="Generate Bill" class="btn btn-outline-warning fas fa-calculator"></a>
+                        }
                     }
-                }
-            </td>
-        </tr>
-}
+                </td>
+            </tr>
+        }
     </tbody>
 </table>
 <br />

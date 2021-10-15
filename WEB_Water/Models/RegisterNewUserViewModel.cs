@@ -1,20 +1,15 @@
-﻿using System;
+﻿using Microsoft.AspNetCore.Http;
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
+using WEB_Water.Data.Entities;
 
 namespace WEB_Water.Models
 {
-    public class RegisterNewUserViewModel
+    public class RegisterNewUserViewModel : User
     {
-        [Required]
-        [Display(Name = "First Name")]
-        public string FirstName { get; set; }
-
-        [Required]
-        [Display(Name = "Last Name")]
-        public string LastName { get; set; }
 
         [Required]
         [DataType(DataType.EmailAddress)]
@@ -24,12 +19,6 @@ namespace WEB_Water.Models
         [Display(Name = "Phone Number")]
         public string PhoneNumber { get; set; }
 
-        [Display(Name = "NIF")]
-        public string Nif { get; set; }
-
-        [Display(Name = "Is Customer?")]
-        public bool IsCustomer { get; set; }
-
         [Required]
         [MinLength(6)]
         public string Password { get; set; }
@@ -38,8 +27,11 @@ namespace WEB_Water.Models
         [Compare("Password")]
         public string Confirm { get; set; }
 
-        [Display(Name = "Image")]
-        public Guid ImageId { get; set; }
+        //[Display(Name = "Image")]
+        //public IFormFile ImageFile { get; set; }
+
+        //[Display(Name = "Image")]
+        //public Guid ImageId { get; set; }
 
     }
 }

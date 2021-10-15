@@ -23,8 +23,8 @@ namespace WEB_Water.Data.Entities
        //Bool to control the first time a user does a Log IN
         public bool FirstTimePass { get; set; }
 
-        //[Display(Name = "Image")]
-        //public string ImageUrl { get; set; }
+        [Display(Name = "Image")]
+        public string ImageUrl { get; set; }
 
         //public string ImageFullPath
         //{

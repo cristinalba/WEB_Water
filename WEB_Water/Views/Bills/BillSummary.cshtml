@@ -4,6 +4,15 @@
     ViewData["Title"] = "BillSummary";
 }
 
+
+@*@if (ViewBag.Message != null)
+{
+    <div class="alert alert-success" role="alert">
+        <center><h3>@ViewBag.Message</h3></center>
+    </div>            
+}*@
+
+
 <h1>Bill Summary</h1>
 
 
@@ -16,76 +25,76 @@
                     @Html.DisplayNameFor(model => model.User.FullName)
                 </th>
             }
-                <th>
-                    @Html.DisplayNameFor(model => model.Reader.ReaderName)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.BillDate)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Reading.Begin)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Reading.End)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.Reading.ValueOfConsumption)
-                </th>
-                <th>
-                    @Html.DisplayNameFor(model => model.ValueToPay)
-                </th>
-                <th></th>
-            </tr>
+            <th>
+                @Html.DisplayNameFor(model => model.Reader.ReaderName)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.BillDate)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reading.Begin)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reading.End)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.Reading.ValueOfConsumption)
+            </th>
+            <th>
+                @Html.DisplayNameFor(model => model.ValueToPay)
+            </th>
+            <th></th>
+        </tr>
     </thead>
     <tbody>
-            @foreach (var item in Model) 
-            {
-                <tr>
-                    @if (this.User.IsInRole("Worker"))
-                    {
-                        <td>
-                            <center>
+        @foreach (var item in Model)
+        {
+            <tr>
+                @if (this.User.IsInRole("Worker"))
+                {
+                    <td>
+                        <center>
                             @Html.DisplayFor(modelItem => item.User.FullName)
-                            </center>
-                        </td>
-                    }
-                    <td>
-                        <center>
-                            @Html.DisplayFor(modelItem => item.Reader.ReaderName)
                         </center>
                     </td>
-                    <td>
-                        <center>
-                            @Html.DisplayFor(modelItem => item.BillDate)
-                        </center>
-                    </td>
-                    <td>
-                        <center>
-                            @Html.DisplayFor(modelItem => item.Reading.Begin)
-                        </center>
-                    </td>
-                    <td>
-                        <center>
-                            @Html.DisplayFor(modelItem => item.Reading.End)
-                        </center>
-                    </td>
-                    <td>
-                        <center>
-                            @Html.DisplayFor(modelItem => item.Reading.ValueOfConsumption)
-                        </center>
-                    </td>
-                    <td>
-                        <center>
-                            @Html.DisplayFor(modelItem => item.ValueToPay)
-                        </center>
-                    </td>
-                    <td>
-                        @* Route appears encrypted in the URL *@
-                        <a asp-action="ShowBill" asp-route-id="@EncryptationFunctions.EncryptString(item.Id.ToString());" title="Show bill" target="_blank" class="btn btn-warning fas fa-file-invoice-dollar"></a>
-                    </td>
+                }
+                <td>
+                    <center>
+                        @Html.DisplayFor(modelItem => item.Reader.ReaderName)
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        @Html.DisplayFor(modelItem => item.BillDate)
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        @Html.DisplayFor(modelItem => item.Reading.Begin)
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        @Html.DisplayFor(modelItem => item.Reading.End)
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        @Html.DisplayFor(modelItem => item.Reading.ValueOfConsumption)
+                    </center>
+                </td>
+                <td>
+                    <center>
+                        @Html.DisplayFor(modelItem => item.ValueToPay)
+                    </center>
+                </td>
+                <td>
+                    @* Route appears encrypted in the URL *@
+                    <a asp-action="ShowBill" asp-route-id="@EncryptationFunctions.EncryptString(item.Id.ToString());" title="Show bill" target="_blank" class="btn btn-warning fas fa-file-invoice-dollar"></a>
+                </td>
 
-                </tr>
-            }
+            </tr>
+        }
     </tbody>
 </table>
 <br />

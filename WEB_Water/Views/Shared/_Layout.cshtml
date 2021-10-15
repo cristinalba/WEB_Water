@@ -8,30 +8,37 @@
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
     <style>
-            ul {
-                font-weight: bolder;
-            }
-            h6{
-                font-weight: bolder;
-            }
-        </style>
+        ul {
+            font-weight: bolder;
+        }
 
- 
+        h6 {
+            font-weight: bolder;
+        }
+    </style>
+
+    <!-- Syncfusion Essential JS 2 Styles -->
+    <link rel="stylesheet" href="https://cdn.syncfusion.com/ej2/material.css" />
+
+    <!-- Syncfusion Essential JS 2 Scripts -->
+    <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
+
 </head>
 <body>
 
-  
+
     <header>
 
         <nav class="navbar navbar-expand-sm navbar-toggleable-sm navbar-light bg-white border-bottom box-shadow mb-3">
             <div class="container">
-                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/images/gotaLogo2.jpg"/>Tajo Water Company </a>
+                <a class="navbar-brand" asp-area="" asp-controller="Home" asp-action="Index"> <img src="~/images/gotaLogo2.jpg" />Tajo Water Company </a>
                 <button class="navbar-toggler" type="button" data-toggle="collapse" data-target=".navbar-collapse" aria-controls="navbarSupportedContent"
                         aria-expanded="false" aria-label="Toggle navigation">
                     <span class="navbar-toggler-icon"></span>
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
+         
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -168,7 +175,7 @@
                     <div class="col-lg-4 col-md-6">
                         <div>
                             <center>
-                             <h4> <img src="~/images/gotaLogo3.jpg"/>Tajo Water Company</h4>
+                                <h4> <img src="~/images/gotaLogo3.jpg" />Tajo Water Company</h4>
                                 <p>
                                     Rua Jau
                                     <br>
@@ -229,19 +236,22 @@
                 <br />
             </div>
         </div>
-    </footer> 
-    
-    
-    @*End Footer*@ 
+    </footer>
+
+
+    @*End Footer*@
 
     <script src="~/lib/jquery/dist/jquery.min.js"></script>
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
+
+
+
+
+    <!-- Syncfusion Essential JS 2 ScriptManager -->
+    <ejs-scripts></ejs-scripts>
+
     @await RenderSectionAsync("Scripts", required: false)
-
-
-
-
 
 </body>
 </html>

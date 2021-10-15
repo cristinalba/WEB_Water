@@ -17,15 +17,18 @@ namespace WEB_Water.Controllers
     {
         
         private readonly IUserHelper _userHelper;
+        private readonly IMailHelper _mailHelper;
         private readonly IBillRepository _billRepository;
         private readonly IReadingRepository _readingRepository;
 
-        public BillsController(IUserHelper userHelper, 
+        public BillsController(IUserHelper userHelper,
+                               IMailHelper mailHelper,
                                IBillRepository billRepository, 
                                IReadingRepository readingRepository)
         {
          
             _userHelper = userHelper;
+            _mailHelper = mailHelper;
             _billRepository = billRepository;
             _readingRepository = readingRepository;
         }
@@ -132,6 +135,13 @@ namespace WEB_Water.Controllers
 
 
             await _billRepository.SaveBillAsync();
+
+            //Send alert to customer of new Bill
+
+            Response response = _mailHelper.SendEmail(model.User.UserName, "New invoice from Tajo Water Company", $"<h3>You can check your last consumption</h3>" +
+                   $"Thank you for choosing us");
+
+
 
             return RedirectToAction(nameof(Index));
         }
