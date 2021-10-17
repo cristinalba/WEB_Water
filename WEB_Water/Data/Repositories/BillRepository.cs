@@ -70,9 +70,6 @@ namespace WEB_Water.Data.Repositories
             return _context.Bills
                 .Include(u => u.User);
               
-                
-
-            //TODO: faltaria incluir reader y reading
         }
         
 

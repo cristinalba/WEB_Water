@@ -6,7 +6,7 @@
     <section class="inner-page">
         <div class="container">
             <br /><br />
-            <center><h2>Profile from  <b>@Html.DisplayFor(model => model.FullName)</b>:</h2></center>
+            <center><h2>Your Profile</h2></center>
 
             <div>
                 <h4>@Html.DisplayFor(model => model.FullName)</h4>
@@ -71,19 +71,10 @@
                 </div>
 
             </div>
-            @if (this.User.IsInRole("Admin"))
-            {
             <div>
-                <a asp-action="Index" class="btn btn-success">Back to list</a>
+                <a asp-action="ChangePassword" asp-route-id="@Model.Id" class="btn btn-warning">Alterar Palavra-Passe</a>
             </div>
-            }
         </div>
     </section>
 
 </main><!-- End #main -->
-
-
-@section Scripts {
-    @{await Html.RenderPartialAsync("_ValidationScriptsPartial");}
-
-}

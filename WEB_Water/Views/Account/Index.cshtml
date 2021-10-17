@@ -35,8 +35,8 @@
                                 @Html.DisplayFor(modelItem => item.UserName)
                             </td>
                             <td>
-                                @if (this.User.IsInRole("Admin"))
-                                {
+                                @*@if (this.User.IsInRole("Admin"))
+                                {*@
                                     <a asp-controller="Readers" asp-action="Create" asp-route-id="@item.Id" title="Add Reader"><i class="fas fa-plus-circle"></i></a>
 
                                     <a asp-action="Edit" asp-route-id="@item.Id" title="Edit User" class="btn btn-outline-primary far fa-edit"></a>
@@ -44,7 +44,7 @@
                                     <a asp-action="ProfileUser" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
 
                                     <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt"></a>
-                                }
+                                @*}*@
                             </td>
                         </tr>
                      }

@@ -119,20 +119,12 @@ namespace WEB_Water.Helpers
 
             return list;
         }
-        //public IQueryable<User> GetAll()
-        //{
-           
-        //    return _context.Set<User>();
-        //}
+    
         public IQueryable<User> GetAll()
         {
             return _userManager.Users;
         }
 
-        //public async Task<User> GetUserByIdAsync(string id)
-        //{
-        //    return await _context.Set<User>().FindAsync(id);
-        //}
 
         public async Task<User> GetByIdAsync(string id)
         {

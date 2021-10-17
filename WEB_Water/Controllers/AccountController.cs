@@ -1,21 +1,18 @@
 ﻿using Microsoft.AspNetCore.Authorization;
 using Microsoft.AspNetCore.Identity;
-using Microsoft.AspNetCore.Mvc;
-using Microsoft.EntityFrameworkCore;
-using Microsoft.Extensions.Configuration;
-using Microsoft.IdentityModel.Tokens;
 using System;
-using System.Collections.Generic;
 using System.IdentityModel.Tokens.Jwt;
-using System.IO;
 using System.Linq;
 using System.Security.Claims;
 using System.Text;
 using System.Threading.Tasks;
+using Microsoft.AspNetCore.Mvc;
+using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.Configuration;
+using Microsoft.IdentityModel.Tokens;
 using WEB_Water.Data.Entities;
 using WEB_Water.Helpers;
 using WEB_Water.Models;
-
 
 namespace WEB_Water.Controllers
 {
@@ -25,8 +22,8 @@ namespace WEB_Water.Controllers
         private readonly IMailHelper _mailHelper;
         private readonly IImageHelper _imageHelper;
         private readonly IConverterHelper _converterHelper;
-        private readonly UserManager<User> _userManager;
         private readonly IConfiguration _configuration;
+        private readonly UserManager<User> _userManager;
 
         public AccountController(IUserHelper userHelper,
                                  IMailHelper mailHelper,
@@ -48,22 +45,23 @@ namespace WEB_Water.Controllers
         [Authorize(Roles = "Admin")]
         public IActionResult Index()
         {
-            return View(_userHelper.GetAll().Where(x => x.IsCustomer==true).OrderBy(x => x.UserName));
+            return View(_userHelper.GetAll().Where(x => x.IsCustomer == true).OrderBy(x => x.UserName));
         }
 
+        //Account/IndexOthers
         [Authorize(Roles = "Admin")]
         public IActionResult IndexOthers()
         {
             return View(_userHelper.GetAll().Where(x => x.IsCustomer == false).OrderBy(x => x.UserName));
         }
 
-        //Create
+        //Account/Create
         public IActionResult Register() //Add View+Razor view
         {
             return View();
         }
 
-        //Create
+        //Account/Create
         [Authorize(Roles = "Admin")]
         [HttpPost]
         public async Task<IActionResult> Register(RegisterNewUserViewModel model)
@@ -71,7 +69,7 @@ namespace WEB_Water.Controllers
             if (ModelState.IsValid)
             {
                 var user = await _userHelper.GetUserByEmailAsync(model.UserName); //check if the user exists
-                
+
                 if (user == null)
                 {
                     user = new User //create user if it doesn't exist
@@ -113,7 +111,7 @@ namespace WEB_Water.Controllers
                     $"please click in this link: <br/><br/><a href = \"{tokenLink}\">Confirm Email</a>");
 
                     if (response.IsSuccess)
-                    { 
+                    {
                         ViewBag.Message = "User registered! Add a reader to the user now";
                         return View(model);
                         //return this.RedirectToAction("Create", "Readers");
@@ -131,8 +129,8 @@ namespace WEB_Water.Controllers
             return View(model);
         }
 
-
-        [Authorize(Roles = "Admin")]
+        //Account/Details
+        [Authorize(Roles = "Admin, Worker")]
         public async Task<IActionResult> ProfileUser(string id)
         {
             var user = await _userManager.FindByIdAsync(id);
@@ -144,7 +142,23 @@ namespace WEB_Water.Controllers
 
             return View(user);
         }
-        //Edit
+
+        // GET: Account/Details/5
+        [Authorize(Roles = "Worker, Customer")]
+        public async Task<IActionResult> Profile()
+        {
+
+            var user = await _userHelper.GetUserByEmailAsync(this.User.Identity.Name);
+
+            if (user == null)
+            {
+                return NotFound();
+            }
+
+            return View(user);
+        }
+
+        //Account/Edit
         [Authorize(Roles = "Admin")]
         public async Task<IActionResult> Edit(string id) //ADD View
         {
@@ -158,7 +172,8 @@ namespace WEB_Water.Controllers
             var model = _converterHelper.ToChangeUserViewModel(user);
             return View(model);
         }
-        //Edit
+
+        //Account/Edit
         [Authorize(Roles = "Admin")]
         [HttpPost]//Update data when click over the username
         public async Task<IActionResult> Edit(EditUserWithImageViewModel model)
@@ -273,13 +288,13 @@ namespace WEB_Water.Controllers
         /////////////////////////////////////////////////////////////////////////////
         public IActionResult Login() //right button, add razor view(Login, without model, use layout)
         {
-           
+
             if (User.Identity.IsAuthenticated) //if the user is autherticated, shows Home!
             {
-               
+
                 return RedirectToAction("Index", "Home");
             }
-            
+
             return View(); //If there is not log in, it remains in the same view
         }
 
@@ -303,13 +318,13 @@ namespace WEB_Water.Controllers
                     //}
                     //else
                     //{
-                        if (this.Request.Query.Keys.Contains("ReturnUrl"))
-                        {
-                            return Redirect(this.Request.Query["ReturnUrl"].First());
-                        }
-                        return this.RedirectToAction("Index", "Home");
+                    if (this.Request.Query.Keys.Contains("ReturnUrl"))
+                    {
+                        return Redirect(this.Request.Query["ReturnUrl"].First());
+                    }
+                    return this.RedirectToAction("Index", "Home");
                     //}
-           
+
                 }
             }
 
@@ -326,7 +341,7 @@ namespace WEB_Water.Controllers
             {
                 model.FirstName = user.FirstName;
                 model.LastName = user.LastName;
-            }        
+            }
             return View(model);
         }
         //Edit
@@ -460,7 +475,7 @@ namespace WEB_Water.Controllers
             var result = await _userHelper.ConfirmEmailAsync(user, token);
             if (!result.Succeeded)
             {
-              
+
             }
 
 
@@ -567,11 +582,11 @@ namespace WEB_Water.Controllers
         }
 
         //Account/UpdatePrices
-        [Authorize(Roles = "Admin")]
-        public IActionResult PriceControlUpdate()
-        {
-            return View();
-        }
+        //[Authorize(Roles = "Admin")]
+        //public IActionResult PriceControlUpdate()
+        //{
+        //    return View();
+        //}
 
         /////////////////////////////////////////////////////////////////////////////
         ///

@@ -38,7 +38,6 @@ namespace WEB_Water.Controllers
         [Authorize(Roles = "Worker")] //Worker can see all customers(List) and can register(create) new readings of a customer in particular (+) 
         public IActionResult ListOfAllTheCustomers()
         {
-            //TODO:FullName??
             return View(_userHelper.GetAll()
                 .Where(x => x.IsCustomer == true)
                 .Where(x => x.Readers.Count>0) //it only shows a customer if the reader has been created
