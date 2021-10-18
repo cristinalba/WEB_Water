@@ -20,7 +20,6 @@ namespace WEB_Water.Data.Repositories
 
         public async Task<IQueryable<Bill>> GetBillAsync(string id)
         {
-
             var user = await _userHelper.GetByIdAsync(id);
             if (user == null)
             {
@@ -32,7 +31,6 @@ namespace WEB_Water.Data.Repositories
                .Include(x => x.Reading)
                .Where(u => u.User == user)
                .OrderByDescending(b => b.BillDate);
-
 
         }
 

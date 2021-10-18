@@ -192,6 +192,7 @@ namespace WEB_Water.Controllers
                             path = await _imageHelper.UploadImageAsync(model.ImageFile, "users");
                         }
                         //before saving in the database
+                        
 
                         user.FirstName = model.FirstName;
                         user.LastName = model.LastName;

@@ -15,10 +15,12 @@ namespace WEB_Water.Helpers
         private readonly UserManager<User> _userManager;
         private readonly SignInManager<User> _signInManager;
         private readonly RoleManager<IdentityRole> _roleManager;
+       
 
         public UserHelper(UserManager<User> userManager,
                           SignInManager<User> signInManager,
-                          RoleManager<IdentityRole> roleManager)
+                          RoleManager<IdentityRole> roleManager
+                          )
         {
             _userManager = userManager;
             _signInManager = signInManager;

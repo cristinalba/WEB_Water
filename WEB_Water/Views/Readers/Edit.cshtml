@@ -24,9 +24,11 @@
                 <span asp-validation-for="AddressName" class="text-danger"></span>
             </div>
             <div class="form-group">
-                <label asp-for="Installation" class="control-label"></label>
-                <input asp-for="Installation" class="form-control" />
-                <span asp-validation-for="Installation" class="text-danger"></span>
+                <ejs-datepicker ejs-for="Installation" id="datetimepicker" format="yyyy-MM-dd" placeholder="Installation date" max="@DateTime.Now.AddYears(-1)" floatLabelType="Auto" cssClass="e-outline">
+
+                </ejs-datepicker>
+                <span asp-validation-for="Installation" class="alert-danger"></span>
+
             </div>
             <div class="form-group">
                 <input type="submit" value="Save" class="btn btn-primary" />

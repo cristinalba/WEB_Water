@@ -65,19 +65,19 @@
                 <td>
                     @if (item.BillIssued == true)
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-primary far fa-edit disabled"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-warning far fa-edit disabled"></a>
                         <a asp-action="Details" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
                         <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt disabled"></a>//Once the bill is generated, it cant be deleted
                         <span><i class="fas fa-check"></i></span> 
                      }
                     else
                     {
-                        <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-primary far fa-edit"></a>
+                        <a asp-action="Edit" asp-route-id="@item.Id" title="Edit" class="btn btn-outline-warning far fa-edit"></a>
                         <a asp-action="Details" asp-route-id="@item.Id" title="Details" class="btn btn-outline-success fas fa-info-circle"></a>
                         <a asp-action="Delete" asp-route-id="@item.Id" title="Delete" class="btn btn-outline-danger fas fa-trash-alt"></a>
                         @if (this.User.IsInRole("Worker"))
                         {
-                            <a asp-action="CalculateBill" asp-controller="Bills" asp-route-id="@item.Id" title="Generate Bill" class="btn btn-outline-warning fas fa-calculator"></a>
+                            <a asp-action="CalculateBill" asp-controller="Bills" asp-route-id="@item.Id" title="Generate Bill" class="btn btn-outline-info fas fa-calculator"></a>
                         }
                     }
                 </td>

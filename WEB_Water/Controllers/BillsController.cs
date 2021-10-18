@@ -120,7 +120,7 @@ namespace WEB_Water.Controllers
                 Reading = model,
                 BillDate = DateTime.UtcNow,
                 ValueToPay = Math.Round(TotalValue,2),
-                User = model.User
+                User = model.User,
             };
        
             _billRepository.AddBill(billfromModel);
@@ -140,8 +140,6 @@ namespace WEB_Water.Controllers
 
             Response response = _mailHelper.SendEmail(model.User.UserName, "New invoice from Tajo Water Company", $"<h3>You can check your last consumption</h3>" +
                    $"Thank you for choosing us");
-
-
 
             return RedirectToAction(nameof(Index));
         }
