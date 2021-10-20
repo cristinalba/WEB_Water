@@ -1,0 +1,10 @@
+{
+  "dependencies": {
+    "storage1": {
+      "type": "storage",
+      "connectionId": "Blob/ConnectionString",
+      "suggestion": "true",
+      "ignored": "true"
+    }
+  }
+}

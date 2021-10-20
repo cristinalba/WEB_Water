@@ -30,7 +30,7 @@
             <br />
 
             <div class="form-group">
-                <ejs-datepicker ejs-for="Begin" id="datetimepicker1" format="yyyy-MM-dd" placeholder="Start Period" max="@DateTime.Now.AddYears(-1)" floatLabelType="Auto" cssClass="e-outline">
+                <ejs-datepicker ejs-for="Begin" id="datetimepicker1" format="yyyy-MM-dd" placeholder="Start Period" max="@DateTime.Now.AddYears(0)" floatLabelType="Auto" cssClass="e-outline">
 
                 </ejs-datepicker>
                 <span asp-validation-for="Begin" class="alert-danger"></span>
@@ -40,7 +40,7 @@
             </div>
             <br />
             <div class="form-group">
-                <ejs-datepicker ejs-for="End" id="datetimepicker2" format="yyyy-MM-dd" placeholder="End Period" max="@DateTime.Now.AddYears(-1)" floatLabelType="Auto" cssClass="e-outline">
+                <ejs-datepicker ejs-for="End" id="datetimepicker2" format="yyyy-MM-dd" placeholder="End Period" max="@DateTime.Now.AddYears(0)" floatLabelType="Auto" cssClass="e-outline">
 
                 </ejs-datepicker>
                 <span asp-validation-for="End" class="alert-danger"></span>

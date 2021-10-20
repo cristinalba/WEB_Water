@@ -7,6 +7,8 @@
     <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" />
     <link rel="stylesheet" href="~/lib/font-awesome/css/all.min.css" />
     <link rel="stylesheet" href="~/css/site.css" />
+    <link rel="stylesheet" type="text/css" href="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.css" />
+
     <style>
         ul {
             font-weight: bolder;
@@ -23,6 +25,8 @@
     <!-- Syncfusion Essential JS 2 Scripts -->
     <script src="https://cdn.syncfusion.com/ej2/dist/ej2.min.js"></script>
 
+
+
 </head>
 <body>
 
@@ -38,7 +42,7 @@
                 </button>
                 <div class="navbar-collapse collapse d-sm-inline-flex justify-content-between">
                     <ul class="navbar-nav flex-grow-1">
-         
+
                         <li class="nav-item">
                             <a class="nav-link text-dark" asp-area="" asp-controller="Home" asp-action="Index">Home</a>
                         </li>
@@ -245,7 +249,18 @@
     <script src="~/lib/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="~/js/site.js" asp-append-version="true"></script>
 
-
+    <script type="text/javascript" src="https://cdn.datatables.net/v/bs5/dt-1.11.3/datatables.min.js"></script>
+    <script type="text/javascript">
+        $(document).ready(function () {
+            $('#readingsTable').DataTable();
+            $('#readersTable').DataTable();
+            $('#usersTable').DataTable();
+            $('#billsTable').DataTable();
+            $('#workersTable').DataTable();
+            $('#billSummaryTable').DataTable();
+            
+        });
+    </script>
 
 
     <!-- Syncfusion Essential JS 2 ScriptManager -->

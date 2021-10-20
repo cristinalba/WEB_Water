@@ -26,17 +26,6 @@ namespace WEB_Water.Data.Entities
         [Display(Name = "Image")]
         public string ImageUrl { get; set; }
 
-        //public string ImageFullPath
-        //{
-        //    get
-        //    {
-        //        if(string.IsNullOrEmpty(ImageUrl))
-        //        {
-        //            return null;
-        //        }
-        //        return $"https://localhost:44333{ImageUrl.Substring(1)}"; //URL completa para ver la imagen
-        //    }
-        //}
 
         [Display(Name = "Customer")]
         public string FullName { get { return $"{this.FirstName} {this.LastName}"; } }

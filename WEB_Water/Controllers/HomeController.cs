@@ -67,11 +67,14 @@ namespace WEB_Water.Controllers
                     $"On {DateTime.Now}<br/>";
 
                 xx.Host = "smtp.gmail.com";
-                xx.Port = 587;
+                
 
-
-                xx.Credentials = new NetworkCredential("kamistesta@gmail.com", "Cinel123!");
+                ////tryng
+                xx.UseDefaultCredentials = false;
                 xx.EnableSsl = true;
+                xx.Port = 587;
+                xx.Credentials = new NetworkCredential("kamistesta@gmail.com", "fklqnhfcgtjlkvvz");
+                
 
                 xx.Send(mailXX);
 
@@ -127,7 +130,7 @@ namespace WEB_Water.Controllers
                 sc.Port = 587;
 
 
-                sc.Credentials = new NetworkCredential("kamistesta@gmail.com", "Cinel123!");
+                sc.Credentials = new NetworkCredential("kamistesta@gmail.com", "fklqnhfcgtjlkvvz");
                 sc.EnableSsl = true;
 
                 sc.Send(mail);

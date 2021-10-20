@@ -33,7 +33,7 @@ namespace WEB_Water.Data
             await _userHelper.CheckRoleAsync("Worker");
             await _userHelper.CheckRoleAsync("Customer");
            
-            var user = await _userHelper.GetUserByEmailAsync("admin@webwater.com");//check if this user has been already created
+            var user = await _userHelper.GetUserByEmailAsync("kamistesta@gmail.com");//check if this user has been already created
             //var user = await _userManager.FindByIdAsync("admin@webwater"); 
 
             var user1 = await _userHelper.GetUserByEmailAsync("adminworker1@webwater.com");
@@ -46,8 +46,8 @@ namespace WEB_Water.Data
                 {
                     FirstName = "Administrator",
                     LastName = "Web_Water",
-                    Email = "admin@webwater.com",
-                    UserName = "admin@webwater.com",
+                    Email = "kamistesta@gmail.com",
+                    UserName = "kamistesta@gmail.com",
                     PhoneNumber = "914412891",
                     Nif = _random.Next(100000000, 999999999).ToString(),
                     FirstTimePass = true
