@@ -1,13 +1,9 @@
 ﻿using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Logging;
 using System;
-using System.Collections.Generic;
-using System.Diagnostics;
-using System.Linq;
-using System.Threading.Tasks;
-using WEB_Water.Models;
-using System.Net.Mail;
 using System.Net;
+using System.Net.Mail;
+using WEB_Water.Models;
 
 namespace WEB_Water.Controllers
 {
@@ -44,14 +40,14 @@ namespace WEB_Water.Controllers
         [HttpPost]
         public IActionResult Contact(SendMail mailInfo)
         {
-            if (!ModelState.IsValid) 
+            if (!ModelState.IsValid)
                 return View();
 
             try
             {
                 SmtpClient xx = new SmtpClient();
                 MailMessage mailXX = new MailMessage();
-                
+
 
                 mailXX.From = new MailAddress("kamistesta@gmail.com");
                 mailXX.To.Add(new MailAddress("kamistesta@gmail.com"));
@@ -67,14 +63,14 @@ namespace WEB_Water.Controllers
                     $"On {DateTime.Now}<br/>";
 
                 xx.Host = "smtp.gmail.com";
-                
+
 
                 ////tryng
                 xx.UseDefaultCredentials = false;
                 xx.EnableSsl = true;
                 xx.Port = 587;
                 xx.Credentials = new NetworkCredential("kamistesta@gmail.com", "fklqnhfcgtjlkvvz");
-                
+
 
                 xx.Send(mailXX);
 
@@ -90,11 +86,11 @@ namespace WEB_Water.Controllers
             return View();
 
         }
+
         public IActionResult FormNewReader()
         {
             return View();
         }
-
 
         [HttpPost]
         public IActionResult FormNewReader(EmailForm sendMail)
@@ -105,26 +101,26 @@ namespace WEB_Water.Controllers
             try
             {
                 SmtpClient sc = new SmtpClient();
-            MailMessage mail = new MailMessage();
+                MailMessage mail = new MailMessage();
 
-            mail.From = new MailAddress("kamistesta@gmail.com");
-            ///////////////////////////////////////////////////////////////////////////////
-            ////                                                                        ///
-            ////               It will be changed to the email of the Admin             ///
-            ////                                                                        ///
-            ///////////////////////////////////////////////////////////////////////////////
-            mail.To.Add(new MailAddress("kamistesta@gmail.com"));
-            mail.Subject = "Form from a new customer";
+                mail.From = new MailAddress("kamistesta@gmail.com");
+                ///////////////////////////////////////////////////////////////////////////////
+                ////                                                                        ///
+                ////               It will be changed to the email of the Admin             ///
+                ////                                                                        ///
+                ///////////////////////////////////////////////////////////////////////////////
+                mail.To.Add(new MailAddress("kamistesta@gmail.com"));
+                mail.Subject = "Form from a new customer";
 
-            mail.IsBodyHtml = true;
+                mail.IsBodyHtml = true;
 
-            mail.Body = "<br/><br/><b>This customer wants a new reader:</b><br/>" +
-                $"<b>Name:</b>  {sendMail.FirstName}  {sendMail.LastName} <br/>" +
-                $"<b>E-mail:</b>  {sendMail.Email}<br/><br/>" +
-                $"<b>Telephone:</b>  {sendMail.Telephone}<br/>" +
-                $"<b>NIF:</b>  {sendMail.NIF}<br/>" +
-                $"<b>Address:</b>  {sendMail.Address}<br/>" +
-                $"This form was sent on {DateTime.Now}<br/>";
+                mail.Body = "<br/><br/><b>This customer wants a new reader:</b><br/>" +
+                    $"<b>Name:</b>  {sendMail.FirstName}  {sendMail.LastName} <br/>" +
+                    $"<b>E-mail:</b>  {sendMail.Email}<br/><br/>" +
+                    $"<b>Telephone:</b>  {sendMail.Telephone}<br/>" +
+                    $"<b>NIF:</b>  {sendMail.NIF}<br/>" +
+                    $"<b>Address:</b>  {sendMail.Address}<br/>" +
+                    $"This form was sent on {DateTime.Now}<br/>";
 
                 sc.Host = "smtp.gmail.com";
                 sc.Port = 587;
@@ -139,7 +135,7 @@ namespace WEB_Water.Controllers
 
                 ModelState.Clear();
 
-            return View();
+                return View();
             }
             catch (Exception ex)
             {
@@ -150,6 +146,6 @@ namespace WEB_Water.Controllers
 
         }
 
-  
+
     }
 }
